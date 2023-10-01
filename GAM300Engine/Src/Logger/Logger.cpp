@@ -3,6 +3,7 @@
 
 namespace TDS
 {
+	int TDS_charlen = 38;
 	std::shared_ptr<spdlog::logger> Log::s_CoreLogger;
 	std::shared_ptr<spdlog::logger> Log::s_ClientLogger;
 	std::ostringstream Log::oss; // stream for imgui logger window
@@ -24,6 +25,10 @@ namespace TDS
 
 	std::string Log::GetImguiLog()
 	{
-		return oss.str();
+		std::string fullStream = oss.str();
+		std::size_t found = fullStream.find_last_of("[");
+		std::string logLine = fullStream.substr(found - TDS_charlen); // TDS_charlen = 29 
+		return logLine;
 	}
+	
 } //end of namespace

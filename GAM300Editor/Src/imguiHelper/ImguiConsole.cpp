@@ -1,5 +1,6 @@
 #include "imguiHelper/ImguiConsole.h"
 #include "imguiHelper/ImguiAssetBrowser.h"
+#include "Logger/Logger.h"
 
 namespace TDS
 {
@@ -87,11 +88,11 @@ namespace TDS
 				color = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
 				has_color = true;
 			}
-			else if (strstr(item, "[yellow]")) {
+			else if (strstr(item, "[warning]")) {
 				color = ImVec4(1.0f, 0.8f, 0.0f, 1.0f);
 				has_color = true;
 			}
-			else if (strstr(item, "[orange]")) {
+			else if (strstr(item, "[error]")) {
 				color = ImVec4(0.8f, 0.2f, 0.0f, 1.0f);
 				has_color = true;
 			}
@@ -114,38 +115,79 @@ namespace TDS
 		//some things to test the console
 		ImGuiIO& io = ImGui::GetIO(); (void)io;
 
+
+
 		if (io.WantCaptureMouseUnlessPopupClose == false)
 		{
 			if (ImGui::IsMouseClicked(0))
 			{
-				AddLog("[yellow] Mouse Click detected on Viewport");
+				//AddLog("[info] Mouse Click detected on Viewport");
+				TDS_INFO("Mouse Click detected on Viewport");
+				
+				AddLog(Log::GetImguiLog().c_str());
+				
 			}
 		}
 		//set this to only capture mouse presses on the window
-		if (io.WantCaptureMouseUnlessPopupClose == true)
-		{
-			if (ImGui::IsMouseClicked(0))
-			{
-				AddLog("[orange] Mouse Click detected on ImGui Window ");
-				//std::cout << AssetBrowser::m_curr_path << std::endl;
-			}
-		}
+		//if (io.WantCaptureMouseUnlessPopupClose == true)
+		//{
+		//	if (ImGui::IsMouseClicked(0))
+		//	{
+		//		TDS_INFO("Mouse Click detected on ImGui Window ");
+		//		AddLog(Log::GetImguiLog().c_str());
+
+		//		//std::cout << AssetBrowser::m_curr_path << std::endl;
+		//	}
+		//}
 		if (ImGui::IsKeyPressed(ImGuiKey_UpArrow))
 		{
-			AddLog("Up key pressed");
+			TDS_INFO("Up key pressed");
+			AddLog(Log::GetImguiLog().c_str());
+
 		}
 		if (ImGui::IsKeyPressed(ImGuiKey_DownArrow))
 		{
-			AddLog("Down key pressed");
+			TDS_INFO("Down key pressed");
+			AddLog(Log::GetImguiLog().c_str());
+
 		}
 		if (ImGui::IsKeyPressed(ImGuiKey_LeftArrow))
 		{
-			AddLog("Left key pressed");
+			TDS_INFO("Left key pressed");
+			AddLog(Log::GetImguiLog().c_str());
+
 		}
 		if (ImGui::IsKeyPressed(ImGuiKey_RightArrow))
 		{
-			AddLog("[info] Right key pressed");
+			TDS_INFO("Right key pressed");
+			AddLog(Log::GetImguiLog().c_str());
+
 		}
+		if (ImGui::IsKeyPressed(ImGuiKey_W))
+		{
+			TDS_INFO("Camera movement forward");
+			AddLog(Log::GetImguiLog().c_str());
+
+		}
+		if (ImGui::IsKeyPressed(ImGuiKey_S))
+		{
+			TDS_INFO("Camera movement backward");
+			AddLog(Log::GetImguiLog().c_str());
+
+		}
+		if (ImGui::IsKeyPressed(ImGuiKey_A))
+		{
+			TDS_INFO("Camera movement left");
+			AddLog(Log::GetImguiLog().c_str());
+
+		}
+		if (ImGui::IsKeyPressed(ImGuiKey_D))
+		{
+			TDS_INFO("Camera movement right");
+			AddLog(Log::GetImguiLog().c_str());
+
+		}
+
 
 
 		ImGui::PopStyleVar();

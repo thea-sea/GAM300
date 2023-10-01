@@ -58,14 +58,14 @@ namespace TDS
 
 		static Input::mousePosition mouse = Input::mousePosition(std::numeric_limits<int>::max(), std::numeric_limits<int>::max());
 		
-		if (Input::isMouseButtonPressed(TDS_MOUSE_LEFT))
+		if (Input::isMouseButtonPressed(TDS_MOUSE_RIGHT))
 		{
 			if (mouse.x == std::numeric_limits<int>::max() && mouse.y == std::numeric_limits<int>::max())
 			{
 				mouse = Input::getMousePosition();
 			}
 
-			if (!Input::isMouseButtonReleased(TDS_MOUSE_LEFT))
+			if (!Input::isMouseButtonReleased(TDS_MOUSE_RIGHT))
 			{
 				float GetMousex = mouse.x;
 				float GetMousey = mouse.y;
