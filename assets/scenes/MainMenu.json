@@ -118,9 +118,9 @@
                 "directionX": 0.0,
                 "directionY": 0.0,
                 "directionZ": 0.0,
-                "nextPositionX": 10.0,
-                "nextPositionY": 10.0,
-                "nextPositionZ": 10.0,
+                "nextPositionX": 0.0,
+                "nextPositionY": 0.0,
+                "nextPositionZ": 0.0,
                 "inputForceX": 0.0,
                 "inputForceY": 0.0,
                 "inputForceZ": 0.0,
@@ -130,7 +130,7 @@
                 "friction": 0.0,
                 "restitution": 0.0,
                 "mass": 1.0,
-                "inverseMass": 1.0,
+                "inverseMass": 0.0,
                 "gravity": 0.0
             }
         }
