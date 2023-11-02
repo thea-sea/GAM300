@@ -14,6 +14,7 @@
 
 #include "imguiHelper/ImguiProperties.h"
 #include "imguiHelper/ImguiHierarchy.h"
+#include "components/rigidBody.h"
 
 namespace TDS
 {
@@ -91,6 +92,8 @@ namespace TDS
 				ImGui::PopID();
 				++i;
 
+				
+
 				if (componentOpen)
 				{
 					if (ImGui::BeginTable("###", 2, /*ImGuiTableFlags_Borders |*/ ImGuiTableFlags_NoPadInnerX, ImVec2(0.0f, 5.5f)))
@@ -107,6 +110,32 @@ namespace TDS
 						ImGui::EndTable();
 					}
 					ImGui::TreePop();
+				}
+
+				//set the EMotion Type
+				if (componentName == "Rigid Body")
+				{
+					const char* motion_types[] = { "None", "Static", "Kinematic", "Dynamic" };
+					const char* selected = motion_types[0]; //set to none by default
+					if (ImGui::BeginCombo("Motion Type: ", RigidBody::current_motion_type))
+					{
+						for (int n = 0; n < IM_ARRAYSIZE(motion_types); n++)
+						{
+							bool is_selected = (selected == motion_types[n]); // You can store your selection however you want, outside or inside your objects
+							if (ImGui::Selectable(motion_types[n], is_selected))
+							{
+								selected = motion_types[n];
+								if (is_selected)
+									ImGui::SetItemDefaultFocus();   // You may set the initial focus when opening the combo (scrolling + for keyboard navigation support)
+
+							}
+						}
+						RigidBody::current_motion_type = selected;
+						//RigidBody::UpdateMotionType(); //unresolved external? TO DO
+
+						ImGui::EndCombo();
+					}
+
 				}
 			}
 

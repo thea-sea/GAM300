@@ -31,23 +31,30 @@ namespace TDS
 	void EditorScene::update()
 	{
 		//ImGui::Image(reinterpret_cast<void*>(vkTexture.m_DescSet), ImVec2{ 200, 200 }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
-		//if (ImGui::BeginDragDropTarget())
-		//{
-		//	if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM"))
-		//	{
-		//		const wchar_t* path = (const wchar_t*)payload->Data;
-		//		std::wstring ws(path);
-		//		// your new String
-		//		std::string str(ws.begin(), ws.end());
-		//		const std::filesystem::path filesystempath = str;
+		
+		//data.LoadTexture(tempPath);
+		//vkTexture.CreateBasicTexture(data.m_TextureInfo);
+		ImVec2 vSize = ImGui::GetContentRegionAvail();
+		m_DescSet = ImGui_ImplVulkan_AddTexture(GraphicsManager::getInstance().getFinalImage().getSampler(), GraphicsManager::getInstance().getFinalImage().getImageView(), VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL);
+		ImGui::Image((ImTextureID)m_DescSet, vSize);
+		//shifted drag drop here, must be directly under the line where imgui image is created
+		if (ImGui::BeginDragDropTarget())
+		{
+			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM"))
+			{
+				const wchar_t* path = (const wchar_t*)payload->Data;
+				std::wstring ws(path);
+				//		//your new String
+				std::string str(ws.begin(), ws.end());
+				const std::filesystem::path filesystempath = str;
 
-		//		if (filesystempath.extension() != ".dds")
-		//		{
-		//			consolelog->AddLog("Invalid file type, please select a .DDS file.");
-		//		}
-		//		else
-		//		{
-		//			tempPath = str;
+				if (filesystempath.extension() != ".dds")
+				{
+					consolelog->AddLog("Invalid file type, please drag a .DDS file.");
+				}
+				else
+				{
+					//tempPath = str;
 		//			std::wcout << " Path is: " << path << std::endl;
 
 		//			//currently i am only changing filepath names, next time i need to impose pictures onto pictures, create new image layer 
@@ -56,15 +63,10 @@ namespace TDS
 		//			data.LoadTexture(tempPath);
 		//			vkTexture.CreateBasicTexture(data.m_TextureInfo);*/
 
-		//		}
-		//	}
-		//	ImGui::EndDragDropTarget();
-		//}
-		//data.LoadTexture(tempPath);
-		//vkTexture.CreateBasicTexture(data.m_TextureInfo);
-		ImVec2 vSize = ImGui::GetContentRegionAvail();
-		m_DescSet = ImGui_ImplVulkan_AddTexture(GraphicsManager::getInstance().getFinalImage().getSampler(), GraphicsManager::getInstance().getFinalImage().getImageView(), VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL);
-		ImGui::Image((ImTextureID)m_DescSet, vSize);
+				}
+			}
+			ImGui::EndDragDropTarget();
+		}
 		//ImGui::End();
 		//code above is currently commented out due to how images are infinitely rendered in update loop and not freed, just for testing
 

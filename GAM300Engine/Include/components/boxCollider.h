@@ -15,8 +15,17 @@
 #include "Vector3.h"
 #include "ecs/ecs.h"
 
+
+namespace JPH //forward declare
+{
+	class BoxShape;
+	class Vec3;
+
+}
+
 namespace TDS
 {
+
 	class BoxCollider : public IComponent
 	{
 	public:
@@ -46,6 +55,10 @@ namespace TDS
 		DLL_API Vec3& GetSize() { return mSize; }
 		DLL_API void SetSize(Vec3 size) { mSize = size; }
 		DLL_API void SetSize(float x, float y, float z) { mSize = Vec3(x, y, z); }
+
+		//for Jolt Physics Capsule Collider creation
+		DLL_API JPH::BoxShape& CreateJPHBoxCollider(JPH::Vec3 inHalfExrent, float inConvexRadius);
+		DLL_API JPH::BoxShape& CreateJPHBoxCollider(JPH::BoxShape& input);
 
 		RTTR_ENABLE(IComponent);
 		RTTR_REGISTRATION_FRIEND

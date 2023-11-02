@@ -24,7 +24,7 @@ namespace TDS
 		panelTitle = "Scene Browser";
 		windowPadding = ImVec2(10.f, 10.f);
 
-		buttonSize = 60.f;
+		buttonSize = 40.f;
 		deleteSceneConfirmation = false;
 		renameFileID = -1;
 		renameFileOldName = "";
@@ -73,8 +73,10 @@ namespace TDS
             }
             ImGui::EndMenuBar();
         }
-
-		ImGui::Columns(6, 0, false);
+		float panelWidth = ImGui::GetContentRegionAvail().x;
+		int columnCount = (int)(panelWidth / buttonSize);
+		ImGui::Columns(std::max(columnCount, 1), 0, false);
+		//ImGui::Columns(4, 0, false);
 		int i = 0;
 		for (std::string scene : sceneManager->getScenes())
 		{

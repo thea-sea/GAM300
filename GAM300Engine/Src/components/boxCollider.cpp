@@ -8,7 +8,7 @@
 		class
 ****************************************************************************
 ***/
-
+#include <Jolt/Physics/Collision/Shape/BoxShape.h>
 #include "components/boxCollider.h"
 
 RTTR_REGISTRATION
@@ -55,5 +55,32 @@ namespace TDS
 	BoxCollider* GetBoxCollider(EntityID entityID)
 	{
 		return ecs.getComponent<BoxCollider>(entityID);
+	}
+
+	/*!***********************************************************************
+		Takes values from RTTR or updated values from imGui and uses it to construct
+		a JPH Box Shape
+	***************************************************************************/
+	JPH::BoxShape& BoxCollider::CreateJPHBoxCollider(JPH::Vec3 inHalfExrent, float inConvexRadius)
+	{
+
+		JPH::BoxShape result = JPH::BoxShape(inHalfExrent, inConvexRadius, nullptr);
+		std::cout << "JPH Box created with halfextent: " << inHalfExrent
+			<< " and radius: " << inConvexRadius <<
+			std::endl;
+		return result;
+	}
+
+	/*!***********************************************************************
+		Takes values from RTTR or updated values from imGui and uses it to construct
+		a JPH Box Shape
+	***************************************************************************/
+	JPH::BoxShape& BoxCollider::CreateJPHBoxCollider(JPH::BoxShape& input)
+	{
+		JPH::BoxShape result = JPH::BoxShape(input.GetHalfExtent() , input.GetConvexRadius(), nullptr);
+		std::cout << "JPH Box created with halfextent: " << input.GetHalfExtent()
+			<< " and radius: " << input.GetConvexRadius() <<
+			std::endl;
+		return result;
 	}
 }

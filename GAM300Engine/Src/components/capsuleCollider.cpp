@@ -8,8 +8,9 @@
 		class
 ****************************************************************************
 ***/
-
+#include <Jolt/Physics/Collision/Shape/CapsuleShape.h>
 #include "components/capsuleCollider.h"
+#include <Jolt/Physics/Collision/Shape/CapsuleShape.h>
 
 
 RTTR_REGISTRATION
@@ -72,6 +73,45 @@ namespace TDS
 	CapsuleCollider* GetCapsuleCollider(EntityID entityID)
 	{
 		return ecs.getComponent<CapsuleCollider>(entityID);
+	}
+
+	/*!***********************************************************************
+		Takes values from RTTR or updated values from imGui and uses it to construct
+		a JPH Capsule Shape
+	***************************************************************************/
+	JPH::CapsuleShape& CapsuleCollider::CreateJPHCapsuleCollider(float inHeightOfCylinder, float inRadius)
+	{
+		JPH::CapsuleShape result = JPH::CapsuleShape(inHeightOfCylinder * 0.5f, inRadius, nullptr);
+		std::cout << "JPH Capsule created with height: " << inHeightOfCylinder
+			<< " and radius: " << inRadius <<
+			std::endl;
+		return result;
+	}
+
+	/*!***********************************************************************
+		Takes values from RTTR or updated values from imGui and uses it to construct
+		a JPH Capsule Shape
+	***************************************************************************/
+	JPH::CapsuleShape& CapsuleCollider::CreateJPHCapsuleCollider(CapsuleCollider& input)
+	{
+		//parameters of JPH::CapsuleShape
+		//CapsuleShape (
+		// float inHalfHeightOfCylinder, 
+		// float inRadius, 
+		// const PhysicsMaterial *inMaterial=nullptr)
+		
+		JPH::CapsuleShape result = JPH::CapsuleShape(input.GetHeight() * 0.5f, input.GetRadius(), nullptr);
+		std::cout << "JPH Capsule created with height: " << input.GetHeight()
+			<< " and radius: " << input.GetRadius() <<
+			std::endl;
+		// parameters of JPH::CapsuleShapeSettings
+		// CapsuleShapeSettings(
+		//		float inHalfHeightOfCylinder, 
+		//		float inRadius, 
+		//		const PhysicsMaterial *inMaterial = nullptr) 
+		// : ConvexShapeSettings(inMaterial), mRadius(inRadius), mHalfHeightOfCylinder(inHalfHeightOfCylinder) 
+
+		return result;
 	}
 
 }

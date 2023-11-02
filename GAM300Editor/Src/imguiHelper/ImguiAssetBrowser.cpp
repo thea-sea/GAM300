@@ -7,6 +7,8 @@
 #include "imguiHelper/ImguiHierarchy.h"
 #include "AssetManagement/AssetManager.h"
 #include "vulkanTools/vulkanInstance.h"
+#include "GraphicsResource/TextureInfo.h"
+#include "vulkanTools/VulkanTexture.h"
 #include <string>
 
 
@@ -14,6 +16,11 @@
 namespace TDS
 {
 	bool lookUp = false;
+	//for icon loading
+	Texture fileIcon{}, folderIcon{};
+	VulkanTexture file_vkTexture{}, folder_vkTexture{};
+	int file_image_count, folder_image_count;
+	
 	AssetBrowser::AssetBrowser()
 	{
 		//selected = 0;
@@ -24,7 +31,8 @@ namespace TDS
 		panelTitle = "Asset Browser";
 		windowPadding = ImVec2(0.f, 0.f);
 		m_curr_path = std::filesystem::path(ASSET_PATH);
-
+		file_image_count = 0;
+		folder_image_count = 0;
 		//insertEntities();
 	}
 
@@ -83,6 +91,7 @@ namespace TDS
 	static const std::filesystem::path s_TextureDirectory = "../../assets";
 	void AssetBrowser::update()
 	{
+
 		if (m_curr_path != std::filesystem::path(s_TextureDirectory))
 		{
 			if (ImGui::Button("<-")) //will only show if u went into a folder in the current directory above
@@ -96,6 +105,21 @@ namespace TDS
 		int columnCount = (int)(panelWidth / cellSize);
 		ImGui::Columns(std::max(columnCount, 1), 0, false);
 
+		//load texture info
+		if (loadonce == true)
+		{
+			fileIcon.LoadTexture("../../assets/icons/icon.dds"); //can only take dds files for now
+			file_vkTexture.CreateBasicTexture(fileIcon.m_TextureInfo);
+			file_vkTexture.m_DescSet = ImGui_ImplVulkan_AddTexture(file_vkTexture.getInfo().sampler, file_vkTexture.getInfo().imageView, file_vkTexture.getInfo().imageLayout);
+
+			folderIcon.LoadTexture("../../assets/icons/folder.dds"); //can only take dds files for now
+			folder_vkTexture.CreateBasicTexture(folderIcon.m_TextureInfo);
+			folder_vkTexture.m_DescSet = ImGui_ImplVulkan_AddTexture(folder_vkTexture.getInfo().sampler, folder_vkTexture.getInfo().imageView, folder_vkTexture.getInfo().imageLayout);
+
+			loadonce = false;
+		}
+		
+
 		for (auto& directory_entry : std::filesystem::directory_iterator(m_curr_path))
 		{
 			path1 = directory_entry.path().string();
@@ -105,24 +129,46 @@ namespace TDS
 			//shorten the path name
 			std::string filename;
 			getFileNameFromPath(path1.c_str(), nullptr, nullptr, &filename, nullptr);
+			ImGui::PushID(filename.c_str());
 
-			
+			//remove the border around buttons
 			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));
-			ImGui::Button(filename.c_str(), { thumbnail_size, thumbnail_size });
-			
-			//do drag drop
-			if (ImGui::BeginDragDropSource())
-			{
-				std::filesystem::path relativePath(path1);
-				const wchar_t* itemPath = relativePath.c_str();
-				ImGui::Text(filename.c_str());
-				ImGui::SetDragDropPayload("CONTENT_BROWSER_ITEM", itemPath, (wcslen(itemPath) + 1) * sizeof(wchar_t));
-				ImGui::EndDragDropSource();
-			}
 
+
+			if (directory_entry.is_directory()) //draw folder icon
+			{
+				ImGui::ImageButton(reinterpret_cast<void*>(folder_vkTexture.m_DescSet), ImVec2{ thumbnail_size, thumbnail_size }, ImVec2{ 0, 0 }, ImVec2{ 1, 1 });
+				folder_image_count++;
+
+			}
+			else //draw file icon
+			{
+				//then render button
+				ImGui::ImageButton(reinterpret_cast<void*>(file_vkTexture.m_DescSet), ImVec2{ thumbnail_size, thumbnail_size }, ImVec2{ 0, 0 }, ImVec2{ 1, 1 });
+				//do drag drop ONLY on files, not folder
+				if (ImGui::BeginDragDropSource())
+				{
+					std::filesystem::path relativePath(path1);
+					const wchar_t* itemPath = relativePath.c_str();
+					ImGui::Text(filename.c_str()); //need to get info from image
+					ImGui::SetDragDropPayload("CONTENT_BROWSER_ITEM", itemPath, (wcslen(itemPath) + 1) * sizeof(wchar_t));
+					ImGui::EndDragDropSource();
+				}
+				file_image_count++;
+
+				//ImGui::Button(filename.c_str(), { thumbnail_size, thumbnail_size });
+
+			}
 			ImGui::PopStyleColor();
 
-
+			if (ImGui::IsItemHovered())
+			{
+				if (ImGui::BeginDragDropSource())
+				{
+					ImGui::Text(filename.c_str());
+					ImGui::EndDragDropSource();
+				}
+			}
 			if (ImGui::IsItemClicked(0))
 			{
 				
@@ -239,7 +285,7 @@ namespace TDS
 
 
 			}
-			ImGui::Text(filename.c_str());
+			ImGui::TextWrapped(filename.c_str()); //display filename
 			
 			/*if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_SourceExtern))
 			{
@@ -256,6 +302,7 @@ namespace TDS
 			{
 				ImGui::EndDragDropTarget();
 			}*/
+			ImGui::PopID();
 			ImGui::NextColumn();
 		}
 
@@ -265,5 +312,24 @@ namespace TDS
 		//ImGui::SliderFloat("Padding", &padding, 0, 32);
 
 
+
+	}
+	void AssetBrowser::destroyIcons()
+	{
+		while (file_image_count)
+		{
+			file_vkTexture.Destroy(); //temp, to prevent mem leak
+			//fileIcon.Destroy();
+			file_image_count--;
+
+		}
+		while (folder_image_count)
+		{
+			folder_vkTexture.Destroy(); //temp, to prevent mem leak
+			//folderIcon.Destroy();
+			folder_image_count--;
+
+		}
+		//icon.Destroy();
 	}
 }

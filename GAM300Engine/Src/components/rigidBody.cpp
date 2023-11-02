@@ -70,6 +70,15 @@ RTTR_REGISTRATION
 
 namespace TDS
 {
+	enum class BodyType //EMotionType in Jolt/.../MotionType.h
+	{
+		NONE,		//when type is not set
+		STATIC,		///< Non movable
+		KINEMATIC,  ///< Movable using velocities only, does not respond to forces
+		DYNAMIC		///< Responds to forces as a normal physics object
+
+	}curr_bodytype;
+
 	/*!*************************************************************************
 	Initializes the RigidBody component when created
 	****************************************************************************/
@@ -110,5 +119,40 @@ namespace TDS
 														mMotionType(toMove.mMotionType)
 
 	{ }
+
+	void RigidBody::UpdateMotionType()
+	{
+		if (current_motion_type = "None")
+		{
+			curr_bodytype = BodyType::NONE;
+			SetAllFalse();
+		}
+		else if (current_motion_type = "Static")
+		{
+			curr_bodytype = BodyType::STATIC;
+			SetAllFalse();
+			isStatic = true;
+		}
+		else if (current_motion_type = "Kinematic")
+		{
+			curr_bodytype = BodyType::KINEMATIC;
+			SetAllFalse();
+			isKinematic = true;
+		}
+		else if (current_motion_type = "Dynamic")
+		{
+			curr_bodytype = BodyType::DYNAMIC;
+			SetAllFalse();
+			isDynamic = true;
+		}
+		std::cout << (int)curr_bodytype << std::endl;
+	}
+
+	void RigidBody::SetAllFalse()
+	{
+		isStatic = isDynamic = isKinematic = false;
+	}
+
+	
 
 }

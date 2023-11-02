@@ -15,6 +15,11 @@
 #include "Vector3.h"
 #include "ecs/ecs.h"
 
+namespace JPH
+{
+	class CapsuleShape;
+}
+
 namespace TDS
 {
 	class CapsuleCollider : public IComponent
@@ -58,6 +63,11 @@ namespace TDS
 		
 		DLL_API Direction& GetDirection() { return mDirection; }
 		DLL_API void SetDirection(Direction direction) { mDirection = direction; }
+
+		//for Jolt Physics Capsule Collider creation
+		DLL_API JPH::CapsuleShape& CreateJPHCapsuleCollider(float inHeightOfCylinder, float inRadius);
+		DLL_API JPH::CapsuleShape& CreateJPHCapsuleCollider(CapsuleCollider& input);
+
 
 		RTTR_ENABLE(IComponent);
 		RTTR_REGISTRATION_FRIEND

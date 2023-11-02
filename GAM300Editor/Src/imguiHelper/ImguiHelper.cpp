@@ -223,5 +223,7 @@ namespace TDS
 		ImGui_ImplVulkan_Shutdown();
 		ImGui_ImplWin32_Shutdown();
 		ImGui::DestroyContext();
+
+		AssetBrowser::destroyIcons(); //temporary
 	}
 }

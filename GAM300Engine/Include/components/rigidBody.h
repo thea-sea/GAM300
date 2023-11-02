@@ -90,11 +90,15 @@ namespace TDS
 		DLL_API uint32_t GetBodyID() { return mBodyID; }
 		DLL_API void SetBodyID(uint32_t bodyID) { mBodyID = bodyID; }
 
+		void UpdateMotionType();
+		void SetAllFalse();
+
 		RTTR_ENABLE(IComponent);
 		RTTR_REGISTRATION_FRIEND
 
 	public:
-
+		bool isStatic, isKinematic, isDynamic;
+		static inline const char * current_motion_type;
 
 
 	private:

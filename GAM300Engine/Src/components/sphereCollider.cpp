@@ -10,6 +10,7 @@
 ***/
 
 #include "components/sphereCollider.h"
+#include<Jolt/Physics/Collision/Shape/SphereShape.h>
 
 RTTR_REGISTRATION
 {
@@ -57,5 +58,29 @@ namespace TDS
 	{
 		return ecs.getComponent<SphereCollider>(entityID);
 	}
-	
+
+	/*!***********************************************************************
+		Takes values from RTTR or updated values from imGui and uses it to construct
+		a JPH Box Shape
+	***************************************************************************/
+	JPH::SphereShape& SphereCollider::CreateJPHSphereCollider(float inRadius)
+	{
+		JPH::SphereShape result = JPH::SphereShape(inRadius, nullptr);
+		std::cout << "JPH Sphere created with radius: " << inRadius <<
+			std::endl;
+		return result;
+	}
+
+	/*!***********************************************************************
+		Takes values from RTTR or updated values from imGui and uses it to construct
+		a JPH Box Shape
+	***************************************************************************/
+	JPH::SphereShape& SphereCollider::CreateJPHSphereCollider(JPH::SphereShape& input)
+	{
+		JPH::SphereShape result = JPH::SphereShape(input.GetRadius(), nullptr);
+		std::cout << "JPH Sphere created with radius: " << input.GetRadius() <<
+			std::endl;
+		return result;
+	}
+
 }
