@@ -16,8 +16,11 @@ namespace TDS
 		{
 			static_assert(wrong_asset_type<T>, "AssetFactory is not available for this type");
 		}
-		void Preload(ResourceAllocator& resourceMgr);
-		static void Load(std::string_view path, TypeReference<T>& model, ResourceAllocator& resourceMgr);
+		//void Preload(ResourceAllocator& resourceMgr);
+		//static void Load(std::string_view path, TypeReference<T>& model, ResourceAllocator& resourceMgr);
+		void Preload();
+		static void Load(std::string_view path, TypeReference<T>& model, AssetFactory<T>& assetFactory);
+
 
 	};
 

@@ -28,6 +28,7 @@
 #include "Rendering/renderPass.h"
 #include "vulkanTools/FrameBuffer.h"
 #include "Tools/DDSConverter.h"
+#include "imguiHelper/ImguiScene.h"
 bool isPlaying = false;
 
 namespace TDS
@@ -182,8 +183,11 @@ namespace TDS
 
             Vec3 m_windowdimension{ static_cast<float>(m_window.getWidth()), static_cast<float>(m_window.getHeight()), 1.f };
             if (GraphicsManager::getInstance().getFrameBuffer().getDimensions() != m_windowdimension)
+            {
                 GraphicsManager::getInstance().getFrameBuffer().resize(m_windowdimension, GraphicsManager::getInstance().getRenderPass().getRenderPass());
-
+                std::shared_ptr<EditorScene> pScene = static_pointer_cast<EditorScene>(LevelEditorManager::GetInstance()->panels[SCENE]);
+                pScene->Resize();
+            }
             GraphicsManager::getInstance().StartFrame();
             VkCommandBuffer commandBuffer = GraphicsManager::getInstance().getCommandBuffer();
              GraphicsManager::getInstance().getRenderPass().beginRenderPass(commandBuffer, &GraphicsManager::getInstance().getFrameBuffer());

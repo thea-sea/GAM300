@@ -52,12 +52,18 @@ namespace TDS
 		
 		CreateDescriptors(m_PipelineEntry.m_ShaderInputs, m_PipelineEntry.m_NumDescriptorSets);
 
+		std::vector<VkDescriptorSetLayout> layouts;
+		layouts.push_back(m_PipelineDescriptor.m_DescSetLayout);
+		if (!m_PipelineDescriptor.m_TextureOrBindless.empty())
+		{
+			layouts.push_back(m_PipelineDescriptor.m_ArrayTextureLayout);
+		}
 
 		VkPipelineLayoutCreateInfo pipelineLayoutCI = { VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO };
 
 		pipelineLayoutCI.pNext = nullptr;
-		pipelineLayoutCI.setLayoutCount = 1;
-		pipelineLayoutCI.pSetLayouts = &m_PipelineDescriptor.m_DescSetLayout;
+		pipelineLayoutCI.setLayoutCount = std::uint32_t(layouts.size());
+		pipelineLayoutCI.pSetLayouts = layouts.data();
 		pipelineLayoutCI.pushConstantRangeCount = static_cast<uint32_t>(m_ShaderLoadedData.m_VkPushConstantRanges.size());
 		pipelineLayoutCI.pPushConstantRanges = m_ShaderLoadedData.m_VkPushConstantRanges.data();
 
@@ -382,7 +388,7 @@ namespace TDS
 				{
 					VkDescriptorPoolSize poolSize = {};
 					if (m_PipelineEntry.m_EnableDoubleBuffering)
-						poolSize.descriptorCount = numStorageBuffer;
+						poolSize.descriptorCount = numStorageBuffer * VulkanSwapChain::MAX_FRAMES_IN_FLIGHT;
 					else
 						poolSize.descriptorCount = numStorageBuffer;
 					poolSize.type = VK_DESCRIPTOR_TYPE_STORAGE_BUFFER;
@@ -399,7 +405,10 @@ namespace TDS
 					NumSamplers += sampler.second.m_ArraySize == 0 ? 1 : sampler.second.m_ArraySize;
 				}
 				VkDescriptorPoolSize poolSize{};
-				poolSize.descriptorCount = NumSamplers;
+				if (m_PipelineEntry.m_EnableDoubleBuffering)
+					poolSize.descriptorCount = NumSamplers * VulkanSwapChain::MAX_FRAMES_IN_FLIGHT;
+				else
+					poolSize.descriptorCount = NumSamplers;
 				poolSize.type = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
 
 
@@ -414,7 +423,10 @@ namespace TDS
 					storageImagesSamplers += storage.second.m_ArraySize == 0 ? 1 : storage.second.m_ArraySize;
 				}
 				VkDescriptorPoolSize poolSize{};
-				poolSize.descriptorCount = storageImagesSamplers;
+				if (m_PipelineEntry.m_EnableDoubleBuffering)
+					poolSize.descriptorCount = storageImagesSamplers * VulkanSwapChain::MAX_FRAMES_IN_FLIGHT;
+				else
+					poolSize.descriptorCount = storageImagesSamplers;
 				poolSize.type = VK_DESCRIPTOR_TYPE_STORAGE_IMAGE;
 				poolSizes.push_back(poolSize);
 			}
@@ -426,7 +438,7 @@ namespace TDS
 		descriptorPoolInfo.poolSizeCount = static_cast<uint32_t>(poolSizes.size());
 		descriptorPoolInfo.pPoolSizes = poolSizes.data();
 		if (m_PipelineEntry.m_EnableDoubleBuffering)
-			descriptorPoolInfo.maxSets = numDescriptorSets * VulkanSwapChain::MAX_FRAMES_IN_FLIGHT;
+			descriptorPoolInfo.maxSets = 4 * numDescriptorSets * VulkanSwapChain::MAX_FRAMES_IN_FLIGHT;
 		else
 			descriptorPoolInfo.maxSets = numDescriptorSets;
 		VkDevice device = GraphicsManager::getInstance().getVkInstance().getVkLogicalDevice();
@@ -447,25 +459,23 @@ namespace TDS
 	}
 	void VulkanPipeline::Draw(VMABuffer& vertexBuffer, std::uint32_t frameIndex)
 	{
-		vkCmdBindDescriptorSets(m_CommandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, m_PipelineLayout, 0, 1, &m_PipelineDescriptor.m_DescriptorSets[frameIndex], 0, nullptr);
+		/*vkCmdBindDescriptorSets(m_CommandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, m_PipelineLayout, 0, 1, &m_PipelineDescriptor.m_DescriptorSets[frameIndex], 0, nullptr);*/
 		vkCmdDraw(m_CommandBuffer, vertexBuffer.getDataCount(), 1, 0, 0);
 	}
 	void VulkanPipeline::DrawIndexed(VMABuffer& vertexBuffer, VMABuffer& indexBuffer, std::uint32_t frameIndex)
 	{
-		vkCmdBindDescriptorSets(m_CommandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, m_PipelineLayout, 0, 1, &m_PipelineDescriptor.m_DescriptorSets[frameIndex], 0, nullptr);
+		/*vkCmdBindDescriptorSets(m_CommandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, m_PipelineLayout, 0, 1, &m_PipelineDescriptor.m_DescriptorSets[frameIndex], 0, nullptr);*/
 		vkCmdDrawIndexed(m_CommandBuffer, indexBuffer.getDataCount(), 1, 0, 0, 1);
 	}
 
 	void VulkanPipeline::DrawInstanced(VMABuffer& vertexBuffer, std::uint32_t instance, std::uint32_t frameIndex)
 	{
-
-		vkCmdBindDescriptorSets(m_CommandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, m_PipelineLayout, 0, 1, &m_PipelineDescriptor.m_DescriptorSets[frameIndex], 0, nullptr);
+		/*vkCmdBindDescriptorSets(m_CommandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, m_PipelineLayout, 0, 1, &m_PipelineDescriptor.m_DescriptorSets[frameIndex], 0, nullptr);*/
 		vkCmdDraw(m_CommandBuffer, vertexBuffer.getDataCount(), instance, 0, 0);
 	}
 
 	void VulkanPipeline::DrawInstancedIndexed(VMABuffer& vertexBuffer, VMABuffer& indexBuffer, std::uint32_t instance, std::uint32_t frameIndex)
 	{
-		vkCmdBindDescriptorSets(m_CommandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, m_PipelineLayout, 0, 1, &m_PipelineDescriptor.m_DescriptorSets[frameIndex], 0, nullptr);
 		vkCmdDrawIndexed(m_CommandBuffer, indexBuffer.getDataCount(), instance, 0, 0, 1);
 	}
 
@@ -496,7 +506,50 @@ namespace TDS
 
 
 	}
-	void VulkanPipeline::UpdateTextureArray(std::uint32_t binding, VkDescriptorType descriptorType, std::vector<VulkanTexture*>& texture)
+	//void VulkanPipeline::UpdateTextureArray(std::uint32_t binding, VkDescriptorType descriptorType, std::vector<VulkanTexture*>& texture)
+	//{
+	//	std::int32_t frame = GraphicsManager::getInstance().GetSwapchainRenderer().getFrameIndex();
+	//	bool invalid = false;
+	//	auto findItr = m_PipelineDescriptor.m_WriteSetFrames.find(binding);
+	//	if (findItr != m_PipelineDescriptor.m_WriteSetFrames.end())
+	//	{
+	//		VkWriteDescriptorSet write{};
+	//		std::uint32_t ArrayCnt = std::uint32_t(texture.size());
+	//		std::vector<VkDescriptorImageInfo> Infos(ArrayCnt);
+	//		for (std::uint32_t i = 0; i < ArrayCnt; ++i)
+	//		{
+	//			if (!texture[i]->GetImage())
+	//			{
+	//				TDS_WARN("Invalid texture is found!\n");
+	//				invalid = true;
+	//				break;
+	//			}
+	//			Infos[i] = texture[i]->getInfo();
+
+	//		}
+
+	//		if (invalid)
+	//		{
+	//			TDS_INFO("Replacing with default texture...\n");
+	//			for (auto& info : Infos)
+	//			{
+	//				//I will replace all textures with default texture...
+	//				info = DefaultTextures::GetDefaultTexture()->getInfo();
+	//			}
+	//		}
+
+	//		findItr->second.dstSet = m_PipelineDescriptor.m_DescriptorSets[frame];
+	//		findItr->second.descriptorType = descriptorType;
+	//		findItr->second.dstBinding = binding;
+	//		findItr->second.dstArrayElement = 0;
+	//		findItr->second.descriptorCount = static_cast<uint32_t>(Infos.size());
+	//		findItr->second.pImageInfo = Infos.data();
+
+	//		vkUpdateDescriptorSets(GraphicsManager::getInstance().getInstance().getVkInstance().getVkLogicalDevice()
+	//			, 1, &findItr->second, 0, 0);
+	//	}
+	//}
+	void VulkanPipeline::UpdateTextureArray(std::uint32_t binding, VkDescriptorType descriptorType, std::vector<Texture*>& texture)
 	{
 		std::int32_t frame = GraphicsManager::getInstance().GetSwapchainRenderer().getFrameIndex();
 		bool invalid = false;
@@ -508,24 +561,16 @@ namespace TDS
 			std::vector<VkDescriptorImageInfo> Infos(ArrayCnt);
 			for (std::uint32_t i = 0; i < ArrayCnt; ++i)
 			{
-				if (!texture[i]->GetImage())
+				if (texture[i]->m_VulkanTexture == nullptr)
 				{
 					TDS_WARN("Invalid texture is found!\n");
-					invalid = true;
-					break;
+					Infos[i] = DefaultTextures::GetDefaultTexture()->getInfo();
 				}
-				Infos[i] = texture[i]->getInfo();
-
-			}
-
-			if (invalid)
-			{
-				TDS_INFO("Replacing with default texture...\n");
-				for (auto& info : Infos)
+				else
 				{
-					//I will replace all textures with default texture...
-					info = DefaultTextures::GetDefaultTexture()->getInfo();
+					Infos[i] = texture[i]->m_VulkanTexture->getInfo();
 				}
+
 			}
 
 			findItr->second.dstSet = m_PipelineDescriptor.m_DescriptorSets[frame];
@@ -539,6 +584,52 @@ namespace TDS
 				, 1, &findItr->second, 0, 0);
 		}
 	}
+	void VulkanPipeline::UpdateTextureArray(std::uint32_t binding, VkDescriptorType descriptorType, std::array<Texture, 2000>& texture)
+	{
+		std::int32_t frame = GraphicsManager::getInstance().GetSwapchainRenderer().getFrameIndex();
+		bool invalid = false;
+		auto findItr = m_PipelineDescriptor.m_WriteSetFrames.find(binding);
+		if (findItr != m_PipelineDescriptor.m_WriteSetFrames.end())
+		{
+			VkWriteDescriptorSet write{};
+			std::uint32_t ArrayCnt = std::uint32_t(texture.size());
+			std::array<VkDescriptorImageInfo,2000> Infos;
+			for (std::uint32_t i = 0; i < ArrayCnt; ++i)
+			{
+				if (texture[i].m_VulkanTexture == nullptr)
+				{
+					Infos[i] = DefaultTextures::GetDefaultTexture()->getInfo();
+				}
+				else
+				{
+					Infos[i] = texture[i].m_VulkanTexture->getInfo();
+				}
+
+			}
+
+			for (int i = 0; i < VulkanSwapChain::MAX_FRAMES_IN_FLIGHT; ++i)
+			{
+				findItr->second.dstSet = m_PipelineDescriptor.m_TextureOrBindless[i];
+				findItr->second.descriptorType = descriptorType;
+				findItr->second.dstBinding = binding;
+				findItr->second.dstArrayElement = 0;
+				findItr->second.descriptorCount = static_cast<uint32_t>(Infos.size());
+				findItr->second.pImageInfo = Infos.data();
+
+				vkUpdateDescriptorSets(GraphicsManager::getInstance().getInstance().getVkInstance().getVkLogicalDevice()
+					, 1, &findItr->second, 0, 0);
+			}
+			//findItr->second.dstSet = m_PipelineDescriptor.m_DescriptorSets[frame];
+			//findItr->second.descriptorType = descriptorType;
+			//findItr->second.dstBinding = binding;
+			//findItr->second.dstArrayElement = 0;
+			//findItr->second.descriptorCount = static_cast<uint32_t>(Infos.size());
+			//findItr->second.pImageInfo = Infos.data();
+
+			//vkUpdateDescriptorSets(GraphicsManager::getInstance().getInstance().getVkInstance().getVkLogicalDevice()
+			//	, 1, &findItr->second, 0, 0);
+		}
+	}
 	void VulkanPipeline::UpdateTexture(std::uint32_t binding, VkDescriptorType descriptorType, VulkanTexture& texture)
 	{
 		UpdateDescriptor(texture.getInfo(), descriptorType, binding);
@@ -547,10 +638,23 @@ namespace TDS
 	{
 		vkCmdBindPipeline(m_CommandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, m_Pipelines[drawMode]);
 	}
-	void VulkanPipeline::BindDescriptor(std::int32_t DescIndex)
+	void VulkanPipeline::BindDescriptor(std::int32_t frame, std::uint32_t numOfSet,std::uint32_t firstSet)
 	{
-		vkCmdBindDescriptorSets(m_CommandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, m_PipelineLayout, 0, 1, &m_PipelineDescriptor.m_DescriptorSets[DescIndex], 0, nullptr);
+		vkCmdBindDescriptorSets(m_CommandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, m_PipelineLayout, firstSet, numOfSet, &m_PipelineDescriptor.m_DescriptorSets[frame], 0, nullptr);
 	}
+	void VulkanPipeline::BindAllDescriptors(std::int32_t frame)
+	{
+	}
+	void VulkanPipeline::BindDescriptorSet(VkDescriptorSet descriptorSet)
+	{
+		vkCmdBindDescriptorSets(m_CommandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, m_PipelineLayout, 0, 1, &descriptorSet, 0, nullptr);
+	}
+
+	void VulkanPipeline::BindArrayDescriptorSet(std::uint32_t FrameIndex, std::uint32_t numOfSet, std::uint32_t firstSet)
+	{
+		vkCmdBindDescriptorSets(m_CommandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, m_PipelineLayout, firstSet, numOfSet, &m_PipelineDescriptor.m_TextureOrBindless[FrameIndex], 0, nullptr);
+	}
+	
 	void VulkanPipeline::BindVertexBuffer(VMABuffer& vertexBuffer)
 	{
 
@@ -606,6 +710,10 @@ namespace TDS
 	{
 		return m_PipelineLayout;
 	}
+	VkDescriptorPool& VulkanPipeline::GetDescriptorPool()
+	{
+		return m_DescriptorPool;
+	}
 	bool VulkanPipeline::IsBlendEnabled()
 	{
 		return m_BlendingEnabled;
@@ -659,12 +767,19 @@ namespace TDS
 			vkDestroyDescriptorSetLayout(device, m_PipelineDescriptor.m_DescSetLayout, nullptr);
 			m_PipelineDescriptor.m_DescSetLayout = nullptr;
 		}
+		if (m_PipelineDescriptor.m_ArrayTextureLayout)
+		{
+			vkDestroyDescriptorSetLayout(device, m_PipelineDescriptor.m_ArrayTextureLayout, nullptr);
+			m_PipelineDescriptor.m_DescSetLayout = nullptr;
+		}
 		m_PipelineDescriptor.m_UpdateBufferFrames.clear();
 		m_PipelineDescriptor.m_StaticBuffers.clear();
 	}
 	void VulkanPipeline::CreateDescriptorSet(ShaderInputs& shaderInput, VulkanPipelineDescriptor& descriptor)
 	{
+		bool UseTextureArrayLayout = false;
 		std::vector<VkDescriptorSetLayoutBinding> layouts;
+		std::vector< VkDescriptorSetLayoutBinding> textureArrayLayout;
 		std::set<std::uint32_t> binded;
 		for (auto& shader : shaderInput.m_Shaders)
 		{
@@ -693,42 +808,90 @@ namespace TDS
 				VkDescriptorSetLayoutBinding layoutBinding = {};
 				layoutBinding.binding = sampler.second.m_BindingPoint;
 				layoutBinding.descriptorType = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
-				layoutBinding.descriptorCount = sampler.second.m_ArraySize == 0 ? 1 : sampler.second.m_ArraySize;
 				layoutBinding.stageFlags = ShaderFlagsToVkStage(shader.first);
-				layouts.push_back(layoutBinding);
+				layoutBinding.descriptorCount = 1;
+				if (sampler.second.m_ArraySize > 1)
+				{
+					UseTextureArrayLayout = true;
+					layoutBinding.descriptorCount = sampler.second.m_ArraySize;
+					textureArrayLayout.push_back(layoutBinding);
+				}
+				else
+				{
+					layouts.push_back(layoutBinding);
+				}
+				
 			}
 			for (auto& storageIMage : metaData.m_ShaderDatas[full_path.filename().string()].m_ReflectedData.m_StorageImages)
 			{
+
 				VkDescriptorSetLayoutBinding layoutBinding = {};
 
 				layoutBinding.binding = storageIMage.second.m_BindingPoint;
 				layoutBinding.descriptorType = VK_DESCRIPTOR_TYPE_STORAGE_IMAGE;
 				layoutBinding.descriptorCount = storageIMage.second.m_ArraySize == 0 ? 1 : storageIMage.second.m_ArraySize;
 				layoutBinding.stageFlags = ShaderFlagsToVkStage(shader.first);
+				if (storageIMage.second.m_ArraySize > 1)
+				{
+					UseTextureArrayLayout = true;
+					layoutBinding.descriptorCount = storageIMage.second.m_ArraySize;
+					textureArrayLayout.push_back(layoutBinding);
+				}
+				else
+				{
+					layouts.push_back(layoutBinding);
+				}
 
-				layouts.push_back(layoutBinding);
 			}
 
 		}
+		std::vector<VkDescriptorSetLayout> TextureArrayLayouts;
+		std::vector<VkDescriptorSetLayout> DescSetlayouts;
 		VkDescriptorSetLayoutCreateInfo layoutInfo = { VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO };
 		layoutInfo.bindingCount = static_cast<uint32_t>(layouts.size());
 		layoutInfo.pBindings = layouts.data();
 		VkDevice device = GraphicsManager::getInstance().getVkInstance().getVkLogicalDevice();
 		VK_ASSERT(vkCreateDescriptorSetLayout(device, &layoutInfo, 0, &descriptor.m_DescSetLayout), "Failed to create Descriptor Layout!");
-
+		DescSetlayouts.push_back(descriptor.m_DescSetLayout);
+		if (UseTextureArrayLayout)
+		{
+			VkDescriptorSetLayoutCreateInfo layoutInfo = { VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO };
+			layoutInfo.bindingCount = static_cast<uint32_t>(textureArrayLayout.size());
+			layoutInfo.pBindings = textureArrayLayout.data();
+			VkDevice device = GraphicsManager::getInstance().getVkInstance().getVkLogicalDevice();
+			VK_ASSERT(vkCreateDescriptorSetLayout(device, &layoutInfo, 0, &descriptor.m_ArrayTextureLayout), "Failed to create Descriptor Layout!");
+			TextureArrayLayouts.push_back(descriptor.m_ArrayTextureLayout);
+		}
 
 		VkDescriptorSetAllocateInfo allocateInfo = { VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO };
 
 		allocateInfo.descriptorPool = m_DescriptorPool;
-		allocateInfo.descriptorSetCount = 1;
-		allocateInfo.pSetLayouts = &descriptor.m_DescSetLayout;
+		allocateInfo.descriptorSetCount = std::uint32_t(DescSetlayouts.size());
+		allocateInfo.pSetLayouts = DescSetlayouts.data();
 		if (m_PipelineEntry.m_EnableDoubleBuffering)
+		{
 			descriptor.m_DescriptorSets.resize(VulkanSwapChain::MAX_FRAMES_IN_FLIGHT);
+			if (UseTextureArrayLayout)
+				descriptor.m_TextureOrBindless.resize(VulkanSwapChain::MAX_FRAMES_IN_FLIGHT);
+		}
 		else
+		{
 			descriptor.m_DescriptorSets.resize(1);
+			if (UseTextureArrayLayout)
+				descriptor.m_TextureOrBindless.resize(1);
+		}
 		for (auto& descSet : descriptor.m_DescriptorSets)
 		{
-			VK_ASSERT(vkAllocateDescriptorSets(device, &allocateInfo, &descSet), "Failed to allocate decsriptor set!");
+			VkResult result = vkAllocateDescriptorSets(device, &allocateInfo, &descSet);
+			VK_ASSERT(result, "Failed to allocate decsriptor set!");
+		}
+		for (auto& Set : descriptor.m_TextureOrBindless)
+		{
+			allocateInfo.descriptorPool = m_DescriptorPool;
+			allocateInfo.descriptorSetCount = std::uint32_t(TextureArrayLayouts.size());
+			allocateInfo.pSetLayouts = TextureArrayLayouts.data();
+			VkResult result = vkAllocateDescriptorSets(device, &allocateInfo, &Set);
+			VK_ASSERT(result, "Failed to allocate decsriptor set!");
 		}
 
 	}
@@ -896,48 +1059,63 @@ namespace TDS
 		{
 			std::filesystem::path full_path(shader.second.data());
 			descriptor.m_ImageInfo = DefaultTextures::GetDefaultTexture()->getInfo();
+			
 			for (auto& samplers : reflectedMeta.m_ShaderDatas[full_path.filename().string()].m_ReflectedData.m_ImageSamplers)
 			{
+				
 				VkWriteDescriptorSet writeSet = { VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET };
-				for (auto& desc : descriptor.m_DescriptorSets)
+
+
+				if (samplers.second.m_Dimension == 1 && samplers.second.m_ArraySize > 1)
 				{
-					if (samplers.second.m_Dimension == 3)
+					std::vector<VkDescriptorImageInfo> infos(samplers.second.m_ArraySize);
+					for (auto& desc : descriptor.m_TextureOrBindless)
 					{
 						writeSet.dstSet = desc;
 						writeSet.descriptorType = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
 						writeSet.dstBinding = samplers.second.m_BindingPoint;
 						writeSet.dstArrayElement = 0;
-						writeSet.descriptorCount = 1;
-						writeSet.pImageInfo = &DefaultTextures::GetDefaultCubeTexture()->getInfo();
-
+						for (std::uint32_t i = 0; i < samplers.second.m_ArraySize; ++i)
+							infos[i] = descriptor.m_ImageInfo;
+						writeSet.descriptorCount = std::uint32_t(infos.size());
+						writeSet.pImageInfo = infos.data();
+						vkUpdateDescriptorSets(instance.getVkLogicalDevice(), 1, &writeSet, 0, nullptr);
 					}
-					else
-					{
-						std::vector<VkDescriptorImageInfo> infos;
-						writeSet.dstSet = desc;
-						writeSet.descriptorType = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
-						writeSet.dstBinding = samplers.second.m_BindingPoint;
-						writeSet.dstArrayElement = 0;
-						if (samplers.second.m_ArraySize > 0)
-						{
-							infos.resize(samplers.second.m_ArraySize);
-							for (std::uint32_t i = 0; i < samplers.second.m_ArraySize; ++i)
-								infos[i] = descriptor.m_ImageInfo;
+					descriptor.m_WriteSetFrames[samplers.second.m_BindingPoint] = writeSet;
+					m_PipelineDescriptor.m_LocalBufferNames[samplers.second.m_Name] = samplers.second.m_BindingPoint;
+				}
+				else
+				{
 
-							writeSet.descriptorCount = static_cast<uint32_t>(infos.size());
-							writeSet.pImageInfo = infos.data();
-						}
-						else
+					for (auto& desc : descriptor.m_DescriptorSets)
+					{
+						if (samplers.second.m_Dimension == 3)
 						{
+							writeSet.dstSet = desc;
+							writeSet.descriptorType = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
+							writeSet.dstBinding = samplers.second.m_BindingPoint;
+							writeSet.dstArrayElement = 0;
+							writeSet.descriptorCount = 1;
+							writeSet.pImageInfo = &DefaultTextures::GetDefaultCubeTexture()->getInfo();
+
+						}
+						else if (samplers.second.m_ArraySize == 1 && samplers.second.m_Dimension == 1)
+						{
+
+							writeSet.dstSet = desc;
+							writeSet.descriptorType = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
+							writeSet.dstBinding = samplers.second.m_BindingPoint;
+							writeSet.dstArrayElement = 0;
 							writeSet.descriptorCount = 1;
 							writeSet.pImageInfo = &descriptor.m_ImageInfo;
-						}
 
+
+						}
+						vkUpdateDescriptorSets(instance.getVkLogicalDevice(), 1, &writeSet, 0, nullptr);
 					}
-					vkUpdateDescriptorSets(instance.getVkLogicalDevice(), 1, &writeSet, 0, nullptr);
+					descriptor.m_WriteSetFrames[samplers.second.m_BindingPoint] = writeSet;
+					m_PipelineDescriptor.m_LocalBufferNames[samplers.second.m_Name] = samplers.second.m_BindingPoint;
 				}
-				descriptor.m_WriteSetFrames[samplers.second.m_BindingPoint] = writeSet;
-				m_PipelineDescriptor.m_LocalBufferNames[samplers.second.m_Name] = samplers.second.m_BindingPoint;
 
 			}
 

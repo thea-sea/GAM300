@@ -3,7 +3,7 @@
         "110000100000": {
             "0": 416,
             "1": 448,
-            "6": 1024
+            "6": 544
         }
     },
     "Entity Data": {
@@ -33,7 +33,15 @@
                     "z": 0.0
                 }
             },
-            "Graphics Component": {}
+            "Graphics Component": {
+                "PointLight": false,
+                "Color": {
+                    "x": 1.0,
+                    "y": 0.0,
+                    "z": 0.0,
+                    "w": 1.0
+                }
+            }
         },
         "2": {
             "ArchetypeID": "110000100000",
@@ -61,7 +69,15 @@
                     "z": 0.0
                 }
             },
-            "Graphics Component": {}
+            "Graphics Component": {
+                "PointLight": false,
+                "Color": {
+                    "x": 1.0,
+                    "y": 1.0,
+                    "z": 1.0,
+                    "w": 1.0
+                }
+            }
         },
         "3": {
             "ArchetypeID": "110000100000",
@@ -89,7 +105,15 @@
                     "z": 0.0
                 }
             },
-            "Graphics Component": {}
+            "Graphics Component": {
+                "PointLight": false,
+                "Color": {
+                    "x": 1.0,
+                    "y": 1.0,
+                    "z": 1.0,
+                    "w": 1.0
+                }
+            }
         },
         "4": {
             "ArchetypeID": "110000100000",
@@ -117,7 +141,15 @@
                     "z": 0.0
                 }
             },
-            "Graphics Component": {}
+            "Graphics Component": {
+                "PointLight": false,
+                "Color": {
+                    "x": 1.0,
+                    "y": 1.0,
+                    "z": 1.0,
+                    "w": 1.0
+                }
+            }
         }
     },
     "Scripts": {

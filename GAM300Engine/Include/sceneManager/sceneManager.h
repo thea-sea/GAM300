@@ -112,7 +112,22 @@ namespace TDS
 		/*!*************************************************************************
 		This function is the getter function for all scenes in Scene Browser
 		****************************************************************************/
-		DLL_API std::vector<std::string>& getScenes();
+		//DLL_API std::vector<std::string>& getScenes();
+
+		/*!*************************************************************************
+		This function is the getter function for the path to scenes
+		****************************************************************************/
+		DLL_API std::string getScenePath();
+
+		/*!*************************************************************************
+		This function is the setter function to reset starting scene
+		****************************************************************************/
+		DLL_API std::string getStartingScene();
+
+		/*!*************************************************************************
+		This function is the setter function to reset starting scene
+		****************************************************************************/
+		DLL_API void setStartingScene(std::string newStartScene);
 
 		bool isGameplay;
 

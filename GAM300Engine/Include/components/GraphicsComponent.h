@@ -31,13 +31,16 @@ namespace TDS
 		RTTR_REGISTRATION_FRIEND
 
 	private:
-		TypeReference<AssetModel> 		m_AssetReference;
-		TypeReference<Texture>			m_TextureReference;
 		bool							m_ShowMesh = true;
 		Vec4							m_Color;
 		int								m_PointLightID{ -1 };
 		bool							m_Pointlight{ false };
 		bool							m_Debug{ false };
+	public:
+		TypeReference<AssetModel> 		m_AssetReference;
+		TypeReference<Texture>			m_TextureReference;
+		std::string						m_ModelName = "";
+		std::string						m_TextureName = "";
 
 
 	};

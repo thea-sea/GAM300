@@ -96,8 +96,11 @@ namespace TDS
 
 				if (componentOpen)
 				{
-					if (ImGui::BeginTable("###", 2, /*ImGuiTableFlags_Borders |*/ ImGuiTableFlags_NoPadInnerX, ImVec2(0.0f, 5.5f)))
+					if (ImGui::BeginTable("###", 2, /*ImGuiTableFlags_Borders |*/ ImGuiTableFlags_NoPadInnerX | ImGuiTableFlags_SizingStretchSame, ImVec2(0.0f, 5.5f)))
 					{
+						ImGui::TableSetupColumn("Component variable name", ImGuiTableColumnFlags_None, ImGui::GetContentRegionAvail().x * 0.4f);
+						ImGui::TableSetupColumn("Component variable value", ImGuiTableColumnFlags_None, ImGui::GetContentRegionAvail().x * 0.6f);
+
 						ImGui::TableNextRow();
 
 						ImGui::TableNextColumn();
@@ -150,11 +153,14 @@ namespace TDS
 				if (ImGui::TreeNodeEx(scriptName.c_str(), nodeFlags))
 				{
 					//ImGui::PushID(selectedEntity);
-					if (ImGui::BeginTable("components", 2, /*ImGuiTableFlags_Borders |*/ ImGuiTableFlags_NoPadInnerX, ImVec2(0.0f, 5.5f)))
+					if (ImGui::BeginTable("components", 2, /*ImGuiTableFlags_Borders |*/ ImGuiTableFlags_NoPadInnerX | ImGuiTableFlags_SizingStretchSame, ImVec2(0.0f, 5.5f)))
 					{
-						ImGui::TableNextRow();
+						ImGui::TableSetupColumn("Component variable name", ImGuiTableColumnFlags_None, ImGui::GetContentRegionAvail().x * 0.4f);
+						ImGui::TableSetupColumn("Component variable value", ImGuiTableColumnFlags_None, ImGui::GetContentRegionAvail().x * 0.6f);
 
+						ImGui::TableNextRow();
 						ImGui::TableNextColumn();
+						//ImGui::SetColumnWidth(ImGui::GetContentRegionAvail().x * 0.3f);
 						ImGui::TableNextColumn();
 						ImGui::PushItemWidth(-FLT_MIN); // Right-aligned
 
@@ -219,11 +225,22 @@ namespace TDS
 
 								if (scriptValue.referenceEntityID) // there is a entity reference 
 								{
-									ImGui::BeginDisabled();
-									char temp[100];
-									strcpy_s(temp, ecs.getComponent<NameTag>(scriptValue.referenceEntityID)->GetName().c_str());
-									ImGui::InputText("###", temp, 100, ImGuiInputTextFlags_ReadOnly);
-									ImGui::EndDisabled();
+									if (scriptValue.type == "ScriptAPI.GameObject")
+									{
+										ImGui::BeginDisabled();
+										char temp[100];
+										strcpy_s(temp, ecs.getComponent<NameTag>(scriptValue.referenceEntityID)->GetName().c_str());
+										ImGui::InputText("###", temp, 100, ImGuiInputTextFlags_ReadOnly);
+										ImGui::EndDisabled();
+									}
+									else
+									{
+										ImGui::BeginDisabled();
+										char temp[100];
+										strcpy_s(temp, (ecs.getComponent<NameTag>(scriptValue.referenceEntityID)->GetName() + " (" + scriptName + ")").c_str());
+										ImGui::InputText("###", temp, 100, ImGuiInputTextFlags_ReadOnly);
+										ImGui::EndDisabled();
+									}
 								}
 								else
 								{
@@ -244,8 +261,6 @@ namespace TDS
 
 									ImVec4* colors = ImGui::GetStyle().Colors;
 									colors[ImGuiCol_ModalWindowDimBg] = ImVec4(1.00f, 0.00f, 0.00f, 0.00f);
-
-									std::cout << "test" << std::endl;
 
 									ImGui::OpenPopup(("selectGameObject" + scriptValue.name).c_str());
 								}
@@ -290,32 +305,6 @@ namespace TDS
 								ImGui::PopID();
 
 								ImGui::PopItemWidth();
-
-								//if (ImGui::BeginTable("test", 2/*, ImGuiTableFlags_NoPadOuterX*/))
-								//{
-								//	ImGui::TableNextRow();
-
-								//	ImGui::TableNextColumn();
-								//	ImGui::PushItemWidth(-ImGui::GetContentRegionAvail().x * 0.1f);
-								//	ImGui::TableNextColumn();
-								//	//ImGui::PushItemWidth(-FLT_MIN); // Right-aligned
-
-
-								//	ImGui::TableNextRow();
-								//	ImGui::TableNextColumn();
-
-								//	char temp[100];
-								//	strcpy_s(temp, scriptValue.name.c_str());
-								//	ImGui::InputText(std::string("##test").c_str(), temp, 100);
-
-								//	ImGui::TableNextColumn();
-								//	if (ImGui::Button(("##" + scriptValue.name).c_str()))
-								//	{
-								//		std::cout << "hmm" << std::endl;
-								//	}
-								//	
-								//	ImGui::EndTable();
-								//}
 							}
 						}
 
@@ -330,7 +319,7 @@ namespace TDS
 			// call manage side to gimme variables that the script has
 
 			// Add component button
-			ImGuiStyle& style = ImGui::GetStyle();
+			static ImGuiStyle& style = ImGui::GetStyle();
 
 			float size = ImGui::CalcTextSize("Add Component").x + style.FramePadding.x * 2.0f;
 			float avail = ImGui::GetContentRegionAvail().x;
@@ -469,7 +458,7 @@ namespace TDS
 		ImGui::Text(variableName.c_str());
 
 		ImGui::TableNextColumn();
-		ImGui::DragInt(("##" + variableName).c_str(), &intVariable, speed, min, max);
+		ImGui::InputInt(("##" + variableName).c_str(), &intVariable, 0/*, speed, min, max*/);
 
 		return intVariable;
 	}
@@ -484,7 +473,7 @@ namespace TDS
 		ImGui::Text(variableName.c_str());
 
 		ImGui::TableNextColumn();
-		ImGui::DragFloat(("##" + variableName).c_str(), &floatVariable, speed, min, max);
+		ImGui::InputFloat(("##" + variableName).c_str(), &floatVariable/*, speed, min, max*/);
 
 		return floatVariable;
 	}
@@ -500,7 +489,7 @@ namespace TDS
 
 		ImGui::TableNextColumn();
 		float temp[2]{ Vec2Variable.x, Vec2Variable.y };
-		ImGui::DragFloat2(("##" + variableName).c_str(), temp, 0.1f);
+		ImGui::InputFloat2(("##" + variableName).c_str(), temp/*, 0.05f*/);
 		Vec2Variable.x = temp[0];
 		Vec2Variable.y = temp[1];
 
@@ -518,7 +507,37 @@ namespace TDS
 
 		ImGui::TableNextColumn();
 		float temp[3]{ Vec3Variable.x, Vec3Variable.y, Vec3Variable.z };
-		ImGui::DragFloat3(("##" + variableName).c_str(), temp, 0.1f);
+
+		static ImGuiStyle& style = ImGui::GetStyle();
+		auto tagWidth = ImGui::CalcTextSize("X").x + style.FramePadding.x * 2;
+		auto inputWidth = (ImGui::GetColumnWidth() - tagWidth * 3) / 3.f;
+
+		std::string format = "";
+
+		ImGui::Text("X");
+		ImGui::SameLine();
+		ImGui::PushItemWidth(inputWidth);
+		format = (temp[0] == floor(temp[0]) ? "%.0f" : "%.3f");
+		ImGui::InputFloat(("##" + variableName + "X").c_str(), &temp[0], 0.0f, 0.0f, format.c_str());
+		ImGui::PopItemWidth();
+
+		ImGui::SameLine();
+		ImGui::Text("Y");
+		ImGui::SameLine();
+		ImGui::PushItemWidth(inputWidth);
+		format = (temp[1] == floor(temp[1]) ? "%.0f" : "%.3f");
+		ImGui::InputFloat(("##" + variableName + "Y").c_str(), &temp[1], 0.0f, 0.0f, format.c_str());
+		ImGui::PopItemWidth();
+
+		ImGui::SameLine();
+		ImGui::Text("Z");
+		ImGui::SameLine();
+		//ImGui::PushItemWidth(inputWidth);
+		ImGui::PushItemWidth(-FLT_MIN); // Right-aligned
+		format = (temp[2] == floor(temp[2]) ? "%.0f" : "%.3f");
+		ImGui::InputFloat(("##" + variableName + "Z").c_str(), &temp[2], 0.0f, 0.0f, format.c_str());
+		ImGui::PopItemWidth();
+
 		Vec3Variable.x = temp[0];
 		Vec3Variable.y = temp[1];
 		Vec3Variable.z = temp[2];
@@ -537,7 +556,14 @@ namespace TDS
 
 		ImGui::TableNextColumn();
 		float temp[4]{ Vec4Variable.x, Vec4Variable.y, Vec4Variable.z, Vec4Variable.w };
-		ImGui::DragFloat4(("##" + variableName).c_str(), temp, 1.0f);
+		if (variableName == "Color")
+		{
+			ImGui::ColorEdit4(("##" + variableName).c_str(), temp);
+		}
+		else
+		{
+			ImGui::InputFloat4(("##" + variableName).c_str(), temp);
+		}
 		Vec4Variable.x = temp[0];
 		Vec4Variable.y = temp[1];
 		Vec4Variable.z = temp[2];

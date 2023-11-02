@@ -186,24 +186,24 @@ namespace TDS
 			std::size_t length = str.size();
 			file.write(reinterpret_cast<const char*>(&length), sizeof(length));
 			file.write(str.data(), length);
-			};
+		};
 
 		auto writeSamplerBufferMap = [&file, &writeString](const std::map<std::string, SamplerBuffer>& map)
-			{
-				std::size_t mapSize = map.size();
-				file.write(reinterpret_cast<const char*>(&mapSize), sizeof(mapSize));
+		{
+			std::size_t mapSize = map.size();
+			file.write(reinterpret_cast<const char*>(&mapSize), sizeof(mapSize));
 
-				for (const auto& [key, value] : map)
-				{
-					writeString(key);
-					file.write(reinterpret_cast<const char*>(&value.m_Location), sizeof(std::uint32_t));
-					file.write(reinterpret_cast<const char*>(&value.m_BindingPoint), sizeof(std::uint32_t));
-					file.write(reinterpret_cast<const char*>(&value.m_Dimension), sizeof(std::uint32_t));
-					file.write(reinterpret_cast<const char*>(&value.m_ArraySize), sizeof(std::uint32_t));
-					writeString(value.m_Name);
-					file.write(reinterpret_cast<const char*>(&value.m_BufferType), sizeof(BUFFER_TYPE));
-				}
-			};
+			for (const auto& [key, value] : map)
+			{
+				writeString(key);
+				file.write(reinterpret_cast<const char*>(&value.m_Location), sizeof(std::uint32_t));
+				file.write(reinterpret_cast<const char*>(&value.m_BindingPoint), sizeof(std::uint32_t));
+				file.write(reinterpret_cast<const char*>(&value.m_Dimension), sizeof(std::uint32_t));
+				file.write(reinterpret_cast<const char*>(&value.m_ArraySize), sizeof(std::uint32_t));
+				writeString(value.m_Name);
+				file.write(reinterpret_cast<const char*>(&value.m_BufferType), sizeof(BUFFER_TYPE));
+			}
+		};
 
 		for (const auto& pair : metadata.m_ShaderDatas)
 		{

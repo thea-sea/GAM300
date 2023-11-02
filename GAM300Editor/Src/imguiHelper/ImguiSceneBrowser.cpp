@@ -51,9 +51,10 @@ namespace TDS
 					{
 						std::string tempNewSceneName = "NewScene" + (newSceneCount ? ("(" + std::to_string(newSceneCount) + ")") : "");
 						recheck = false;
-						for (std::string scene : sceneManager->getScenes())
+						std::filesystem::path filePath = sceneManager->getScenePath();
+						for (auto& directory_entry : std::filesystem::directory_iterator(filePath))
 						{
-							if (tempNewSceneName == scene)
+							if (tempNewSceneName == directory_entry.path().stem().string())
 							{
 								++newSceneCount;
 								recheck = true;
@@ -78,101 +79,115 @@ namespace TDS
 		ImGui::Columns(std::max(columnCount, 1), 0, false);
 		//ImGui::Columns(4, 0, false);
 		int i = 0;
-		for (std::string scene : sceneManager->getScenes())
+		std::filesystem::path filePath = sceneManager->getScenePath();
+		for (auto& directory_entry : std::filesystem::directory_iterator(filePath))
 		{
-			ImGui::PushID(i);
-			if (ImGui::Button(scene.c_str(), { buttonSize , buttonSize }) && scene != sceneManager->getCurrentScene())
+			if (directory_entry.path().extension() == ".json")
 			{
-				hierarchyPanel->setSelectedEntity(0);
-				sceneManager->loadScene(scene);
-				hierarchyPanel->init();
-			}
-
-			if (rightClick && ImGui::IsItemHovered())
-			{
-				ImGui::OpenPopup("sceneEditPopup");
-			}
-
-			if (ImGui::BeginPopupContextItem("sceneEditPopup"))
-			{
-				if (ImGui::Selectable("Rename Scene"))
+				ImGui::PushID(i);
+				std::string sceneName = directory_entry.path().stem().string();
+				if (ImGui::Button(sceneName.c_str(), {buttonSize , buttonSize}) && sceneName != sceneManager->getCurrentScene())
 				{
-					renameFileID = i;
-					renameFileOldName = scene;
-					TDS_INFO("Renamed Scene");
-				}
-				if (ImGui::Selectable("Delete Scene"))
-				{
-					deleteSceneConfirmation = true;
-					ImGui::CloseCurrentPopup();
+					hierarchyPanel->setSelectedEntity(0);
+					sceneManager->loadScene(sceneName);
+					hierarchyPanel->init();
 				}
 
-				ImGui::EndPopup();
-			}
-
-			if (deleteSceneConfirmation)
-			{
-				ImGui::OpenPopup("deleteScene");
-				deleteSceneConfirmation = false;
-			}
-
-			ImVec2 center = ImGui::GetMainViewport()->GetCenter();
-			ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
-			if (ImGui::BeginPopupModal("deleteScene", NULL, ImGuiWindowFlags_AlwaysAutoResize))
-			{
-				ImGui::Text((scene + " will be deleted.\nThis operation cannot be undone!").c_str());
-				ImGui::Separator();
-
-				//static bool dont_ask_me_next_time = false;
-				//ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0, 0));
-				//ImGui::Checkbox("Don't ask me next time", &dont_ask_me_next_time);
-				//ImGui::PopStyleVar();
-
-				if (ImGui::Button("OK", ImVec2(120, 0)))
+				if (rightClick && ImGui::IsItemHovered())
 				{
-					sceneManager->deleteScene(scene);
-					TDS_INFO("Deleted Scene");
-					ImGui::CloseCurrentPopup();
+					ImGui::OpenPopup("sceneEditPopup");
 				}
-				ImGui::SetItemDefaultFocus();
-				ImGui::SameLine();
-				if (ImGui::Button("Cancel", ImVec2(120, 0)))
-				{
-					ImGui::CloseCurrentPopup();
-				}
-				ImGui::EndPopup();
-			}
 
-			if (renameFileID == i)
-			{
-				ImGui::SetKeyboardFocusHere();
-				char temp[100];
-				strcpy_s(temp, scene.c_str());
-				ImGui::InputText(("##" + std::to_string(i)).c_str(), temp, 100);
-				scene = std::string(temp);
-
-				if ((!ImGui::IsItemHovered() && (rightClick || ImGui::IsMouseClicked(ImGuiMouseButton_Left))) || ImGui::IsKeyPressed(ImGuiKey_Enter))
+				if (ImGui::BeginPopupContextItem("sceneEditPopup"))
 				{
-					if (renameFileOldName != scene && !sceneManager->renameScene(renameFileOldName, scene))
+					if (sceneManager->getStartingScene() != sceneName)
 					{
-						scene = renameFileOldName;
-						TDS_INFO("Scene name exist already!");
+						if (ImGui::Selectable("Set As Entry"))
+						{
+							sceneManager->setStartingScene(sceneName);
+							TDS_INFO("Reset entry scene");
+						}
+						ImGui::Separator();
 					}
 
-					renameFileID = -1;
-				}
-			}
-			else
-			{
-				ImGui::Text(scene.c_str());
-			}
+					if (ImGui::Selectable("Rename Scene"))
+					{
+						renameFileID = i;
+						renameFileOldName = sceneName;
+						TDS_INFO("Renamed Scene");
+					}
+					if (ImGui::Selectable("Delete Scene"))
+					{
+						deleteSceneConfirmation = true;
+						ImGui::CloseCurrentPopup();
+					}
 
-			ImGui::PopID();
-			++i;
-			ImGui::NextColumn();
+					ImGui::EndPopup();
+				}
+
+				if (deleteSceneConfirmation)
+				{
+					ImGui::OpenPopup("deleteScene");
+					deleteSceneConfirmation = false;
+				}
+
+				ImVec2 center = ImGui::GetMainViewport()->GetCenter();
+				ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
+				if (ImGui::BeginPopupModal("deleteScene", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+				{
+					ImGui::Text((sceneName + " will be deleted.\nThis operation cannot be undone!").c_str());
+					ImGui::Separator();
+
+					//static bool dont_ask_me_next_time = false;
+					//ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0, 0));
+					//ImGui::Checkbox("Don't ask me next time", &dont_ask_me_next_time);
+					//ImGui::PopStyleVar();
+
+					if (ImGui::Button("OK", ImVec2(120, 0)))
+					{
+						sceneManager->deleteScene(sceneName);
+						TDS_INFO("Deleted Scene");
+						ImGui::CloseCurrentPopup();
+					}
+					ImGui::SetItemDefaultFocus();
+					ImGui::SameLine();
+					if (ImGui::Button("Cancel", ImVec2(120, 0)))
+					{
+						ImGui::CloseCurrentPopup();
+					}
+					ImGui::EndPopup();
+				}
+
+				if (renameFileID == i)
+				{
+					ImGui::SetKeyboardFocusHere();
+					char temp[100];
+					strcpy_s(temp, sceneName.c_str());
+					ImGui::InputText(("##" + std::to_string(i)).c_str(), temp, 100);
+					sceneName = std::string(temp);
+
+					if ((!ImGui::IsItemHovered() && (rightClick || ImGui::IsMouseClicked(ImGuiMouseButton_Left))) || ImGui::IsKeyPressed(ImGuiKey_Enter))
+					{
+						if (renameFileOldName != sceneName && !sceneManager->renameScene(renameFileOldName, sceneName))
+						{
+							sceneName = renameFileOldName;
+							TDS_INFO("Scene name exist already!");
+						}
+
+						renameFileID = -1;
+					}
+				}
+				else
+				{
+					ImGui::Text(sceneName.c_str());
+				}
+
+				ImGui::PopID();
+				++i;
+				ImGui::NextColumn();
+			}
 		}
 
 		ImGui::Columns(1);
-
 	}
 }

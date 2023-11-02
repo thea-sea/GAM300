@@ -200,7 +200,10 @@ namespace TDS
 					EntityID currEntity = panel->getSelectedEntity();
 					IComponent* Graph = getComponentByName("Graphics Component", panel->getSelectedEntity());
 					if (Graph == nullptr)
-						Graph = addComponentByName("Graphics Component", panel->getSelectedEntity());
+					{
+						addComponentByName("Graphics Component", panel->getSelectedEntity());
+						Graph = getComponentByName("Graphics Component", panel->getSelectedEntity());
+					}
 					GraphicsComponent* graphComp = reinterpret_cast<GraphicsComponent*>(Graph);
 
 					std::string OutPath = ASSET_PATH;
@@ -222,8 +225,9 @@ namespace TDS
 					if (lookUp == false)
 						TextureCompressor::GetInstance().Run(inPath, OutPath);
 
-
-
+					std::filesystem::path FilePath(OutPath);
+					std::string fileName = FilePath.filename().string();
+					graphComp->m_TextureName = fileName;
 					AssetManager::GetInstance()->LoadAsset(OutPath, graphComp->GetTexture());
 
 
@@ -235,7 +239,8 @@ namespace TDS
 				{
 					lookUp = false;
 					std::string& OutPath = GeomCompiler::GetInstance()->OutPath;
-					OutPath = MODEL_PATH;
+					OutPath = ASSET_PATH;
+					OutPath += "/models/";
 					OutPath += filename.c_str();
 					if (strstr(filename.c_str(), ".fbx"))
 						OutPath = RemoveFileExtension(OutPath, ".fbx");
@@ -254,7 +259,11 @@ namespace TDS
 					EntityID currEntity = panel->getSelectedEntity();
 					IComponent* Graph = getComponentByName("Graphics Component", panel->getSelectedEntity());
 					if (Graph == nullptr)
-						Graph = addComponentByName("Graphics Component", panel->getSelectedEntity());
+					{
+						addComponentByName("Graphics Component", panel->getSelectedEntity());
+						Graph = getComponentByName("Graphics Component", panel->getSelectedEntity());
+						
+					}
 					GraphicsComponent* graphComp = reinterpret_cast<GraphicsComponent*>(Graph);
 
 					if (lookUp == false)
@@ -263,10 +272,18 @@ namespace TDS
 						m_GeomDescriptor.m_Descriptor.m_FilePath = std::filesystem::path(filename).filename().string();
 						GeomCompiler::GetInstance()->InitDesc(m_GeomDescriptor);
 						std::string OutputFile = GeomCompiler::GetInstance()->LoadModel();
+						std::filesystem::path FilePath(OutputFile);
+						std::string fileName = FilePath.filename().string();
+						graphComp->m_ModelName = fileName;
 						AssetManager::GetInstance()->LoadAsset(OutputFile, graphComp->GetAsset());
 					}
 					else
+					{
+						std::filesystem::path FilePath(OutPath);
+						std::string fileName = FilePath.filename().string();
+						graphComp->m_ModelName = fileName;
 						AssetManager::GetInstance()->LoadAsset(OutPath, graphComp->GetAsset());
+					}
 
 
 

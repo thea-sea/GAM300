@@ -57,6 +57,7 @@
     <ClInclude Include="Include\imguiHelper\ImguiProperties.h" />
     <ClInclude Include="Include\imguiHelper\ImguiScene.h" />
     <ClInclude Include="Include\imguiHelper\ImguiSceneBrowser.h" />
+    <ClInclude Include="Include\imguiHelper\ImguiScriptBrowser.h" />
     <ClInclude Include="Include\imguiHelper\ImguiToolbar.h" />
     <ClInclude Include="Include\imguiHelper\ImGuiViewport.h" />
     <ClInclude Include="Include\Tools\CompilerSettings.h" />
@@ -98,6 +99,7 @@
     <ClCompile Include="Src\imguiHelper\ImguiProperties.cpp" />
     <ClCompile Include="Src\imguiHelper\ImguiScene.cpp" />
     <ClCompile Include="Src\imguiHelper\ImguiSceneBrowser.cpp" />
+    <ClCompile Include="Src\imguiHelper\ImguiScriptBrowser.cpp" />
     <ClCompile Include="Src\imguiHelper\ImguiToolBar.cpp" />
     <ClCompile Include="Src\Tools\CompilerSettings.cpp" />
     <ClCompile Include="Src\Tools\DDSConverter.cpp" />

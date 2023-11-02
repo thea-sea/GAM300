@@ -27,11 +27,16 @@ layout(set = 0, binding = 0) uniform GlobalUBO{
     vec4 pad[15];    
 }PL;
 
+
+
 //updated per frame per model
 layout(push_constant) uniform Push {
     mat4 modelMatrix;
     mat4 normalMatrix;
+    uint textureIndex;
+    float padding[3]; 
 } push;
+
 
 
 

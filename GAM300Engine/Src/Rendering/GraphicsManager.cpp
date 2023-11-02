@@ -105,7 +105,6 @@ namespace TDS
 		m_RenderingAttachment->~RenderTarget();
 		m_Renderpass->~RenderPass();
 		m_Framebuffer->~FrameBuffer();
-		//m_MainFrameBuffer->Destroy();
 		DefaultTextures::GetInstance().DestroyDefaultTextures();
 		m_SwapchainRenderer->ShutDown();
 		m_CommandManager->Shutdown();
@@ -116,12 +115,12 @@ namespace TDS
 	}
 	void GraphicsManager::ResizeFrameBuffer(std::uint32_t width, std::uint32_t height)
 	{
-		//m_MainFrameBuffer->Resize({ width, height });
 	}
 	void GraphicsManager::setCamera(TDSCamera& camera)
 	{
 		m_Camera = &camera;
 	}
+
 	TDSCamera& GraphicsManager::GetCamera()
 	{
 		return *m_Camera;

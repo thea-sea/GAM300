@@ -15,7 +15,7 @@
 #include <fstream>
 #include <iostream>
 
-#define MODEL_PATH "../../assets/models/"
+#define MODEL_PATH "../assets/models/"
 #define MAX_PRELOAD_MODELS 5
 
 namespace TDS
@@ -30,8 +30,30 @@ namespace TDS
 		std::array<const char*, 6> m_PrimitiveModels = { "capsule_bin.bin", "cube_bin.bin", "Quad1_bin.bin",
 			"Quad2_bin.bin","sphere_bin.bin", "torus_bin.bin" };
 
+		std::array<AssetModel, 4096> m_Models;
+		std::unordered_map<std::string, std::uint32_t> m_ModelIndices; //Map with string and instance ID/index
+		std::unordered_map<std::string, std::uint32_t> m_InstanceCnt; //Each instance count
+		std::uint32_t m_CurrentIndex = 0;
 
 
+		std::array<AssetModel, 4096>& GetModelArray()
+		{
+			return m_Models;
+		}
+		AssetModel* GetModel(std::string_view modelName, TypeReference<AssetModel>& model)
+		{
+			auto itr = m_ModelIndices.find(modelName.data());
+			if (itr != m_ModelIndices.end())
+			{
+				--m_InstanceCnt[model.m_AssetName];
+				model.m_AssetName = modelName;
+				model.m_ResourcePtr = &m_Models[itr->second];
+				++m_InstanceCnt[modelName.data()];
+				return model.m_ResourcePtr;
+			}
+			return nullptr;
+			TDS_WARN("Model doesnt exist!");
+		}
 
 		/*!*************************************************************************
 		 * Deserialize the model from the file.
@@ -121,29 +143,25 @@ namespace TDS
 			inFile.close();
 		}
 
-		void PreloadDefaultPrimitives(ResourceAllocator& resourceMgr)
+		void PreloadDefaultPrimitives()
 		{
 			for (auto& primitive : m_PrimitiveModels)
 			{
 				Geom newGeom{};
-				TypeReference<AssetModel> modelInstance{};
 				std::string Path = MODEL_PATH;
 				Path += primitive;
+				std::string primitiveName = std::filesystem::path(Path).filename().string();
 				DeserializeGeom(newGeom, Path);
-				modelInstance.m_AssetName = primitive;
-				auto newModel = resourceMgr.LoadResource(modelInstance);
-				if (newModel == nullptr)
-				{
-					TDS_ERROR("Failed to load default primitive!");
-					continue;
-				}
-				newModel->LoadGeomData(newGeom);
+				m_Models[m_CurrentIndex].LoadGeomData(newGeom);
+				m_ModelIndices[primitiveName] = m_CurrentIndex++;
+				m_InstanceCnt[primitiveName] = 1;
+				
 			}
 		}
 		/*!*************************************************************************
 		 * Preload the model from the file.
 		 ***************************************************************************/
-		void Preload(ResourceAllocator& resourceMgr)
+		/*void Preload(ResourceAllocator& resourceMgr)
 		{
 			std::filesystem::path dir = MODEL_PATH;
 
@@ -183,36 +201,110 @@ namespace TDS
 
 				}
 			}
-		}
+		}*/
+		void Preload()
+		{
+			std::filesystem::path dir = MODEL_PATH;
 
+			if (!std::filesystem::exists(dir) || !std::filesystem::is_directory(dir))
+			{
+				std::cout << "Invalid directory" << std::endl;
+				return;
+			}
+			std::uint32_t numPreLoadedModels = 0;
+			for (const auto& entry : std::filesystem::directory_iterator(dir))
+			{
+				if (numPreLoadedModels >= MAX_PRELOAD_MODELS)
+					break;
+
+
+				const std::filesystem::path& path = entry.path();
+
+				if (path.extension() == ".bin")
+				{
+					Geom newGeom{};
+					
+
+					DeserializeGeom(newGeom, entry.path().string());
+					std::string fileName = path.filename().string();
+					
+					m_Models[m_CurrentIndex].LoadGeomData(newGeom);
+					m_ModelIndices[fileName.data()] = m_CurrentIndex++;
+					m_InstanceCnt[fileName.data()] = 1;
+					++numPreLoadedModels;
+
+
+				}
+			}
+		}
 		/*!*************************************************************************
 		 * Loading the model from the file.
 		 ***************************************************************************/
-		static void Load(std::string_view path, TypeReference<AssetModel>& model, ResourceAllocator& resourceMgr)
-		{
+		//static void Load(std::string_view path, TypeReference<AssetModel>& model, ResourceAllocator& resourceMgr)
+		//{
 
+		//	std::filesystem::path FilePath(path);
+		//	std::string fileName = FilePath.filename().string();
+		//	model.m_AssetName = fileName;
+		//	if (!resourceMgr.GetResource(model))
+		//	{
+		//		if (!resourceMgr.LoadResource(model))
+		//		{
+		//			TDS_WARN("Failed to load resource!");
+		//			return;
+		//		}
+		//	}
+
+
+		//	Geom geom{};
+		//	DeserializeGeom(geom, path);
+
+		//	model.m_ResourcePtr->LoadGeomData(geom);
+
+
+		//}
+
+		static void Load(std::string_view path, TypeReference<AssetModel>& model, AssetFactory<AssetModel>& modelFactory)
+		{
 			std::filesystem::path FilePath(path);
 			std::string fileName = FilePath.filename().string();
-			model.m_AssetName = fileName;
-			if (!resourceMgr.GetResource(model))
+		
+			
+			auto& modelIndices = modelFactory.m_ModelIndices;
+			auto& modelArray = modelFactory.m_Models;
+			auto& instanceContainer = modelFactory.m_InstanceCnt;
+
+			auto itr = modelIndices.find(fileName);
+
+			if (itr != modelIndices.end())
 			{
-				if (!resourceMgr.LoadResource(model))
-				{
-					TDS_WARN("Failed to load resource!");
-					return;
-				}
+				--instanceContainer[model.m_AssetName];
+				model.m_AssetName = fileName;
+				TDS_INFO("Model {} is already loaded!", model.m_AssetName);
+				++instanceContainer[fileName];
+				model.m_ResourcePtr = &modelArray[itr->second];
+				return;
 			}
 
-
+			//its a new model
+			model.m_AssetName = fileName;
+			std::uint32_t& newIndex = modelFactory.m_CurrentIndex;
 			Geom geom{};
 			DeserializeGeom(geom, path);
-
-			model.m_ResourcePtr->LoadGeomData(geom);
-
-
+			modelArray[newIndex].LoadGeomData(geom);
+			model.m_ResourcePtr = &modelArray[newIndex];
+			modelIndices[fileName] = newIndex++;
+			instanceContainer[fileName] = 1;
 		}
 
-
+		void DestroyAllModels()
+		{
+			for (auto& model : m_Models)
+			{
+				model.Destroy();
+			}
+			m_ModelIndices.clear();
+		}
 
 	};
 

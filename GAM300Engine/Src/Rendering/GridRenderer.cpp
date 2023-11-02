@@ -12,11 +12,11 @@ namespace TDS
 
 		m_GridModel.m_AssetName = "Quad2_Bin.bin";
 		m_GridModel.m_ResourcePtr = nullptr;
-		if (!AssetManager::GetInstance()->getResourceAllocator().LoadResource(m_GridModel))
-		{
-			TDS_ERROR("FAILED TO LOAD GRID!");
-			return;
-		}
+		//if (!AssetManager::GetInstance()->LoadAsset(m_GridModel))
+		//{
+		//	TDS_ERROR("FAILED TO LOAD GRID!");
+		//	return;
+		//}
 
 		m_VertexBuffer = std::make_shared<VMABuffer>();
 		std::vector<Vec3> pos(m_GridModel.m_ResourcePtr->GetVertexData().size());

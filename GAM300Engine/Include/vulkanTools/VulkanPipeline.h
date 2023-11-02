@@ -4,6 +4,7 @@
 #include "BufferInfo.h"
 #include "GraphicsResource/GraphicsResourceDefines.h"
 #include "VertexTypes.h"
+#include "GraphicsResource/TextureInfo.h"
 #include "dotnet/ImportExport.h"
 
 namespace TDS
@@ -42,8 +43,10 @@ namespace TDS
 		std::unordered_map<std::uint32_t, std::vector<std::shared_ptr<UBO>>>	m_StaticBuffers; //Only update here when u need to
 		std::unordered_map<std::uint32_t, VkWriteDescriptorSet>					m_WriteSetFrames;
 		std::vector<VkDescriptorSet>											m_DescriptorSets;
+		std::vector<VkDescriptorSet>											m_TextureOrBindless;
 		std::uint32_t															descContainerSize = 0;
 		VkDescriptorSetLayout													m_DescSetLayout{};
+		VkDescriptorSetLayout													m_ArrayTextureLayout{};
 		VkDescriptorImageInfo													m_ImageInfo{};
 	};
 
@@ -105,17 +108,22 @@ namespace TDS
 		void									DrawInstancedIndexed(VMABuffer& vertexBuffer, VMABuffer& indexBuffer, std::uint32_t instance = 1, std::uint32_t frameIndex = 0);
 		void									SubmitPushConstant(void* data, size_t size, std::int32_t flags);
 		void									UpdateUBO(void* data, size_t size, std::uint32_t binding, std::uint32_t frameIndex = 0, std::uint32_t offset = 0);
-		void									UpdateTextureArray(std::uint32_t binding, VkDescriptorType descriptorType, std::vector<VulkanTexture*>& texture);
+		//void									UpdateTextureArray(std::uint32_t binding, VkDescriptorType descriptorType, std::vector<VulkanTexture*>& texture);
+		void									UpdateTextureArray(std::uint32_t binding, VkDescriptorType descriptorType, std::vector<Texture*>& texture);
+		void									UpdateTextureArray(std::uint32_t binding, VkDescriptorType descriptorType, std::array<Texture, 2000>& texture);
 		void									UpdateTexture(std::uint32_t binding, VkDescriptorType descriptorType, VulkanTexture& texture);
-
 		void									BindPipeline(VkPrimitiveTopology drawMode = VkPrimitiveTopology::VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST);
-		void									BindDescriptor(std::int32_t DescIndex = 0);
+		void									BindDescriptor(std::int32_t frame, std::uint32_t numofSet,  std::uint32_t firstSet = 0);
+		void									BindAllDescriptors(std::int32_t frame);
+		void									BindDescriptorSet(VkDescriptorSet descriptorSet);
+		void									BindArrayDescriptorSet(std::uint32_t FrameIndex, std::uint32_t numOfSet, std::uint32_t firstSet = 0);
 		void									BindVertexBuffer(VMABuffer& vertexBuffer);
 		void									BindIndexBuffer(VMABuffer& IndexBuffer);
 		void									LoadShader(std::string_view shaderPath, SHADER_FLAG shaderFlag);
 
-		VkPipeline& GetPipeline(VkPrimitiveTopology drawMode);
-		VkPipelineLayout& GetLayout();
+		VkPipeline&								GetPipeline(VkPrimitiveTopology drawMode);
+		VkPipelineLayout&						GetLayout();
+		VkDescriptorPool&						GetDescriptorPool();
 		bool									IsBlendEnabled();
 		std::uint32_t							GetBufferBinding(std::string_view bufferName);
 		std::uint32_t							GetTextureBinding(std::string_view textureBinding);

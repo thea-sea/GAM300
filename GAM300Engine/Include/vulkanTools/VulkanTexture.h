@@ -64,7 +64,7 @@ namespace TDS
 		DLL_API VkWriteDescriptorSet& getWriteSet();
 		DLL_API VkDescriptorImageInfo& getInfo();
 		DLL_API VkImage& GetImage();
-		VkDescriptorSet					m_DescSet = nullptr; // For now, only for imgui
+
 	private:
 		VkImage							m_ImageHdl = nullptr;
 		VkImageView						m_BaseImageView = nullptr;

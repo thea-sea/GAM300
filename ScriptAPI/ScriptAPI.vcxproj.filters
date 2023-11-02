@@ -51,6 +51,9 @@
     <ClInclude Include="HelperFunctions.hxx">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="GameObject.hxx">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EngineInterface.cxx">
@@ -78,6 +81,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="TypeConversion.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject.cxx">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

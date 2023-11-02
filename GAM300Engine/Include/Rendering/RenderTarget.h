@@ -30,6 +30,8 @@ namespace TDS {
 		VkImage				  _inheritVkImage		{ VK_NULL_HANDLE };
 	};
 
+
+
 	class RenderTarget
 	{
 	public:
@@ -87,9 +89,8 @@ namespace TDS {
 		VkImageSubresourceRange m_SubResourceRange{};
 		VkImageView				m_ImageView{};
 		VkImageView				m_ImageViewSB{};				//SB == stencil buffer, !sha bi
-
 		size_t					m_MemSize{ 0 };
-
+		
 		std::vector<std::vector<VkImageView>> m_RenderImageViews{};
 		std::vector<std::vector<VkImageSubresourceRange>> m_RenderSubRR{}; //subresource ranges
 
@@ -100,7 +101,10 @@ namespace TDS {
 		bool m_InheritsVkImage{ false };
 
 		Vec3 m_Dimensions{};
-		
+
+	public:
+
+
 	}; //End RenderTarget
 
 

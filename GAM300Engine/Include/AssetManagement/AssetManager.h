@@ -7,7 +7,8 @@
 namespace TDS
 {
 
-
+	template <typename T>
+	inline constexpr bool wrong_factory_type = false;
 
 	class AssetManager
 	{
@@ -19,17 +20,34 @@ namespace TDS
 		void DLL_API ShutDown();
 
 		//Runtime load
+		//template <typename T>
+		//void LoadAsset(std::string_view FilePath, TypeReference<T>& ref)
+		//{
+		//	AssetFactory<T>::Load(FilePath, ref);
+		//}
 		template <typename T>
 		void LoadAsset(std::string_view FilePath, TypeReference<T>& ref)
 		{
-			AssetFactory<T>::Load(FilePath, ref, m_ResourceAllocator);
+			(FilePath);
+			(ref);
+			static_assert(wrong_factory_type<T>, "No such factory");
 		}
 
-		template <typename T>
-		T* GetResource(TypeReference<T>& ref)
+		template <>
+		void LoadAsset<AssetModel>(std::string_view FilePath, TypeReference<AssetModel>& ref)
 		{
-			return m_ResourceAllocator.GetResource(ref);
+			AssetFactory<AssetModel>::Load(FilePath, ref, m_ModelFactory);
 		}
+		template <>
+		void LoadAsset<Texture>(std::string_view FilePath, TypeReference<Texture>& ref)
+		{
+			AssetFactory<Texture>::Load(FilePath, ref, m_TextureFactory);
+		}
+		//template <typename T>
+		//T* GetResource(TypeReference<T>& ref)
+		//{
+		//	return m_ResourceAllocator.GetResource(ref);
+		//}
 
 		AssetFactory<AssetModel>& GetModelFactory()
 		{
@@ -41,17 +59,17 @@ namespace TDS
 			return m_TextureFactory;
 		}
 
-		inline ResourceAllocator& getResourceAllocator()
-		{
-			return m_ResourceAllocator;
-		}
+		//inline ResourceAllocator& getResourceAllocator()
+		//{
+		//	return m_ResourceAllocator;
+		//}
 		static DLL_API std::shared_ptr<AssetManager> GetInstance();
 
 
 	private:
 		inline static std::shared_ptr<AssetManager> m_Instance = nullptr;
 		/*ResourceManager m_ResourceManager;*/
-		ResourceAllocator m_ResourceAllocator;
+		//ResourceAllocator m_ResourceAllocator;
 		AssetFactory<AssetModel> m_ModelFactory;
 		AssetFactory<Texture> m_TextureFactory;
 

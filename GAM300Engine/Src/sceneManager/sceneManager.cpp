@@ -446,37 +446,27 @@ namespace TDS
 		}
 
 		rapidjson::Value& value = doc.GetObject();
-
-		for (auto& directory_entry : std::filesystem::directory_iterator(filePath))
-		{
-			if (directory_entry.path().extension() == ".json")
-			{
-				newScene(directory_entry.path().stem().string());
-			}
-		}
 		
 		// Starting scene
 		rapidjson::Value::MemberIterator theItr = value.FindMember("start");
 		std::string startingScene = theItr->value.GetString();
 
-		if (std::find(allScenes.begin(), allScenes.end(), startingScene) == allScenes.end())
+		bool fileCheck = false;
+		for (auto& directory_entry : std::filesystem::directory_iterator(filePath))
 		{
-			startingScene = "";
+			if (directory_entry.path().extension() == ".json" && startingScene == directory_entry.path().stem().string()) // found
+			{
+				loadScene(startingScene);
+				fileCheck = true;
+			}
+		}
+		if (!fileCheck) // entry scene not found
+		{
+			newScene("NewScene");
+			startingScene = "NewScene";
+			loadScene("NewScene");
 		}
 
-		if (startingScene == "")
-		{
-			if (allScenes.size() == 0)
-			{
-				newScene("NewScene");
-				startingScene = "NewScene";
-			}
-			loadScene(allScenes[0]);
-		}
-		else
-		{
-			loadScene(startingScene);
-		}
 		currentScene = startingScene;
 		startScene = startingScene;
 		currentSceneSaved = true;
@@ -535,7 +525,7 @@ namespace TDS
 	****************************************************************************/
 	void SceneManager::newScene(std::string scene)
 	{
-		allScenes.emplace_back(scene);
+		//allScenes.emplace_back(scene);
 
 		if (!std::filesystem::exists(filePath + scene + ".json"))
 		{
@@ -543,7 +533,7 @@ namespace TDS
 			ofs.close();
 		}
 
-		std::sort(allScenes.begin(), allScenes.end(), stringCompare);
+		//std::sort(allScenes.begin(), allScenes.end(), stringCompare);
 	}
 	/*!*************************************************************************
 	This function loads given scene
@@ -565,10 +555,10 @@ namespace TDS
 
 		SerializeToFile(filePath + currentScene + ".json");
 
-		if (std::find(allScenes.begin(), allScenes.end(), currentScene) == allScenes.end())
-		{
-			newScene(currentScene);
-		}
+		//if (std::find(allScenes.begin(), allScenes.end(), currentScene) == allScenes.end())
+		//{
+		//	newScene(currentScene);
+		//}
 	}
 	/*!*************************************************************************
 	This function deletes the given scene
@@ -581,12 +571,12 @@ namespace TDS
 		}
 
 		std::filesystem::remove(filePath + scene + ".json");
-		auto sceneInVector = std::find(allScenes.begin(), allScenes.end(), scene);
+		//auto sceneInVector = std::find(allScenes.begin(), allScenes.end(), scene);
 
-		if (sceneInVector != allScenes.end())
-		{
-			allScenes.erase(sceneInVector);
-		}
+		//if (sceneInVector != allScenes.end())
+		//{
+		//	allScenes.erase(sceneInVector);
+		//}
 	}
 
 	/*!*************************************************************************
@@ -633,22 +623,51 @@ namespace TDS
 	****************************************************************************/
 	bool SceneManager::renameScene(std::string oldName, std::string newName)
 	{
-		if (std::find(allScenes.begin(), allScenes.end(), newName) != allScenes.end())
+		//if (std::find(allScenes.begin(), allScenes.end(), newName) != allScenes.end())
+		//{
+		//	return false;
+		//}
+		if (std::filesystem::exists(filePath + newName + ".json"))
 		{
 			return false;
 		}
 
 		std::filesystem::rename(filePath + oldName + ".json", filePath + newName + ".json");
-		std::replace(allScenes.begin(), allScenes.end(), oldName, newName);
-		std::sort(allScenes.begin(), allScenes.end(), stringCompare);
+		//std::replace(allScenes.begin(), allScenes.end(), oldName, newName);
+		//std::sort(allScenes.begin(), allScenes.end(), stringCompare);
 		return true;
 	}
 
 	/*!*************************************************************************
 	This function is the getter function for all scenes in Scene Browser
 	****************************************************************************/
-	std::vector<std::string>& SceneManager::getScenes()
+	//std::vector<std::string>& SceneManager::getScenes()
+	//{
+	//	return allScenes;
+	//}
+
+	/*!*************************************************************************
+	This function is the getter function for the path to scenes
+	****************************************************************************/
+	std::string SceneManager::getScenePath()
 	{
-		return allScenes;
+		return filePath;
+	}
+
+	/*!*************************************************************************
+	This function is the setter function to reset starting scene
+	****************************************************************************/
+	DLL_API std::string SceneManager::getStartingScene()
+	{
+		return startScene;
+	}
+
+	/*!*************************************************************************
+	This function is the setter function to reset starting scene
+	****************************************************************************/
+	void SceneManager::setStartingScene(std::string newStartScene)
+	{
+		startScene = newStartScene;
+		sceneSerialize();
 	}
 }

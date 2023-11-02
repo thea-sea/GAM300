@@ -871,6 +871,8 @@ namespace TDS
 	}
 
 
+	
+
 	VkExtent2D VulkanTexture::GenMipsExtent(TextureData& data, std::uint32_t mip)
 	{
 		VkExtent2D out = { data.m_TextureLoaded.GetWidth(), data.m_TextureLoaded.GetHeight() };

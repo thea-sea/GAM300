@@ -9,13 +9,18 @@ namespace TDS
 	private:
 		std::array<AllocationInfo, MAX_RESOURCE> m_InfoBuffer;
 		std::unordered_map<std::string, std::uint32_t> m_ResourceInstance;
+		std::set<std::string> m_CurrentAssets;
 		std::uint32_t m_CurrentIndex = 0;
 	public:
 		ResourceAllocator();
 		~ResourceAllocator();
+		std::set<std::string>& GetLoadedAssetNames();
 
+		void RemoveAssetNameFromList(std::string_view name);
 
 		void FreeAllResources();
+
+
 		template <typename T>
 		T* LoadResource(TypeReference<T>& reference)
 		{
@@ -31,7 +36,6 @@ namespace TDS
 			reference.m_ResourcePtr = new T();
 
 			m_ResourceInstance.insert(std::make_pair(reference.m_AssetName, m_CurrentIndex));
-
 			if constexpr (std::is_member_function_pointer_v<decltype(&T::Destroy)>)
 				m_InfoBuffer[m_CurrentIndex].m_Destroyfunc = std::bind(&T::Destroy, reference.m_ResourcePtr);
 
@@ -39,6 +43,7 @@ namespace TDS
 			m_InfoBuffer[m_CurrentIndex].m_pData = reference.m_ResourcePtr;
 			m_InfoBuffer[m_CurrentIndex].m_AssetName = reference.m_AssetName;
 			m_InfoBuffer[m_CurrentIndex].ReferenceCnt = 1;
+			m_CurrentAssets.insert(reference.m_AssetName);
 
 			m_CurrentIndex++;
 			return reference.m_ResourcePtr;
@@ -69,7 +74,7 @@ namespace TDS
 		template <typename T>
 		void RemoveReference(TypeReference<T>& reference)
 		{
-			if (reference.m_ResourcePtr == nullptr)
+			if (reference.m_AssetName.empty() || reference.m_ResourcePtr == nullptr)
 			{
 				TDS_WARN("Nothing to remove!");
 				return;
@@ -82,17 +87,7 @@ namespace TDS
 				reference.m_ResourcePtr = nullptr;
 				reference.m_AssetName = "";
 				--m_InfoBuffer[itr->second].ReferenceCnt;
-				if (m_InfoBuffer[itr->second].ReferenceCnt == 0)
-				{
-					if (m_InfoBuffer[itr->second].m_Destroyfunc)
-					{
-						m_InfoBuffer[itr->second].m_AssetName = "";
-						m_InfoBuffer[itr->second].m_Destroyfunc.value()();
-					}
-					else
-						TDS_ERROR("Destroy function doesnt exist!");
-
-				}
+				
 			}
 			else
 			{

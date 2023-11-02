@@ -1,8 +1,9 @@
 
 #version 450
 
-layout(binding = 4) uniform sampler2D texSampler;
+//layout(binding = 4) uniform sampler2D texSampler;
 
+layout(set = 1, binding = 4) uniform sampler2D texArraySampler[2000];
 
 layout(location = 0) in vec3 fragColor;
 layout(location = 1) in vec2 fragTexCoord;
@@ -27,11 +28,22 @@ layout(set = 0, binding = 0) uniform GlobalUBO{
     vec4 pad[15];    
 }PL;
 
+/*
+    layout(std140, binding = 3) uniform texArrayUBO
+    {
+        vec4 m_TextureID;
+    }textureArrUniform;
+*/
+
+
 //updated per frame per model
 layout(push_constant) uniform Push {
     mat4 modelMatrix;
     mat4 normalMatrix;
+    uint textureIndex;
+    float padding[3]; 
 } push;
+
 
 void main() {
     // vec3 directiontolight = PL.pointlights[0].Position.xyz - fragPosWorld;
@@ -43,6 +55,7 @@ void main() {
 
 
     // outColor = vec4((diffuselight*ambientlight)*fragColor,1.0);
+    int textureID = int(push.textureIndex);
     vec3 ambientlight = PL.ambientlightcolor.xyz * PL.ambientlightcolor.w;
     vec3 SurfaceNormal = normalize(fragNormalWorld);
     vec3 diffuselight = vec3(0.0,0.0,0.0);
@@ -57,8 +70,9 @@ void main() {
         
         diffuselight += intensity * cosAngleIncidence;
     }
-
-    vec4 texColor = texture(texSampler, fragTexCoord);
+    
+    vec4 texColor = texture(texArraySampler[textureID], fragTexCoord);
+    //vec4 texColor = texture(texArraySampler, fragTexCoord);
     //outColor = vec4((diffuselight*ambientlight)*fragColor,1.0);
     //outColor = texture(texSampler, fragTexCoord);
     outColor = texColor * vec4((diffuselight + ambientlight), 1.0);

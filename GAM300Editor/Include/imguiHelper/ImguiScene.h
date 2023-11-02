@@ -10,8 +10,9 @@ namespace TDS
 	public:
 		EditorScene();
 
-		void init() {}
+		void init();
 		void update();
+		void Resize();
 
 	private:
 		

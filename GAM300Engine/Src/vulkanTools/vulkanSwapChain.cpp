@@ -71,7 +71,7 @@ namespace TDS
 	VkResult VulkanSwapChain::SubmitCommandBuffers(const VkCommandBuffer* buffers, uint32_t* ImageIndex) {
 		if (m_vImagesinFlight[*ImageIndex] != VK_NULL_HANDLE)
 			vkWaitForFences(m_Instance.getVkLogicalDevice(), 1, &m_vImagesinFlight[*ImageIndex], VK_TRUE, UINT64_MAX);
-		m_vImagesinFlight[*ImageIndex] = m_vImagesinFlight[m_currentFrame];
+		m_vImagesinFlight[*ImageIndex] = m_vInFlightFences[m_currentFrame];
 
 		VkSubmitInfo SubmitInfo{};
 		SubmitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
@@ -414,11 +414,6 @@ namespace TDS
 
 		}
 
-		for (auto& fence : m_vImagesinFlight)
-		{
-			if (fence)
-				vkDestroyFence(m_Instance.getVkLogicalDevice(), fence, nullptr);
-		}
 		for (auto& fence : m_vInFlightFences)
 		{
 			if (fence)

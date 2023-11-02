@@ -92,6 +92,9 @@ namespace TDS
 		}
 
 		vkGetPhysicalDeviceProperties(m_PhysDeviceHandle, &m_Properties);
+		VkPhysicalDeviceProperties2 properties2 = { VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_PROPERTIES_2 };
+		m_Properties = properties2.properties;
+
 		std::cout << "physical device: " << m_Properties.deviceName << std::endl;
 	}
 
@@ -117,8 +120,14 @@ namespace TDS
 			queueCreateInfo.pQueuePriorities = &queuePriority;
 			queueCreateInfos.push_back(queueCreateInfo);
 		}
+		
+		VkPhysicalDeviceFeatures2 features2 = { VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_FEATURES_2 };
+		vkGetPhysicalDeviceFeatures2(m_PhysDeviceHandle, &features2);
 		VkPhysicalDeviceFeatures deviceFeatures{};
+		deviceFeatures = features2.features;
 		deviceFeatures.samplerAnisotropy = VK_TRUE;
+		deviceFeatures.shaderSampledImageArrayDynamicIndexing = VK_TRUE;
+
 		//deviceFeatures.sampleRateShading = VK_TRUE; // enable sample shading feature will affect performace cost
 
 		VkDeviceCreateInfo createInfo{};

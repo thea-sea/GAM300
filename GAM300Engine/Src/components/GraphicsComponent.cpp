@@ -8,6 +8,8 @@ RTTR_REGISTRATION
 		.method("IsPointLight", &GraphicsComponent::IsPointLight)
 		.method("TogglePointLight", &GraphicsComponent::TogglePointLight)
 		.property("PointLight", &GraphicsComponent::m_Pointlight)
+		.property("TextureName", &GraphicsComponent::m_TextureName)
+		.property("ModelName", &GraphicsComponent::m_ModelName)
 		.method("SetColor", rttr::select_overload<void(Vec4)>(&GraphicsComponent::SetColor))
 		.method("SetColor", rttr::select_overload<void(float, float, float, float)>(&GraphicsComponent::SetColor))
 		.method("GetColor", &GraphicsComponent::GetColor)

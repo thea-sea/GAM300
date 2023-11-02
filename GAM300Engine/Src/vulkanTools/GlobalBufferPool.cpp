@@ -50,7 +50,7 @@ namespace TDS
 		}
 		else
 		{
-			TDS_ERROR("Global Buffer binding %d already exist!", binding);
+			TDS_ERROR("Global Buffer binding {} already exist!", binding);
 		}
 	}
 
