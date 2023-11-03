@@ -74,7 +74,11 @@ namespace TDS
             ImGui::EndMenuBar();
         }
 
-		ImGui::Columns(6, 0, false);
+		//for auto resizing of buttons
+		float panelWidth = ImGui::GetContentRegionAvail().x;
+		int columnCount = (int)(panelWidth / buttonSize);
+		ImGui::Columns(std::max(columnCount, 1), 0, false);
+
 		int i = 0;
 		std::filesystem::path filePath = sceneManager->getScenePath();
 		for (auto& directory_entry : std::filesystem::directory_iterator(filePath))
@@ -176,7 +180,7 @@ namespace TDS
 				}
 				else
 				{
-					ImGui::Text(sceneName.c_str());
+					ImGui::TextWrapped(sceneName.c_str());
 				}
 
 				ImGui::PopID();

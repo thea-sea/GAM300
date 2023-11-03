@@ -16,6 +16,8 @@
 #include "imguiHelper/ImguiHierarchy.h"
 
 #include "eventManager/eventHandler.h"
+#include "imguiHelper/ImguiAssetBrowser.h"
+
 
 namespace TDS
 {
@@ -151,6 +153,42 @@ namespace TDS
 						ImGui::TableNextColumn();
 						ImGui::TableNextColumn();
 						ImGui::PushItemWidth(-FLT_MIN); // Right-aligned
+
+						//to drag drop texture name
+						if (componentName == "Graphics Component")
+						{
+										GraphicsComponent* g = reinterpret_cast<GraphicsComponent*>(componentBase);
+							std::string final = g->GetTextureName();
+							ImguiInput("TextureName", final);
+							if (ImGui::BeginDragDropTarget())
+							{
+								if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM"))
+								{
+									const wchar_t* path = (const wchar_t*)payload->Data;
+									std::wstring ws(path);
+									// your new String
+									std::string str(ws.begin(), ws.end());
+									const std::filesystem::path filesystempath = str;
+
+									if (filesystempath.extension() != ".dds")
+									{
+										//consolelog->AddLog("Invalid file type, please select a .DDS file.");
+									}
+									else
+									{
+										
+										AssetBrowser assetbroswer;
+										assetbroswer.getFileNameFromPath(str.c_str(), nullptr, nullptr, &final, nullptr);
+										//g.m_TextureName = final;
+										g->SetTextureName(final);
+										
+										std::wcout << " Path of dragged file is: " << path << std::endl;
+
+									}
+								}
+								ImGui::EndDragDropTarget();
+							}
+						}
 
 						// For child transform change
 						Vec3 oldPosition, oldScale, oldRotation;

@@ -1,6 +1,5 @@
 
 #include "ImguiHelper/ImguiSceneBrowser.h"
-#include "ImguiHelper/ImguiScriptBrowser.h"
 #include "imguiHelper/ImguiHelper.h"
 #include "imguiHelper/ImguiHierarchy.h"
 #include "imguiHelper/ImguiProperties.h"
@@ -30,7 +29,6 @@ namespace TDS
 			m_instance->panels[PanelTypes::ASSETBROWSER] = std::make_shared<AssetBrowser>();
 			//m_instance->panels[PanelTypes::AUDIOLER] = std::make_shared<AudioImgui>();
 			m_instance->panels[PanelTypes::SCENEBROWSER] = std::make_shared<SceneBrowser>();
-			m_instance->panels[PanelTypes::SCRIPTBROWSER] = std::make_shared<ScriptBrowser>();
 			m_instance->panels[PanelTypes::CONSOLE] = std::make_shared<EditorConsole>();
 			m_instance->panels[PanelTypes::TOOLBAR] = std::make_shared<Toolbar>();
 			m_instance->panels[PanelTypes::PROFILER] = std::make_shared<Profiler>();
@@ -225,5 +223,6 @@ namespace TDS
 		ImGui_ImplVulkan_Shutdown();
 		ImGui_ImplWin32_Shutdown();
 		ImGui::DestroyContext();
+		AssetBrowser::destroyIcons(); //temp to prevent mem leak
 	}
 }

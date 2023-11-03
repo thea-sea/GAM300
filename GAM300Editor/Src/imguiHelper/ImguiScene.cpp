@@ -69,14 +69,36 @@ namespace TDS
 		ImVec2 vSize = ImGui::GetContentRegionAvail();
 	
 		ImGui::Image((ImTextureID)m_DescSet, vSize);
-		//ImGui::End();
-		//code above is currently commented out due to how images are infinitely rendered in update loop and not freed, just for testing
+		//drag drop code MUST be ddirecvtly under imgui::image code
+		if (ImGui::BeginDragDropTarget())
+		{
+			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM"))
+			{
+				const wchar_t* path = (const wchar_t*)payload->Data;
+				std::wstring ws(path);
+				// your new String
+				std::string str(ws.begin(), ws.end());
+				const std::filesystem::path filesystempath = str;
 
-	/*	ImGui::Text("comment out update() in \n ImguiScene.cpp to test dragdrop");
-		ImGui::Text("The Image above tests \n Drag and Drop of .dds files");
-		ImGui::Text("Drag a .dds file from the \n content browser on the left and drop onto the image");
-		ImGui::Text("xx u can render the frame \n buffer here to replace the ImGui::Image");
-		ImGui::Text("so in future we will drag \n and rendering multiple images onto the scene");*/
+				//if (filesystempath.extension() != ".dds")
+				//{
+				//	consolelog->AddLog("Invalid file type, please select a .DDS file.");
+				//}
+				//else
+				//{
+				//	tempPath = str;
+					std::wcout << " Path of dragged file is: " << path << std::endl;
+
+				//	//currently i am only changing filepath names, next time i need to impose pictures onto pictures, create new image layer 
+				//	//and also parse each image's width and height, rn its hardcoded to 500 x 500 px
+				//	/*tempPath = path;
+				//	data.LoadTexture(tempPath);
+				//	vkTexture.CreateBasicTexture(data.m_TextureInfo);*/
+
+				//}
+			}
+			ImGui::EndDragDropTarget();
+		}
 
 
 		std::shared_ptr<Hierarchy> hierarchyPanel = static_pointer_cast<Hierarchy>(LevelEditorManager::GetInstance()->panels[PanelTypes::HIERARCHY]);
