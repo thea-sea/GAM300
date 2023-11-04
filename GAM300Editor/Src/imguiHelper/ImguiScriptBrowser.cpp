@@ -70,7 +70,9 @@ namespace TDS
 			ImGui::EndMenuBar();
 		}
 
-		ImGui::Columns(6, 0, false);
+		float panelWidth = ImGui::GetContentRegionAvail().x;
+		int columnCount = (int)(panelWidth / buttonSize);
+		ImGui::Columns(std::max(columnCount, 1), 0, false);
 		int i = 0;
 		std::filesystem::path filePath = std::filesystem::path(sceneManager->getScenePath()).parent_path().parent_path().parent_path().string() + std::string("\\ManagedScripts\\");
 		for (auto& directory_entry : std::filesystem::directory_iterator(filePath))
@@ -138,7 +140,7 @@ namespace TDS
 					ImGui::EndPopup();
 				}
 
-				ImGui::Text(scriptName.c_str());
+				ImGui::TextWrapped(scriptName.c_str());
 
 				ImGui::PopID();
 				++i;

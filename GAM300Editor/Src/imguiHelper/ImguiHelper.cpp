@@ -4,6 +4,7 @@
 #include "imguiHelper/ImguiHierarchy.h"
 #include "imguiHelper/ImguiProperties.h"
 #include "imguiHelper/ImguiAssetBrowser.h"
+#include "imguiHelper/ImguiScriptBrowser.h"
 #include "imguiHelper/ImguiAudio.h"
 #include "imguiHelper/ImguiBehaviourTree.h"
 
@@ -29,6 +30,7 @@ namespace TDS
 			m_instance->panels[PanelTypes::ASSETBROWSER] = std::make_shared<AssetBrowser>();
 			//m_instance->panels[PanelTypes::AUDIOLER] = std::make_shared<AudioImgui>();
 			m_instance->panels[PanelTypes::SCENEBROWSER] = std::make_shared<SceneBrowser>();
+			m_instance->panels[PanelTypes::SCRIPTBROWSER] = std::make_shared<ScriptBrowser>();
 			m_instance->panels[PanelTypes::CONSOLE] = std::make_shared<EditorConsole>();
 			m_instance->panels[PanelTypes::TOOLBAR] = std::make_shared<Toolbar>();
 			m_instance->panels[PanelTypes::PROFILER] = std::make_shared<Profiler>();

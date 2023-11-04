@@ -134,14 +134,14 @@ namespace TDS
 
 			if (directory_entry.is_directory()) //draw folder icon
 			{
-				ImGui::ImageButton(reinterpret_cast<void*>(folder_DescSet), ImVec2{ thumbnail_size, thumbnail_size }, ImVec2{ 0, 0 }, ImVec2{ 1, 1 });
+				ImGui::ImageButton(reinterpret_cast<void*>(folder_DescSet), ImVec2{ thumbnail_size, thumbnail_size }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
 				//folder_image_count++;
 
 			}
 			else //draw file icon
 			{
 				//then render button
-				ImGui::ImageButton(reinterpret_cast<void*>(file_DescSet), ImVec2{ thumbnail_size, thumbnail_size }, ImVec2{ 0, 0 }, ImVec2{ 1, 1 });
+				ImGui::ImageButton(reinterpret_cast<void*>(file_DescSet), ImVec2{ thumbnail_size, thumbnail_size }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
 				//do drag drop ONLY on files, not folder
 				if (ImGui::BeginDragDropSource())
 				{
