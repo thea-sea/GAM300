@@ -508,29 +508,40 @@ namespace TDS
 						std::string str(ws.begin(), ws.end());
 						const std::filesystem::path filesystempath = str;
 
-						if (filesystempath.extension() == ".dds")
+						if (propertyName.get_name() == "TextureName")
 						{
+							if (filesystempath.extension() == ".dds")
+							{
 
-							AssetBrowser assetbroswer;
-							assetbroswer.getFileNameFromPath(str.c_str(), nullptr, nullptr, &finaltexture, nullptr);
-							//g.m_TextureName = final;
-							g->SetTextureName(finaltexture);
+								AssetBrowser assetbroswer;
+								assetbroswer.getFileNameFromPath(str.c_str(), nullptr, nullptr, &finaltexture, nullptr);
+								//g.m_TextureName = final;
+								g->SetTextureName(finaltexture);
 
-							std::wcout << " Path of dragged file is: " << path << std::endl;
+								std::wcout << " Path of dragged file is: " << path << std::endl;
+							}
+							else
+							{
+								TDS_INFO("invalid file type, please drag a .dds for TextureName");
+							}
+
 						}
-						if (filesystempath.extension() == ".bin")
+						if (propertyName.get_name() == "ModelName")
 						{
+							if (filesystempath.extension() == ".bin" || filesystempath.extension() == ".fbx")
+							{
 
-							AssetBrowser assetbroswer;
-							assetbroswer.getFileNameFromPath(str.c_str(), nullptr, nullptr, &finalmodel, nullptr);
-							//g.m_TextureName = final;
-							g->SetModelName(finalmodel);
+								AssetBrowser assetbroswer;
+								assetbroswer.getFileNameFromPath(str.c_str(), nullptr, nullptr, &finalmodel, nullptr);
+								//g.m_TextureName = final;
+								g->SetModelName(finalmodel);
 
-							std::wcout << " Path of dragged file is: " << path << std::endl;
-						}
-						else
-						{
-							TDS_INFO("invalid file type, please drag a .dds for TextureName or .bin for ModelName ");
+								std::wcout << " Path of dragged file is: " << path << std::endl;
+							}
+							else
+							{
+								TDS_INFO("invalid file type, please drag a .bin or .fbx for ModelName ");
+							}
 						}
 					}
 					else

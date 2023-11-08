@@ -68,14 +68,14 @@ namespace TDS
 		fps_log.push_back(ImGui::GetIO().Framerate);
 		char engine_name[25];
 		sprintf_s(engine_name, 25, "Framerate %.1f", fps_log[fps_log.size() - 1]);
-		ImGui::PlotHistogram("##framerate", &fps_log[0], static_cast<int>(fps_log.size()), 0, engine_name, 0.0f, 100.0f, ImVec2(200, 100));
+		ImGui::PlotHistogram("##framerate", &fps_log[0], static_cast<int>(fps_log.size()), 0, engine_name, 0.0f, 100.0f, ImVec2(200, 70));
 
 		//Milliseconds
 		if (ms_log.size() > 100)
 			ms_log.erase(ms_log.begin());
 		ms_log.push_back(1 / (ImGui::GetIO().Framerate / 1000));
 		sprintf_s(engine_name, 25, "Milliseconds %.1f", ms_log[ms_log.size() - 1]);
-		ImGui::PlotHistogram("##framerate", &ms_log[0], static_cast<int>(ms_log.size()), 0, engine_name, 0.0f, 40.0f, ImVec2(200, 100));
+		ImGui::PlotHistogram("##framerate", &ms_log[0], static_cast<int>(ms_log.size()), 0, engine_name, 0.0f, 40.0f, ImVec2(200, 70));
 	}
 
 }

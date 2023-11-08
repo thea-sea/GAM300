@@ -63,6 +63,7 @@
     <ClInclude Include="Include\imguiHelper\ImGuiViewport.h" />
     <ClInclude Include="Include\Tools\CompilerSettings.h" />
     <ClInclude Include="Include\Tools\DDSConverter.h" />
+    <ClInclude Include="Include\Tools\EditorHistory.h" />
     <ClInclude Include="Include\Tools\FileExtensions.h" />
     <ClInclude Include="Include\Tools\FontLoader.h" />
     <ClInclude Include="Include\Tools\GeomCompiler.h" />
@@ -105,6 +106,7 @@
     <ClCompile Include="Src\imguiHelper\ImguiToolBar.cpp" />
     <ClCompile Include="Src\Tools\CompilerSettings.cpp" />
     <ClCompile Include="Src\Tools\DDSConverter.cpp" />
+    <ClCompile Include="Src\Tools\EditorHistory.cpp" />
     <ClCompile Include="Src\Tools\FileExtensions.cpp" />
     <ClCompile Include="Src\Tools\GeomCompiler.cpp" />
     <ClCompile Include="Src\Tools\ShaderReflector.cpp" />
