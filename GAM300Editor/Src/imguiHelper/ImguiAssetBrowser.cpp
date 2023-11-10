@@ -87,15 +87,31 @@ namespace TDS
 		}
 	}
 
-	static const std::filesystem::path s_TextureDirectory = "../../assets";
+	static const std::filesystem::path s_AssetDirectory = "../../assets";
+	static const std::filesystem::path s_ModelDirectory = "../../assets/models";
+	static const std::filesystem::path s_TextureDirectory = "../../assets/textures";
 	void AssetBrowser::update()
 	{
-		if (m_curr_path != std::filesystem::path(s_TextureDirectory))
+		if (m_curr_path != std::filesystem::path(s_AssetDirectory))
 		{
 			if (ImGui::Button("<-")) //will only show if u went into a folder in the current directory above
 			{
 				m_curr_path = m_curr_path.parent_path();
 			}
+		}
+		if (m_curr_path == std::filesystem::path(s_ModelDirectory))
+		{
+			ImGui::SameLine();
+			ImGui::Checkbox("Show .bin files", &show_bin);
+			ImGui::SameLine();
+			ImGui::Checkbox("Show .fbx files", &show_fbx);
+		}
+		if (m_curr_path == std::filesystem::path(s_TextureDirectory))
+		{
+			ImGui::SameLine();
+			ImGui::Checkbox("Show .dds files", &show_dds);
+			ImGui::SameLine();
+			ImGui::Checkbox("Show .png files", &show_png);
 		}
 		float cellSize = thumbnail_size + padding;
 
@@ -121,12 +137,61 @@ namespace TDS
 		for (auto& directory_entry : std::filesystem::directory_iterator(m_curr_path))
 		{
 			path1 = directory_entry.path().string();
-			auto relative_path = std::filesystem::relative(directory_entry.path(), s_TextureDirectory);
+			auto relative_path = std::filesystem::relative(directory_entry.path(), s_AssetDirectory);
 
 			//ImGui::Button(path1.c_str(), { thumbnail_size, thumbnail_size });
 			//shorten the path name
+
 			std::string filename;
 			getFileNameFromPath(path1.c_str(), nullptr, nullptr, &filename, nullptr);
+			if (m_curr_path == std::filesystem::path(s_ModelDirectory))
+			{
+				if (directory_entry.is_directory()) //draw folder icon
+				{
+					ImGui::ImageButton(reinterpret_cast<void*>(folder_DescSet), ImVec2{ thumbnail_size, thumbnail_size }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
+					//folder_image_count++;
+				}
+				if (!show_bin && !show_fbx) { continue; }
+				else if (show_bin && !show_fbx)
+				{
+					if (!strstr(filename.c_str(), ".bin")) //if its not bin, continue
+					{
+						continue;
+					}
+				}
+				else if (show_fbx && !show_bin)
+				{
+					if (!strstr(filename.c_str(), ".fbx")) //if its not bin, continue
+					{
+						continue;
+					}
+				}
+
+			}
+			if (m_curr_path == std::filesystem::path(s_TextureDirectory))
+			{
+				if (directory_entry.is_directory()) //draw folder icon
+				{
+					ImGui::ImageButton(reinterpret_cast<void*>(folder_DescSet), ImVec2{ thumbnail_size, thumbnail_size }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
+					//folder_image_count++;
+				}
+				if (!show_dds && !show_png) { continue; }
+				else if (show_dds && !show_png)
+				{
+					if (!strstr(filename.c_str(), ".dds")) //if its not dds, continue
+					{
+						continue;
+					}
+				}
+				else if (show_png && !show_dds)
+				{
+					if (!strstr(filename.c_str(), ".png")) //if its not png, continue
+					{
+						continue;
+					}
+				}
+
+			}
 			ImGui::PushID(filename.c_str()); //store the current id in each button that is created in each iteration of files
 			
 			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));
@@ -136,10 +201,10 @@ namespace TDS
 			{
 				ImGui::ImageButton(reinterpret_cast<void*>(folder_DescSet), ImVec2{ thumbnail_size, thumbnail_size }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
 				//folder_image_count++;
-
 			}
 			else //draw file icon
 			{
+				
 				//then render button
 				ImGui::ImageButton(reinterpret_cast<void*>(file_DescSet), ImVec2{ thumbnail_size, thumbnail_size }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
 				//do drag drop ONLY on files, not folder

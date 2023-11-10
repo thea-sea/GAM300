@@ -10,6 +10,7 @@
 #include "vulkanTools/Renderer.h"
 #include "imgui/ImGuizmo.h"
 #include "eventManager/eventHandler.h"
+#include "../EditorApp.h"
 //#include "Input/Input.h"
 namespace TDS
 {
@@ -35,6 +36,24 @@ namespace TDS
 	}
 	void EditorScene::update()
 	{
+		if (ImGui::BeginMenuBar())
+		{
+			if (isPlaying)
+			{
+				if (ImGui::BeginMenu("Scene is Playing..."))
+				{
+					ImGui::EndMenu();
+				}
+			}
+			else
+			{
+				if (ImGui::BeginMenu("Scene is Paused"))
+				{
+					ImGui::EndMenu();
+				}
+			}
+			ImGui::EndMenuBar();
+		}
 		//ImGui::Image(reinterpret_cast<void*>(vkTexture.m_DescSet), ImVec2{ 200, 200 }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
 		//if (ImGui::BeginDragDropTarget())
 		//{

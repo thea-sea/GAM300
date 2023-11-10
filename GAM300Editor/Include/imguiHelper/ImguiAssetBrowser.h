@@ -20,7 +20,10 @@ namespace TDS
 		std::string path1;
 		std::string selectedpath;
 		bool loadonce = true;
-
+		bool show_fbx = false;
+		bool show_bin = true;
+		bool show_png = false;
+		bool show_dds = true;
 	};
 }
 

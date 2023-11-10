@@ -54,7 +54,8 @@ namespace TDS
         IMGUI_WIN32_WNDPROCHANDLER_FORWARD_DECLARATION;
         ImGui_ImplWin32_WndProcHandler(hWnd, uMsg, wParam, lParam); //for imgui implementation
         //can extern  some imgui wndproc handler | tbc
-
+        SetWindowHandle(hWnd);
+        
         switch (uMsg)
         {
 
@@ -119,6 +120,14 @@ namespace TDS
             Input::keystatus = Input::KeyStatus::IDLE;
         }break;
         }
+    }
+    void Application::SetWindowHandle(HWND hWnd)
+    {
+        m_handler = hWnd;
+    }
+    HWND Application::GetWindowHandle()
+    {
+        return m_handler;
     }
     void Application::Initialize()
     {

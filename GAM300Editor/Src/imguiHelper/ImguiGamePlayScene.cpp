@@ -19,6 +19,24 @@ void TDS::GamePlayScene::init()
 
 void TDS::GamePlayScene::update()
 {
+	if (ImGui::BeginMenuBar())
+	{
+		if (isPlaying)
+		{
+			if (ImGui::BeginMenu("Game is Running..."))
+			{
+				ImGui::EndMenu();
+			}
+		}
+		else
+		{
+			if (ImGui::BeginMenu("Game is Paused"))
+			{
+				ImGui::EndMenu();
+			}
+		}
+		ImGui::EndMenuBar();
+	}
 	isFocus = ImGui::IsWindowFocused() && ImGui::IsItemVisible();
 	ImVec2 vSize = ImGui::GetContentRegionAvail();
 

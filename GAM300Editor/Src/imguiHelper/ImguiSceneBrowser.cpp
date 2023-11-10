@@ -11,7 +11,10 @@
 
 #include "imguiHelper/ImguiSceneBrowser.h"
 #include "imguiHelper/ImguiHierarchy.h"
-
+#include <commdlg.h> //file dialogue
+#include "../EditorApp.h" //get hWnd
+#include "sceneManager/serialization.h" //create new files
+#include "sceneManager/sceneManager.h" //for scenemanager instance
 
 namespace TDS
 {
@@ -68,6 +71,18 @@ namespace TDS
 				if (ImGui::MenuItem("Save")) 
 				{
 					sceneManager->saveCurrentScene();
+				}
+				if (ImGui::MenuItem("Save Scene As..."))
+				{
+					TDS_INFO("Save Button Pressed");
+
+					std::string entered_filename = SaveFile("*.json", Application::GetWindowHandle());
+					if (!entered_filename.empty())
+					{
+						SceneManager::GetInstance()->SerializeToFile(entered_filename);
+
+					}
+
 				}
                 ImGui::EndMenu();
             }
@@ -190,5 +205,31 @@ namespace TDS
 		}
 
 		ImGui::Columns(1);
+	}
+	std::string SceneBrowser::SaveFile(const char* filter, HWND inHwnd)
+	{
+		OPENFILENAMEA ofn;
+		CHAR szFile[260] = { 0 };
+		CHAR currentDir[256] = "../assets/scenes";
+		ofn.Flags = OFN_PATHMUSTEXIST | OFN_OVERWRITEPROMPT /*| OFN_NOCHANGEDIR*/;
+		ZeroMemory(&ofn, sizeof(OPENFILENAME));
+		ofn.lStructSize = sizeof(OPENFILENAME);
+		ofn.hwndOwner = inHwnd;
+		ofn.lpstrFile = szFile;
+		ofn.nMaxFile = sizeof(szFile);
+
+		//testtttttt
+		if (GetCurrentDirectoryA(256, currentDir))
+			ofn.lpstrInitialDir = "../assets/scenes";
+		ofn.lpstrFilter = filter;
+		ofn.nFilterIndex = 1;
+
+		// Sets the default extension by extracting it from the filter
+		ofn.lpstrDefExt = strchr(filter, '\0') + 1;
+
+		if (GetSaveFileNameA(&ofn) == TRUE)
+			return ofn.lpstrFile;
+		std::cout << "<<<<<<<<<< filepath is: " << ofn.lpstrFile << std::endl;
+		return std::string();
 	}
 }

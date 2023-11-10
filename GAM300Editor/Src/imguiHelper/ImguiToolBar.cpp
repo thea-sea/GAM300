@@ -5,6 +5,12 @@
 #include "sceneManager/sceneManager.h"
 #include <Windows.h>
 #include <shellapi.h>
+#include <commdlg.h> //file dialogue
+#include "../EditorApp.h" //get hWnd
+#include "sceneManager/serialization.h" //create new files
+#include "sceneManager/sceneManager.h" //for scenemanager instance
+#include "imguiHelper/ImguiSceneBrowser.h" //for "savefile() save as" function
+
 
 namespace TDS
 {
@@ -31,32 +37,52 @@ namespace TDS
 		ImGui::Text("Display: "); ImGui::SameLine();
 
 		ImGui::SetItemDefaultFocus();
-		if (ImGui::ArrowButton("Play", ImGuiDir_Right))
-		{
-			//console->AddLog("Play button pressed");
-			//console->AddLog("Play button pressed");
-			//if (isPlay) {
-			//	//App->timeManagement->Play();
-			//	////TODO: Call the Init of the particles
-			//	//App->scene->PlayScene(App->scene->GetRoot(), App->scene->GetRoot());
-			//}
-			//else if (isPause) {
-			//	//set game to resume
-			//	//App->timeManagement->Resume();
-			//}
-			/*App->scene->inGame = true;*/
 
-			if (isPlaying)
+		/*if (isPlaying)
+		{
+			std::cout << "playinggggggggggggg" << std::endl;
+		}*/
+
+		//when play button is pressed, make button red
+		if (isPlaying)
+		{
+			ImGui::PushStyleColor(ImGuiCol_Button, { 0.8f,0,0,1 });
+			ImGui::PushStyleColor(ImGuiCol_ButtonHovered, { 1,0.2f,0,1 });
+			ImGui::PushStyleColor(ImGuiCol_ButtonActive, { 1,0.2f,0,1 });
+		
+			if (ImGui::ArrowButton("Play", ImGuiDir_Right))
 			{
+				//console->AddLog("Play button pressed");
+				//console->AddLog("Play button pressed");
+				//if (isPlay) {
+				//	//App->timeManagement->Play();
+				//	////TODO: Call the Init of the particles
+				//	//App->scene->PlayScene(App->scene->GetRoot(), App->scene->GetRoot());
+				//}
+				//else if (isPause) {
+				//	//set game to resume
+				//	//App->timeManagement->Resume();
+				//}
+				/*App->scene->inGame = true;*/
+				
 				isPlaying = false;
 				SceneManager::GetInstance()->loadScene(SceneManager::GetInstance()->getCurrentScene());
+				
 			}
-			else
+			//when playing, make button red
+			ImGui::PopStyleColor();
+			ImGui::PopStyleColor();
+			ImGui::PopStyleColor();
+		}
+		else
+		{
+			if (ImGui::ArrowButton("Play", ImGuiDir_Right))
 			{
 				SceneManager::GetInstance()->saveCurrentScene();
 				isPlaying = true;
 			}
 		}
+
 		ImGui::SameLine();
 		if (ImGui::Button("||", { 23, 19 }))
 		{
@@ -70,11 +96,11 @@ namespace TDS
 			isPlaying = isPlaying ? false : true;
 		}
 		ImGui::SameLine();
-		ImGui::PushStyleColor(ImGuiCol_Button, { 0.8f,0,0,1 });
-		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, { 1,0.2f,0,1 });
+		//ImGui::PushStyleColor(ImGuiCol_Button, { 0.8f,0,0,1 });
+		//ImGui::PushStyleColor(ImGuiCol_ButtonHovered, { 1,0.2f,0,1 });
 		//if (ImGui::Button("STOP", { 40, 19 }))
 		//{
-		//	console->AddLog("Stop button pressed");
+		//	TDS_INFO("Stop button pressed");
 		//	if (isStopped) {
 
 		//		//stop the app
@@ -83,8 +109,8 @@ namespace TDS
 		//		App->scene->StopScene(App->scene->GetRoot(), App->scene->GetRoot());*/
 		//	}
 		//}
-		ImGui::PopStyleColor();
-		ImGui::PopStyleColor();
+		//ImGui::PopStyleColor();
+		//ImGui::PopStyleColor();
 
 
 		ImGui::SameLine();
@@ -119,9 +145,8 @@ namespace TDS
 		//ImGui::PopStyleColor();
 
 		ImGui::SameLine();
-		ImGui::PushStyleColor(ImGuiCol_Button, { 0.1f,0.1f,0.1f,1 });
-		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, { 1,0.1f,0,1 });
-		if (ImGui::Button("Save Scene", { 100, 19 }))
+
+		if (ImGui::Button("Save Scene", { 90, 19 }))
 		{
 			//console->AddLog("Save Scene Button Pressed");
 			if (isSaveScene) {
@@ -130,21 +155,36 @@ namespace TDS
 				SceneManager::GetInstance()->saveCurrentScene();
 			}
 		}
-		ImGui::PopStyleColor();
-		ImGui::PopStyleColor();
+
+
+		//Save As File Dialogue:
+		//note: this is to save current edited scene to a new filename based on user input
+		ImGui::SameLine();
+		
+		if (ImGui::Button("Save Scene As...", { 120, 19 }))
+		{
+			TDS_INFO("Save Button Pressed");
+			
+			std::string entered_filename = SceneBrowser::SaveFile("*.json", Application::GetWindowHandle());
+			if (!entered_filename.empty())
+			{
+				SceneManager::GetInstance()->SerializeToFile(entered_filename);
+
+			}
+			
+		}
+		
+		//end save as
 
 		ImGui::SameLine();
-		ImGui::PushStyleColor(ImGuiCol_Button, { 0.1f,0.1f,0.1f,1 });
-		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, { 1,0.1f,0,1 });
-		if (ImGui::Button("Toggle 2D/3D view", { 120, 19 }))
+		if (ImGui::Button("Toggle 2D/3D view", { 130, 19 }))
 		{
 			static bool view2Dtoggle = false;
 			//console->AddLog("Save Scene Button Pressed");
 			view2Dtoggle = !view2Dtoggle;
 			GraphicsManager::getInstance().ToggleViewFrom2D(view2Dtoggle);
 		}
-		ImGui::PopStyleColor();
-		ImGui::PopStyleColor();
+	
 
 		//ImGui::SameLine();
 		//ImGui::PushStyleColor(ImGuiCol_Button, { 0.1f,0.1f,0.1f,1 });

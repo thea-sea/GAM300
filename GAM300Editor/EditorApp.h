@@ -39,6 +39,8 @@ namespace TDS
 
 		void handleMessages(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
+		static void SetWindowHandle(HWND hWnd);
+		static HWND GetWindowHandle();
 
 	private:
 		bool initImgui();
@@ -52,6 +54,7 @@ namespace TDS
 	private:
 		WindowsWin						 m_window;
 		bool							 m_isRunning{ true };
+		static inline HWND				 m_handler;
 
 		std::chrono::time_point<std::chrono::high_resolution_clock>Clock{};
 		//std::shared_ptr <VulkanInstance> m_pVKInst;
