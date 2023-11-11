@@ -541,7 +541,7 @@ namespace TDS
 						}
 						if (propertyName.get_name() == "ModelName")
 						{
-							if (filesystempath.extension() == ".bin" || filesystempath.extension() == ".fbx")
+							if (filesystempath.extension() == ".bin")
 							{
 
 								AssetBrowser assetbroswer;
