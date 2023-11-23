@@ -55,11 +55,11 @@ namespace TDS
 		float mHeight = GraphicsManager::getInstance().getViewportScreen().w;
 
 		float xClipped = (mousePosition.x - mX) / (mWidth);
-		float yClipped = (mousePosition.y - mY) / (mHeight);
-		
+		float yClipped = ((mousePosition.y - mY) - (GraphicsManager::getInstance().getOffset() - mHeight)) / (mHeight);
+		 
 		IDReadCompute idreadPush{};
 		idreadPush.mouseRelativeCoord = { xClipped, yClipped };
-		
+		//std::cout << idreadPush.mouseRelativeCoord.y << std::endl;
 
 		pickubo.View = GraphicsManager::getInstance().GetCamera().GetViewMatrix();
 		pickubo.Projection = Mat4::Perspective(GraphicsManager::getInstance().GetCamera().m_Fov * Mathf::Deg2Rad,

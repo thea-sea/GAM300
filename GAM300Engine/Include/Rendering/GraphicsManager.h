@@ -43,7 +43,7 @@ namespace TDS
 		bool									m_ViewingFrom2D = false;
 		bool									m_FrameHasBegin = false;
 
-
+		float									m_TabOffset{};
 		Vec4									m_ViewportScreen{};
 	public:
 		inline static std::shared_ptr<GraphicsManager> m_Instance;
@@ -93,6 +93,7 @@ namespace TDS
 
 		WindowsWin* getWindow() const { return m_pWindow;}
 		Vec4& getViewportScreen() { return m_ViewportScreen; }
+		float& getOffset() { return m_TabOffset; }
 	};
 
 

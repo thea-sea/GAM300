@@ -6,5 +6,6 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LocalDebuggerDebuggerType>NativeWithManagedCore</LocalDebuggerDebuggerType>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
+    <LocalDebuggerAttach>true</LocalDebuggerAttach>
   </PropertyGroup>
 </Project>

@@ -11,7 +11,7 @@ namespace TDS
 		//selectedFolder = -1;
 		//renameCheck = false;
 
-		flags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoCollapse;
+		flags = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiDockNodeFlags_AutoHideTabBar;
 		panelTitle = "Console";
 		windowPadding = ImVec2(0.f, 0.f);
 		AddLog("-------------- ImGui Console Start --------------");

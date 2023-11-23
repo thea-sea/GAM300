@@ -27,6 +27,7 @@ namespace TDS
 		flags = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse| ImGuiDockNodeFlags_AutoHideTabBar;
 		panelTitle = "Scene";
 		windowPadding = ImVec2(0.f, 0.f);
+
 	}
 
 	std::string tempPath = "../assets/textures/texture.dds";
@@ -37,7 +38,10 @@ namespace TDS
 	void EditorScene::update()
 	{
 		isFocus = ImGui::IsWindowFocused() && ImGui::IsItemVisible();
-
+		/*TDS_INFO("Window Height is: ");
+		TDS_INFO(ImGui::GetWindowHeight());
+		TDS_INFO("Content Height is: ");
+		TDS_INFO(ImGui::GetContentRegionAvail().y);*/
 		if (ImGui::BeginMenuBar())
 		{
 			if (isPlaying)
@@ -96,7 +100,7 @@ namespace TDS
 		GraphicsManager::getInstance().getViewportScreen().y = ImGui::GetWindowPos().y;
 		GraphicsManager::getInstance().getViewportScreen().z = ImGui::GetContentRegionAvail().x;
 		GraphicsManager::getInstance().getViewportScreen().w = ImGui::GetContentRegionAvail().y;
-	
+		GraphicsManager::getInstance().getOffset() = ImGui::GetWindowHeight();
 		ImGui::Image((ImTextureID)m_DescSet, vSize);
 		//drag drop code MUST be directly under imgui::image code
 		if (ImGui::BeginDragDropTarget())
