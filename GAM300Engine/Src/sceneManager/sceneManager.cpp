@@ -63,6 +63,7 @@ namespace TDS
 		ecs.registerComponent<Tag>("Tag");
 		ecs.registerComponent<WinData>("Win Data");
 		ecs.registerComponent<UISprite>("UI Sprite");
+		ecs.registerComponent<SoundInfo>("Audio");
 
 		startScene = "";
 		//startScene = "MainMenu";

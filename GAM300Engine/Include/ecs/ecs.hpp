@@ -147,7 +147,7 @@ namespace TDS
     {
         if (key == "")
         {
-            auto components = {Component<Cs>::getTypeID()...};
+            auto components = { Component<Cs>::getTypeID()... };
 
             for (std::uint32_t i = 0; i < ecs.getNumberOfComponents(); ++i)
             {

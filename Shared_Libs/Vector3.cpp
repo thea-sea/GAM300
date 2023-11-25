@@ -50,6 +50,7 @@ namespace TDS
     }
 
     void Vec3::Set(float newX, float newY, float newZ) { x = newX; y = newY; z = newZ; }
+
     std::string Vec3::ToString()
     {
         std::ostringstream oss;

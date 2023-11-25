@@ -107,9 +107,9 @@ namespace TDS
 
         // TYPEDEF
         typedef std::function<void(const float, const std::vector<EntityID>&, Cs*...)>
-                                            RunFunc;
+            RunFunc;
         typedef std::function<void(void)>
-                                            InitFunc;
+            InitFunc;
 
         // Setting the update function in the mFunc function pointer 
         void                                action(InitFunc initFunc, RunFunc runFunc);
@@ -198,8 +198,8 @@ namespace TDS
         //track which entity is which archetype
         struct Record
         {
-            Archetype*                      archetype;
-            Archetype*                      activeArchetype; // used in systems
+            Archetype* archetype;
+            Archetype* activeArchetype; // used in systems
             std::uint32_t                   index;
             bool                            isEnabled;
         };
@@ -252,7 +252,7 @@ namespace TDS
         void                         runSystems(const int layer, const float elapsedMilliseconds);
 
         // Gets the archetype class pointer of the given archetype ID
-        Archetype*                   getArchetype(const ArchetypeID& id);
+        Archetype* getArchetype(const ArchetypeID& id);
 
         // Gets all archetypes
         ArchetypesArray              getAllArchetypes();
@@ -261,7 +261,7 @@ namespace TDS
         ArchetypeID                  getArchetypeID(EntityID& id);
 
         // Adds a new archetype ID
-        Archetype*                   addArchetype(const ArchetypeID& id, bool commit = true);
+        Archetype* addArchetype(const ArchetypeID& id, bool commit = true);
 
         // Committing an archetype ID
         void                         commitArchetype(const ArchetypeID& id);
@@ -272,7 +272,7 @@ namespace TDS
 
         // Add a component to the entity
         template<typename C>
-        C*                           addComponent(const EntityID& entityID);
+        C* addComponent(const EntityID& entityID);
 
         // Add components to a new entity by archetype
         void                         addComponentsByArchetype(const EntityID& entityID, ArchetypeID archetype);
@@ -286,7 +286,7 @@ namespace TDS
 
         // Get a component data from the entity
         template<typename C>
-        C*                           getComponent(const EntityID& entityId);
+        C* getComponent(const EntityID& entityId);
 
         // Get entities with a certain component in the angle bracket
         template<typename C>
@@ -366,14 +366,14 @@ namespace TDS
 
         // Adding a new component, with component values
         template<typename C>
-        C*                                  add();
+        C* add();
 
         // Adding a new component overload, move component data
         template<typename C>
-        C*                                  add(C&& c);
+        C* add(C&& c);
 
         // Get ID of the entity
-        EntityID                            getID() const;                           
+        EntityID                            getID() const;
 
     private:
         EntityID                            mID;

@@ -951,6 +951,35 @@ namespace TDS
 						}
 					}
 				}
+				else if (componentName == "Audio" && ImGui::BeginDragDropTarget())
+				{
+					if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM"))
+					{
+						const wchar_t* path = (const wchar_t*)payload->Data;
+						std::wstring ws(path);
+						// your new String
+						std::string str(ws.begin(), ws.end());
+						const std::filesystem::path filesystempath = str;
+
+						if (propertyName.get_name() == "File path")
+						{
+							if (filesystempath.extension() == ".flac" || filesystempath.extension() == ".wav" || filesystempath.extension() == ".mp3")
+							{
+								SoundInfo* si = reinterpret_cast<SoundInfo*>(componentBase);
+								si->setFilePath(str);
+
+								AssetBrowser Assetbrowser;
+								Assetbrowser.getFileNameFromPath(str.c_str(), nullptr, nullptr, &str, nullptr);
+
+								std::wcout << " Path of dragged file is: " << path << std::endl;
+							}
+							else
+							{
+								TDS_INFO("invalid file type, please drag a .flac/.wav/.mp3 for filePath");
+							}
+						}
+					}
+				}
 				else
 				{
 					propertyName.set_value(componentInstance, newValue);

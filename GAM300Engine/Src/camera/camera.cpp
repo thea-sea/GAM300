@@ -16,7 +16,7 @@ namespace TDS
 		updateViewMatrix();
 	}
 
-	
+
 	Mat4 TDSCamera::GetViewMatrix() const
 	{
 		return Mat4::LookAt(m_Position, m_Position + m_Front, m_Up);
@@ -155,31 +155,31 @@ namespace TDS
 		{
 			switch (Input::keyCode)
 			{
-				case TDS_W:
-					return keys.up = true;
-					break;
+			case TDS_W:
+				return keys.up = true;
+				break;
 
-				case TDS_A:
-					return keys.left = true;
-					break;
+			case TDS_A:
+				return keys.left = true;
+				break;
 
-				case TDS_S:
-					return keys.down = true;
-					break;
+			case TDS_S:
+				return keys.down = true;
+				break;
 
-				case TDS_D:
-					return keys.right = true;
+			case TDS_D:
+				return keys.right = true;
 
-				default:
-					return false;
+			default:
+				return false;
 			}
 		}
 		else
 		{
-			keys.up		= false;		  
-			keys.left	= false;				  
-			keys.down	= false;			  
-			keys.right	= false;
+			keys.up = false;
+			keys.left = false;
+			keys.down = false;
+			keys.right = false;
 		}
 		return false;
 	}

@@ -19,6 +19,7 @@
 #include "eventManager/eventHandler.h"
 #include "Physics/CollisionSystem.h"
 #include "Rendering/FontSystem.h"
+
 namespace TDS
 {
 	/*!*************************************************************************
@@ -28,10 +29,12 @@ namespace TDS
 	{
 		_PhysicsSystem.action(PhysicsSystem::PhysicsSystemInit, PhysicsSystem::PhysicsSystemUpdate);
 		_AISystem.action(AISystem::AISystemInit, AISystem::AISystemUpdate);
+		_RenderSystem.action(RendererSystem::OnInit, RendererSystem::OnUpdate);
 		_CameraSystem.action(CameraSystem::CameraSystemInit, CameraSystem::CameraSystemUpdate);
 		_EventHandler_ChildTransform.action(EventHandler::childTransformationHandlerInit, EventHandler::childTransformationHandlerUpdate);
 		_UiSystem.action(UiSystem::Init, UiSystem::Update);
 		_ColliderDebugSystem.action(CollisionSystem::CollisionSystemInit, CollisionSystem::CollisionSystemUpdate);
 		_RenderSystem.action(RendererSystem::OnInit, RendererSystem::OnUpdate);
+		_AudioSystem.action(proxy_audio_system::audio_system_init, proxy_audio_system::audio_system_update);
 	}
 }

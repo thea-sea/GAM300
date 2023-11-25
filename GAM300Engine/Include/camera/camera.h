@@ -10,7 +10,7 @@ namespace TDS
 	{
 	public:
 
-		DLL_API TDSCamera(float Yaw, float pitch,/* float aspectRatio,*/ float zNear = 0.1f, float zFar = 1000.f, Vec3 position = {0.0f, 0.0f, 3.0f}, Vec3 up = {0.0f, 1.0f, 0.0f});
+		DLL_API TDSCamera(float Yaw, float pitch,/* float aspectRatio,*/ float zNear = 0.1f, float zFar = 1000.f, Vec3 position = { 0.0f, 0.0f, 3.0f }, Vec3 up = { 0.0f, 1.0f, 0.0f });
 
 		//using lookat and Euler Angles
 		DLL_API Mat4 GetViewMatrix() const;
@@ -37,19 +37,19 @@ namespace TDS
 		DLL_API bool getScrollWheel() const { return m_ScrollWheel; }
 		DLL_API void setScrollWheel(bool scrollWheel) { m_ScrollWheel = scrollWheel; }
 		DLL_API Vec3 getForwardVector() { return m_Front; }
-		float m_Fov{45.f};
+		float m_Fov{ 45.f };
 	private:
-		
+
 		struct {
-			bool left	{ false };
-			bool right	{ false };
-			bool up		{ false };
-			bool down	{ false };
+			bool left{ false };
+			bool right{ false };
+			bool up{ false };
+			bool down{ false };
 		}keys;
 		//camera attributes
 		Vec3	m_Position{};
 		Vec3	m_Front{};
-		Vec3	m_Up{0.f,0.f,1.f};
+		Vec3	m_Up{ 0.f,0.f,1.f };
 		Vec3	m_Right{};
 		Vec3	m_Down{};
 		Vec3	m_WorldUp{};
@@ -58,10 +58,10 @@ namespace TDS
 		//euler angles
 		float	m_Yaw{};
 		float	m_Pitch{};
-		
+
 		//option to toggle with
-		float	m_Speed{5.0f};
-		float	m_mouseSensitivity{0.1f}; //should it be in input???
+		float	m_Speed{ 5.0f };
+		float	m_mouseSensitivity{ 0.1f }; //should it be in input???
 		float	m_ZoomLevel{};
 		float	m_Width{};
 		float	m_Height{};
@@ -72,7 +72,7 @@ namespace TDS
 
 		bool m_EditorCamera = true;
 		bool m_ScrollWheel = true;
-		
+
 	};
 
 }//namespace TDS

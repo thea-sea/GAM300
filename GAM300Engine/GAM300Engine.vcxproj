@@ -195,11 +195,12 @@ xcopy /y /d "$(SolutionDir)Libs\rttr_core.dll" "$(OutDir)"</Command>
     <ClCompile Include="..\Shared_Libs\Vector4.cpp" />
     <ClCompile Include="Include\ecs\ecs.cpp" />
     <ClCompile Include="Include\Rendering\GraphicsManagerWrapperCalls.cpp" />
+    <ClCompile Include="src\components\SoundInfo.cpp" />
+    <ClCompile Include="src\fmod_engine\AudioEngine.cpp" />
     <ClCompile Include="Src\Physics\Interface\PhysicsInterface.cpp" />
     <ClCompile Include="Src\AI\aiSystem.cpp" />
     <ClCompile Include="Src\AI\behaviourTree.cpp" />
     <ClCompile Include="Src\AssetManagement\ResourceAllocator.cpp" />
-    <ClCompile Include="Src\AudioEngine.cpp" />
     <ClCompile Include="Src\camera\camerasystem\CameraSystem.cpp" />
     <ClCompile Include="Src\camera\SphereFrustum.cpp" />
     <ClCompile Include="Src\components\ai.cpp" />
@@ -321,6 +322,7 @@ xcopy /y /d "$(SolutionDir)Libs\rttr_core.dll" "$(OutDir)"</Command>
     <ClInclude Include="Include\components\iComponent.h" />
     <ClInclude Include="Include\components\nameTag.h" />
     <ClInclude Include="Include\components\rigidBody.h" />
+    <ClInclude Include="Include\components\SoundInfo.h" />
     <ClInclude Include="Include\components\sphereCollider.h" />
     <ClInclude Include="Include\components\sprite.h" />
     <ClInclude Include="Include\components\tag.h" />

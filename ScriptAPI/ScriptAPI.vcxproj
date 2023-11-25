@@ -132,6 +132,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Audio.hxx" />
+    <ClInclude Include="Components\AudioComponent.hxx" />
     <ClInclude Include="Components\BoxColliderComponent.hxx" />
     <ClInclude Include="Components\CameraComponent.hxx" />
     <ClInclude Include="Components\CapsuleColliderComponent.hxx" />
@@ -161,6 +163,8 @@
     <ClInclude Include="Vector4.hxx" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Audio.cxx" />
+    <ClCompile Include="Components\AudioComponent.cxx" />
     <ClCompile Include="Components\BoxColliderComponent.cxx" />
     <ClCompile Include="Components\CameraComponent.cxx" />
     <ClCompile Include="Components\CapsuleColliderComponent.cxx" />

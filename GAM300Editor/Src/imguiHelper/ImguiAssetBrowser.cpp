@@ -8,6 +8,7 @@
 #include "AssetManagement/AssetManager.h"
 #include "vulkanTools/vulkanInstance.h"
 #include "vulkanTools/VulkanTexture.h"
+#include "imguiHelper/ImguiAudio.h"
 #include <string>
 
 
@@ -117,7 +118,7 @@ namespace TDS
 	}
 
 
-
+	AudioImgui audimg; //This causes COM library error, not sure why
 
 	AssetBrowser::AssetBrowser()
 	{
@@ -196,6 +197,11 @@ namespace TDS
 			if (ImGui::Button("<-")) //will only show if u went into a folder in the current directory above
 			{
 				m_curr_path = m_curr_path.parent_path();
+				
+				/*if (audimg.ToggleControls())
+				{
+					std::cout << "Stopping Audio Imgui controls" << '\n';
+				}*/
 			}
 		}
 		if (m_curr_path == std::filesystem::path(s_ModelDirectory))
@@ -482,9 +488,11 @@ namespace TDS
 				}
 
 				//if .wav, play audio...
-				if (strstr(filename.c_str(), ".wav"))
+				if (strstr(filename.c_str(), ".wav") || strstr(filename.c_str(), ".flac") || strstr(filename.c_str(), ".mp3"))
 				{
+					/*audimg.ToggleControls(true);
 
+					audimg.play(filename);*/
 				}
 
 

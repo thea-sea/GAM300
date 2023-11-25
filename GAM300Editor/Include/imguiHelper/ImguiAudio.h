@@ -12,8 +12,9 @@
 #ifndef IMGUI_AUDIO
 #define IMGUI_AUDIO
 
+#include <filesystem>
+
 #include "ImguiHelper.h"
-#include "fmod_engine/AudioEngine.h"
 
 namespace TDS
 {
@@ -24,25 +25,36 @@ namespace TDS
 		 * @brief Constructor that sets appear to false and bar as 0.f. Initiates the Audio Engine.
 		*/
 		AudioImgui();
+
 		/**
 		 * @brief Destructor that deactivates the Audio Engine
 		*/
 		~AudioImgui();
 
 		/**
-		 * @brief Shows ImGui Controls for audio when user navigates to audio assets in the editor.
+		 * @brief Show or hide audio controls. Also can be used to see if active or not
+		 * @param state 
+		 * @return 
 		*/
-		void activate_audio_controls();
+		bool ToggleControls(bool state = false);
 
 		/**
-		 * @brief Hides ImGui Constrols for audio.
+		 * @brief Add sound into vector container
+		 * @param folder_path 
 		*/
-		void deactivate_audio_controls();
+		void add_audio_files(std::filesystem::path folder_path);
+
+		/**
+		 * @brief Step into multiple levels of folders
+		*/
+		std::vector<std::filesystem::path> go_deeper(std::filesystem::path f_path);
+
+		void play(std::string file); //temp testing
 
 		/**
 		 * @brief Initialize
 		*/
-		void init() {}
+		virtual void init() {}
 
 		/**
 		 * @brief Update loop.
@@ -50,10 +62,15 @@ namespace TDS
 		void update();
 
 	private:
-		AudioWerks::AudioEngine audeng;
+		AudioWerks::AudioEngine* audeng;
 
-		bool appear;
+		bool appear, playing;
 		float bar;
+
+		std::vector<SoundInfo> music;
+		std::vector<SoundInfo> SFX;
+		std::vector<SoundInfo> background;
+		std::vector<SoundInfo> VO;
 	};
 }
 

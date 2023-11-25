@@ -49,6 +49,8 @@ namespace TDS
 			return ecs.addComponent<WinData>(entityID);
 		else if (componentName == "UI Sprite")
 			return ecs.addComponent<UISprite>(entityID);
+		else if (componentName == "Audio")
+			return ecs.addComponent<SoundInfo>(entityID);
 		
 		else 
 			return nullptr;
@@ -84,7 +86,10 @@ namespace TDS
 			return *(ecs.addComponent<Transform>(entityID));
 		else if (componentName == rttr::type::get<UISprite>())
 			return *(ecs.addComponent<UISprite>(entityID));
-		return *(ecs.addComponent<WinData>(entityID));
+		else if (componentName == rttr::type::get<WinData>())
+			return *(ecs.addComponent<WinData>(entityID));
+		else if (componentName == rttr::type::get<SoundInfo>())
+			return *(ecs.addComponent<SoundInfo>(entityID));
 	}
 
 	/*!*************************************************************************
@@ -118,6 +123,8 @@ namespace TDS
 			return ecs.getComponent<WinData>(entityID);
 		else if (componentName == "UI Sprite")
 			return ecs.getComponent<UISprite>(entityID);
+		else if (componentName == "Audio")
+			return ecs.getComponent<SoundInfo>(entityID);
 		else
 			return nullptr;
 	}
@@ -152,7 +159,10 @@ namespace TDS
 			return *(ecs.getComponent<Transform>(entityID));
 		else if (componentName == rttr::type::get<UISprite>())
 			return *(ecs.getComponent<UISprite>(entityID));
-		return *(ecs.getComponent<WinData>(entityID));
+		else if (componentName == rttr::type::get<WinData>())
+			return *(ecs.getComponent<WinData>(entityID));
+		else if (componentName == rttr::type::get<SoundInfo>())
+			return *(ecs.getComponent<SoundInfo>(entityID));
 	}
 
 	/*!*************************************************************************
@@ -186,6 +196,8 @@ namespace TDS
 			ecs.removeComponent<WinData>(entityID);
 		else if (componentName == "UI Sprite")
 			ecs.removeComponent<UISprite>(entityID);
+		else if (componentName == "Audio")
+			ecs.removeComponent<SoundInfo>(entityID);
 	}
 
 	/*!*************************************************************************
@@ -219,6 +231,8 @@ namespace TDS
 			ecs.setComponentIsEnabled<WinData>(entityID, isEnabled);
 		else if (componentName == "UI Sprite")
 			ecs.setComponentIsEnabled<UISprite>(entityID, isEnabled);
+		else if (componentName == "Audio")
+			ecs.setComponentIsEnabled<SoundInfo>(entityID, isEnabled);
 	}
 
 	/*!*************************************************************************
@@ -252,6 +266,8 @@ namespace TDS
 			return ecs.getComponentIsEnabled<WinData>(entityID);
 		else if (componentName == "UI Sprite")
 			return ecs.getComponentIsEnabled<UISprite>(entityID);
+		else if (componentName == "Audio")
+			return ecs.getComponentIsEnabled<SoundInfo>(entityID);
 		else
 			return false;
 	}

@@ -58,7 +58,6 @@
     <ClCompile Include="Src\Physics\PhysicsSystem.cpp" />
     <ClCompile Include="Src\sceneManager\sceneManager.cpp" />
     <ClCompile Include="Src\sceneManager\serialization.cpp" />
-    <ClCompile Include="Src\AudioEngine.cpp" />
     <ClCompile Include="Src\vulkanTools\ShadowMap.cpp" />
     <ClCompile Include="Src\Shader\ShaderLoader.cpp" />
     <ClCompile Include="Src\vulkanTools\VulkanTexture.cpp" />
@@ -102,6 +101,8 @@
     <ClCompile Include="Src\vulkanTools\Synchronization.cpp" />
     <ClCompile Include="Src\Rendering\FontSystem.cpp" />
     <ClCompile Include="Include\Rendering\GraphicsManagerWrapperCalls.cpp" />
+    <ClCompile Include="src\fmod_engine\AudioEngine.cpp" />
+    <ClCompile Include="src\components\SoundInfo.cpp" />
     <ClCompile Include="Src\Rendering\UISpriteWrapper.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -237,6 +238,7 @@
     <ClInclude Include="Include\Rendering\Batch2D.h" />
     <ClInclude Include="Include\Rendering\FontSystem.h" />
     <ClInclude Include="Include\Rendering\GraphicsManagerWrapperCalls.h" />
+    <ClInclude Include="Include\components\SoundInfo.h" />
     <ClInclude Include="Include\Rendering\UISpriteWrapper.h" />
   </ItemGroup>
   <ItemGroup>

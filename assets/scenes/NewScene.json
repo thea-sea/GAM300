@@ -1,14 +1,14 @@
 {
     "Archetype Sizes": {
-        "110000100000": {
-            "0": 544,
-            "1": 800,
-            "6": 1056
+        "11000010000000": {
+            "0": 136,
+            "1": 200,
+            "6": 264
         }
     },
     "Entity Data": {
         "1": {
-            "ArchetypeID": "110000100000",
+            "ArchetypeID": "11000010000000",
             "Name Tag": {
                 "Name": "New Entity",
                 "Tag": "",
@@ -24,142 +24,13 @@
                     "z": 0.0
                 },
                 "Scale": {
-                    "x": 225.79957580566406,
-                    "y": 225.79957580566406,
-                    "z": 225.79957580566406
-                },
-                "Rotation": {
-                    "x": 0.0,
-                    "y": -0.0,
-                    "z": 0.0
-                }
-            },
-            "Graphics Component": {
-                "PointLight": false,
-                "TextureName": "",
-                "Mesh Renderer": true,
-                "Debug": false,
-                "ModelName": "Mansion_layout_Bin.bin",
-                "MeshName": "",
-                "Color": {
-                    "x": 1.0,
-                    "y": 1.0,
-                    "z": 1.0,
-                    "w": 1.0
-                },
-                "Used In 2D": false
-            }
-        },
-        "3": {
-            "ArchetypeID": "110000100000",
-            "Name Tag": {
-                "Name": "New Entity",
-                "Tag": "",
-                "IsActive": true,
-                "HierarchyParent": 0,
-                "HierarchyIndex": 1,
-                "HierarchyChildren": []
-            },
-            "Transform": {
-                "Position": {
-                    "x": 0.0,
-                    "y": 144.81817626953125,
-                    "z": 0.0
-                },
-                "Scale": {
                     "x": 1.0,
                     "y": 1.0,
                     "z": 1.0
                 },
                 "Rotation": {
                     "x": 0.0,
-                    "y": -0.0,
-                    "z": 0.0
-                }
-            },
-            "Graphics Component": {
-                "PointLight": true,
-                "TextureName": "",
-                "Mesh Renderer": true,
-                "Debug": false,
-                "ModelName": "",
-                "MeshName": "",
-                "Color": {
-                    "x": 1.0,
-                    "y": 1.0,
-                    "z": 1.0,
-                    "w": 1.0
-                },
-                "Used In 2D": false
-            }
-        },
-        "4": {
-            "ArchetypeID": "110000100000",
-            "Name Tag": {
-                "Name": "New Entity",
-                "Tag": "",
-                "IsActive": true,
-                "HierarchyParent": 0,
-                "HierarchyIndex": 2,
-                "HierarchyChildren": []
-            },
-            "Transform": {
-                "Position": {
-                    "x": 0.0,
-                    "y": -12.151211738586426,
-                    "z": 55.846763610839844
-                },
-                "Scale": {
-                    "x": 256.13037109375,
-                    "y": 10.825582504272461,
-                    "z": 162.74461364746094
-                },
-                "Rotation": {
-                    "x": 0.0,
-                    "y": -0.0,
-                    "z": 0.0
-                }
-            },
-            "Graphics Component": {
-                "PointLight": false,
-                "TextureName": "RoundTable_SSurface_Color.dds",
-                "Mesh Renderer": true,
-                "Debug": false,
-                "ModelName": "Quad2_Bin.bin",
-                "MeshName": "",
-                "Color": {
-                    "x": 1.0,
-                    "y": 1.0,
-                    "z": 1.0,
-                    "w": 1.0
-                },
-                "Used In 2D": false
-            }
-        },
-        "5": {
-            "ArchetypeID": "110000100000",
-            "Name Tag": {
-                "Name": "New Entity",
-                "Tag": "",
-                "IsActive": true,
-                "HierarchyParent": 0,
-                "HierarchyIndex": 3,
-                "HierarchyChildren": []
-            },
-            "Transform": {
-                "Position": {
-                    "x": 157.38438415527344,
-                    "y": -6.568429946899414,
-                    "z": -52.298404693603516
-                },
-                "Scale": {
-                    "x": 6.662766933441162,
-                    "y": 6.662766933441162,
-                    "z": 6.662766933441162
-                },
-                "Rotation": {
-                    "x": 0.0,
-                    "y": -0.0,
+                    "y": 0.0,
                     "z": 0.0
                 }
             },
@@ -181,9 +52,9 @@
         }
     },
     "Scripts": {
-        "1": {},
-        "3": {},
-        "4": {},
-        "5": {}
+        "1": {}
+    },
+    "Active Archetype": {
+        "1": "11000010000000"
     }
 }
