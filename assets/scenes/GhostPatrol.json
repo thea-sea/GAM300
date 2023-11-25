@@ -1,0 +1,402 @@
+{
+    "Archetype Sizes": {
+        "110000100000": {
+            "0": 544,
+            "1": 800,
+            "6": 1056
+        },
+        "1100000000000": {
+            "0": 136,
+            "1": 200
+        },
+        "1100001000000": {
+            "0": 272,
+            "1": 400,
+            "6": 528
+        }
+    },
+    "Entity Data": {
+        "1": {
+            "ArchetypeID": "110000100000",
+            "Name Tag": {
+                "Name": "PointLight",
+                "Tag": "",
+                "IsActive": true,
+                "HierarchyParent": 0,
+                "HierarchyIndex": 0,
+                "HierarchyChildren": []
+            },
+            "Transform": {
+                "Position": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "Scale": {
+                    "x": 225.79957580566406,
+                    "y": 225.79957580566406,
+                    "z": 225.79957580566406
+                },
+                "Rotation": {
+                    "x": 0.0,
+                    "y": -0.0,
+                    "z": 0.0
+                }
+            },
+            "Graphics Component": {
+                "PointLight": false,
+                "TextureName": "",
+                "Mesh Renderer": true,
+                "Debug": false,
+                "ModelName": "Mansion_layout_Bin.bin",
+                "MeshName": "",
+                "Color": {
+                    "x": 1.0,
+                    "y": 1.0,
+                    "z": 1.0,
+                    "w": 1.0
+                },
+                "Used In 2D": false
+            }
+        },
+        "9": {
+            "ArchetypeID": "1100000000000",
+            "Name Tag": {
+                "Name": "Waypoints",
+                "Tag": "",
+                "IsActive": true,
+                "HierarchyParent": 0,
+                "HierarchyIndex": 4,
+                "HierarchyChildren": [
+                    10,
+                    11
+                ]
+            },
+            "Transform": {
+                "Position": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "Scale": {
+                    "x": 1.0,
+                    "y": 1.0,
+                    "z": 1.0
+                },
+                "Rotation": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                }
+            }
+        },
+        "3": {
+            "ArchetypeID": "110000100000",
+            "Name Tag": {
+                "Name": "Walls",
+                "Tag": "",
+                "IsActive": true,
+                "HierarchyParent": 0,
+                "HierarchyIndex": 1,
+                "HierarchyChildren": []
+            },
+            "Transform": {
+                "Position": {
+                    "x": 0.0,
+                    "y": 144.81817626953125,
+                    "z": 0.0
+                },
+                "Scale": {
+                    "x": 1.0,
+                    "y": 1.0,
+                    "z": 1.0
+                },
+                "Rotation": {
+                    "x": 0.0,
+                    "y": -0.0,
+                    "z": 0.0
+                }
+            },
+            "Graphics Component": {
+                "PointLight": true,
+                "TextureName": "",
+                "Mesh Renderer": true,
+                "Debug": false,
+                "ModelName": "",
+                "MeshName": "",
+                "Color": {
+                    "x": 1.0,
+                    "y": 1.0,
+                    "z": 1.0,
+                    "w": 1.0
+                },
+                "Used In 2D": false
+            }
+        },
+        "11": {
+            "ArchetypeID": "1100001000000",
+            "Name Tag": {
+                "Name": "1",
+                "Tag": "",
+                "IsActive": true,
+                "HierarchyParent": 9,
+                "HierarchyIndex": 1,
+                "HierarchyChildren": []
+            },
+            "Transform": {
+                "Position": {
+                    "x": 156.87240600585938,
+                    "y": 0.0,
+                    "z": -1.0402569770812988
+                },
+                "Scale": {
+                    "x": 1.0,
+                    "y": 1.0,
+                    "z": 1.0
+                },
+                "Rotation": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                }
+            },
+            "Graphics Component": {
+                "PointLight": false,
+                "TextureName": "",
+                "Mesh Renderer": true,
+                "Debug": false,
+                "ModelName": "",
+                "MeshName": "",
+                "Color": {
+                    "x": 1.0,
+                    "y": 1.0,
+                    "z": 1.0,
+                    "w": 1.0
+                },
+                "Used In 2D": false
+            }
+        },
+        "4": {
+            "ArchetypeID": "110000100000",
+            "Name Tag": {
+                "Name": "Floor",
+                "Tag": "",
+                "IsActive": true,
+                "HierarchyParent": 0,
+                "HierarchyIndex": 2,
+                "HierarchyChildren": []
+            },
+            "Transform": {
+                "Position": {
+                    "x": 0.0,
+                    "y": -12.151211738586426,
+                    "z": 55.846763610839844
+                },
+                "Scale": {
+                    "x": 256.13037109375,
+                    "y": 10.825582504272461,
+                    "z": 162.74461364746094
+                },
+                "Rotation": {
+                    "x": 0.0,
+                    "y": -0.0,
+                    "z": 0.0
+                }
+            },
+            "Graphics Component": {
+                "PointLight": false,
+                "TextureName": "RoundTable_SSurface_Color.dds",
+                "Mesh Renderer": true,
+                "Debug": false,
+                "ModelName": "Quad2_Bin.bin",
+                "MeshName": "",
+                "Color": {
+                    "x": 1.0,
+                    "y": 1.0,
+                    "z": 1.0,
+                    "w": 1.0
+                },
+                "Used In 2D": false
+            }
+        },
+        "5": {
+            "ArchetypeID": "110000100000",
+            "Name Tag": {
+                "Name": "Ghost",
+                "Tag": "",
+                "IsActive": true,
+                "HierarchyParent": 0,
+                "HierarchyIndex": 3,
+                "HierarchyChildren": []
+            },
+            "Transform": {
+                "Position": {
+                    "x": 156.87240600585938,
+                    "y": -12.108985900878906,
+                    "z": -61.31470489501953
+                },
+                "Scale": {
+                    "x": 0.07999999821186066,
+                    "y": 0.07999999821186066,
+                    "z": 0.07999999821186066
+                },
+                "Rotation": {
+                    "x": 0.0,
+                    "y": -0.0,
+                    "z": 0.0
+                }
+            },
+            "Graphics Component": {
+                "PointLight": false,
+                "TextureName": "MonsterSurface_Color.dds",
+                "Mesh Renderer": true,
+                "Debug": false,
+                "ModelName": "Monster_Bin.bin",
+                "MeshName": "",
+                "Color": {
+                    "x": 1.0,
+                    "y": 1.0,
+                    "z": 1.0,
+                    "w": 1.0
+                },
+                "Used In 2D": false
+            }
+        },
+        "10": {
+            "ArchetypeID": "1100001000000",
+            "Name Tag": {
+                "Name": "0",
+                "Tag": "",
+                "IsActive": true,
+                "HierarchyParent": 9,
+                "HierarchyIndex": 0,
+                "HierarchyChildren": []
+            },
+            "Transform": {
+                "Position": {
+                    "x": 156.58055114746094,
+                    "y": 0.0,
+                    "z": -57.604583740234375
+                },
+                "Scale": {
+                    "x": 1.0,
+                    "y": 1.0,
+                    "z": 1.0
+                },
+                "Rotation": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                }
+            },
+            "Graphics Component": {
+                "PointLight": false,
+                "TextureName": "",
+                "Mesh Renderer": true,
+                "Debug": false,
+                "ModelName": "",
+                "MeshName": "",
+                "Color": {
+                    "x": 1.0,
+                    "y": 1.0,
+                    "z": 1.0,
+                    "w": 1.0
+                },
+                "Used In 2D": false
+            }
+        }
+    },
+    "Scripts": {
+        "1": {},
+        "9": {},
+        "3": {},
+        "11": {
+            "Waypoint": {
+                "runtimePosx": {
+                    "Float": 156.8724
+                },
+                "runtimePosz": {
+                    "Float": -1.040257
+                },
+                "gameObject": {
+                    "GameObject": 11
+                },
+                "is_Enabled": {
+                    "Bool": true
+                },
+                "is_Awake": {
+                    "Bool": true
+                },
+                "is_Start": {
+                    "Bool": false
+                }
+            }
+        },
+        "4": {},
+        "5": {
+            "GhostMovement": {
+                "patrolSpeed": {
+                    "Float": 0.1
+                },
+                "currTargetWaypt": {
+                    "Int": 0
+                },
+                "deltaTime": {
+                    "Float": 8.4700985
+                },
+                "NumOfWaypoints": {
+                    "Int": 2
+                },
+                "isPatrol": {
+                    "Bool": true
+                },
+                "isChasingPlayer": {
+                    "Bool": false
+                },
+                "gameObject": {
+                    "GameObject": 5
+                },
+                "is_Enabled": {
+                    "Bool": true
+                },
+                "is_Awake": {
+                    "Bool": true
+                },
+                "is_Start": {
+                    "Bool": false
+                }
+            }
+        },
+        "10": {
+            "Waypoint": {
+                "runtimePosx": {
+                    "Float": 156.58055
+                },
+                "runtimePosz": {
+                    "Float": -57.604584
+                },
+                "gameObject": {
+                    "GameObject": 10
+                },
+                "is_Enabled": {
+                    "Bool": true
+                },
+                "is_Awake": {
+                    "Bool": true
+                },
+                "is_Start": {
+                    "Bool": false
+                }
+            }
+        }
+    },
+    "Active Archetype": {
+        "1": "110000100000",
+        "9": "1100000000000",
+        "3": "110000100000",
+        "11": "1100001000000",
+        "4": "110000100000",
+        "5": "110000100000",
+        "10": "1100001000000"
+    }
+}
