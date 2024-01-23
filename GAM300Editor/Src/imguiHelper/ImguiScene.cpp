@@ -11,6 +11,7 @@
 #include "imgui/ImGuizmo.h"
 #include "eventManager/eventHandler.h"
 #include "../EditorApp.h"
+
 //#include "Input/Input.h"
 namespace TDS
 {
@@ -18,15 +19,17 @@ namespace TDS
 	VkDescriptorSet m_DescSet = nullptr;
 	std::shared_ptr<EditorConsole> consolelog = static_pointer_cast<EditorConsole>(LevelEditorManager::GetInstance()->panels[PanelTypes::CONSOLE]);
 
+
 	EditorScene::EditorScene()
 	{
 		//selected = 0;
 		//selectedFolder = -1;
 		//renameCheck = false;
 
-		flags = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse| ImGuiDockNodeFlags_AutoHideTabBar;
+		flags = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse| ImGuiWindowFlags_AlwaysAutoResize | ImGuiDockNodeFlags_AutoHideTabBar;
 		panelTitle = "Scene";
 		windowPadding = ImVec2(0.f, 0.f);
+		
 
 	}
 
@@ -37,6 +40,7 @@ namespace TDS
 	}
 	void EditorScene::update()
 	{
+		
 		isFocus = ImGui::IsWindowFocused() && ImGui::IsItemVisible();
 		/*TDS_INFO("Window Height is: ");
 		TDS_INFO(ImGui::GetWindowHeight());
@@ -94,12 +98,22 @@ namespace TDS
 		isFocus = ImGui::IsWindowFocused() && ImGui::IsItemVisible();
 		static bool view2D = false;
 		
-		ImVec2 vSize = ImGui::GetContentRegionAvail();
+		ImVec2 vSize /*= ImGui::GetContentRegionAvail()*/;
+		if (ImGui::GetContentRegionAvail().x < (ImGui::GetContentRegionAvail().y * (16.0f / 9.0f)))
+		{
+			vSize = ImVec2(ImGui::GetContentRegionAvail().x, ImGui::GetContentRegionAvail().x * (9.0f / 16.0f)); //scale y
+		}
+		else
+		{
+			vSize = ImVec2(ImGui::GetContentRegionAvail().y * (16.0f / 9.0f), ImGui::GetContentRegionAvail().y); //scale x
+		}
 
 		GraphicsManager::getInstance().getViewportScreen().x = ImGui::GetWindowPos().x;
 		GraphicsManager::getInstance().getViewportScreen().y = ImGui::GetWindowPos().y;
-		GraphicsManager::getInstance().getViewportScreen().z = ImGui::GetContentRegionAvail().x;
-		GraphicsManager::getInstance().getViewportScreen().w = ImGui::GetContentRegionAvail().y;
+		//GraphicsManager::getInstance().getViewportScreen().z = ImGui::GetContentRegionAvail().x;
+		//GraphicsManager::getInstance().getViewportScreen().w = ImGui::GetContentRegionAvail().y;
+		GraphicsManager::getInstance().getViewportScreen().z = vSize.x;
+		GraphicsManager::getInstance().getViewportScreen().w = vSize.y;
 		GraphicsManager::getInstance().getOffset() = ImGui::GetWindowHeight();
 		ImGui::Image((ImTextureID)m_DescSet, vSize);
 		//drag drop code MUST be directly under imgui::image code

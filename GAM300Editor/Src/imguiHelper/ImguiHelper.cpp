@@ -158,6 +158,15 @@ namespace TDS
 		ImGui_ImplVulkan_CreateFontsTexture(SingleUseCommandBuffer);
 	}
 
+	
+#define IM_MAX(A, B)            (((A) >= (B)) ? (A) : (B))
+	static void AspectRatio(ImGuiSizeCallbackData* data) 
+	{ 
+		float aspect_ratio = *(float*)data->UserData; 
+		data->DesiredSize.x = IM_MAX(data->CurrentSize.x, data->CurrentSize.y); 
+		data->DesiredSize.y = (float)(int)(data->DesiredSize.x / aspect_ratio); 
+	}
+
 	void imguiHelper::Update()
 	{
 		ImGui_ImplVulkan_NewFrame();
@@ -200,6 +209,14 @@ namespace TDS
 			if (currentPanel.first == PanelTypes::SCENE)
 			{
 				ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0.f,0.f });
+				float aspect_ratio = 16.0f / 9.0f;
+
+				//ImGui::SetNextWindowSizeConstraints(ImVec2(1280, 720), ImVec2(1920, 1080), AspectRatio, (void*)&aspect_ratio);   // Aspect ratio
+
+				//ImGui::SetNextWindowSizeConstraints();
+				//float frame_height = ImGui::GetFrameHeight();
+				//ImVec2 extra_size_needed = ImVec2(0.0f, frame_height);
+				//extra_size_needed = extra_size_needed + ImVec2(ImGui::GetStyle().WindowBorderSize * 2, ImGui::GetStyle().WindowBorderSize * 2);
 			}
 			if (ImGui::Begin(currentPanel.second->panelTitle.c_str(), (bool*)0, currentPanel.second->flags))
 			{
@@ -218,6 +235,7 @@ namespace TDS
 			if (currentPanel.first == PanelTypes::SCENE)
 			{
 				ImGui::PopStyleVar();
+				
 			}
 
 		}
