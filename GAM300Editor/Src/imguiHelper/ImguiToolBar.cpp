@@ -203,5 +203,22 @@ namespace TDS
 		//}
 		//ImGui::PopStyleColor();
 		//ImGui::PopStyleColor();
+
+		float panelWidth = ImGui::GetContentRegionAvail().x;
+		//for auto resizing of buttons
+		int columnCount = 3;
+		ImGui::Columns(std::max(columnCount, 1), 0, false);
+		
+		ImGui::Checkbox("Show Grid", &grid_visible);
+		ImGui::NextColumn();
+			
+
+#include "GridManager/GridManager.h"
+		ImGui::InputInt("Rows (X)", &GridMap::m_NumRows, 0);
+		ImGui::NextColumn();
+
+		ImGui::InputInt("Cols (Z)", &GridMap::m_NumCols, 0);
+
+		//show the current cursor pos in the GhostPathfinding.cs script
 	}
 }

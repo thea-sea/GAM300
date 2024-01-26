@@ -1,23 +1,51 @@
 {
     "Archetype Sizes": {
-        "110000100000": {
-            "0": 544,
-            "1": 800,
-            "6": 1056
+        "11000010000000": {
+            "0": 816,
+            "1": 1200,
+            "6": 1584
         },
-        "1100000000000": {
+        "11000000000000": {
             "0": 136,
             "1": 200
-        },
-        "1100001000000": {
-            "0": 272,
-            "1": 400,
-            "6": 528
         }
     },
     "Entity Data": {
+        "9": {
+            "ArchetypeID": "11000000000000",
+            "Enabled": true,
+            "Name Tag": {
+                "Name": "Waypoints",
+                "Tag": "",
+                "IsActive": true,
+                "HierarchyParent": 0,
+                "HierarchyIndex": 4,
+                "HierarchyChildren": [
+                    10,
+                    11
+                ]
+            },
+            "Transform": {
+                "Position": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "Scale": {
+                    "x": 1.0,
+                    "y": 1.0,
+                    "z": 1.0
+                },
+                "Rotation": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                }
+            }
+        },
         "1": {
-            "ArchetypeID": "110000100000",
+            "ArchetypeID": "11000010000000",
+            "Enabled": true,
             "Name Tag": {
                 "Name": "PointLight",
                 "Tag": "",
@@ -59,82 +87,9 @@
                 "Used In 2D": false
             }
         },
-        "9": {
-            "ArchetypeID": "1100000000000",
-            "Name Tag": {
-                "Name": "Waypoints",
-                "Tag": "",
-                "IsActive": true,
-                "HierarchyParent": 0,
-                "HierarchyIndex": 4,
-                "HierarchyChildren": [
-                    10,
-                    11
-                ]
-            },
-            "Transform": {
-                "Position": {
-                    "x": 0.0,
-                    "y": 0.0,
-                    "z": 0.0
-                },
-                "Scale": {
-                    "x": 1.0,
-                    "y": 1.0,
-                    "z": 1.0
-                },
-                "Rotation": {
-                    "x": 0.0,
-                    "y": 0.0,
-                    "z": 0.0
-                }
-            }
-        },
-        "3": {
-            "ArchetypeID": "110000100000",
-            "Name Tag": {
-                "Name": "Walls",
-                "Tag": "",
-                "IsActive": true,
-                "HierarchyParent": 0,
-                "HierarchyIndex": 1,
-                "HierarchyChildren": []
-            },
-            "Transform": {
-                "Position": {
-                    "x": 0.0,
-                    "y": 144.81817626953125,
-                    "z": 0.0
-                },
-                "Scale": {
-                    "x": 1.0,
-                    "y": 1.0,
-                    "z": 1.0
-                },
-                "Rotation": {
-                    "x": 0.0,
-                    "y": -0.0,
-                    "z": 0.0
-                }
-            },
-            "Graphics Component": {
-                "PointLight": true,
-                "TextureName": "",
-                "Mesh Renderer": true,
-                "Debug": false,
-                "ModelName": "",
-                "MeshName": "",
-                "Color": {
-                    "x": 1.0,
-                    "y": 1.0,
-                    "z": 1.0,
-                    "w": 1.0
-                },
-                "Used In 2D": false
-            }
-        },
         "11": {
-            "ArchetypeID": "1100001000000",
+            "ArchetypeID": "11000010000000",
+            "Enabled": true,
             "Name Tag": {
                 "Name": "1",
                 "Tag": "",
@@ -176,8 +131,53 @@
                 "Used In 2D": false
             }
         },
+        "3": {
+            "ArchetypeID": "11000010000000",
+            "Enabled": true,
+            "Name Tag": {
+                "Name": "Walls",
+                "Tag": "",
+                "IsActive": true,
+                "HierarchyParent": 0,
+                "HierarchyIndex": 1,
+                "HierarchyChildren": []
+            },
+            "Transform": {
+                "Position": {
+                    "x": 0.0,
+                    "y": 144.81817626953125,
+                    "z": 0.0
+                },
+                "Scale": {
+                    "x": 1.0,
+                    "y": 1.0,
+                    "z": 1.0
+                },
+                "Rotation": {
+                    "x": 0.0,
+                    "y": -0.0,
+                    "z": 0.0
+                }
+            },
+            "Graphics Component": {
+                "PointLight": true,
+                "TextureName": "",
+                "Mesh Renderer": true,
+                "Debug": false,
+                "ModelName": "",
+                "MeshName": "",
+                "Color": {
+                    "x": 1.0,
+                    "y": 1.0,
+                    "z": 1.0,
+                    "w": 1.0
+                },
+                "Used In 2D": false
+            }
+        },
         "4": {
-            "ArchetypeID": "110000100000",
+            "ArchetypeID": "11000010000000",
+            "Enabled": true,
             "Name Tag": {
                 "Name": "Floor",
                 "Tag": "",
@@ -220,7 +220,8 @@
             }
         },
         "5": {
-            "ArchetypeID": "110000100000",
+            "ArchetypeID": "11000010000000",
+            "Enabled": true,
             "Name Tag": {
                 "Name": "Ghost",
                 "Tag": "",
@@ -263,7 +264,8 @@
             }
         },
         "10": {
-            "ArchetypeID": "1100001000000",
+            "ArchetypeID": "11000010000000",
+            "Enabled": true,
             "Name Tag": {
                 "Name": "0",
                 "Tag": "",
@@ -307,94 +309,67 @@
         }
     },
     "Scripts": {
-        "1": {},
         "9": {},
-        "3": {},
+        "1": {},
         "11": {
             "Waypoint": {
                 "runtimePosx": {
-                    "Float": 156.8724
+                    "System.Single": "156.8724"
                 },
                 "runtimePosz": {
-                    "Float": -1.040257
+                    "System.Single": "-1.040257"
                 },
                 "gameObject": {
-                    "GameObject": 11
-                },
-                "is_Enabled": {
-                    "Bool": true
-                },
-                "is_Awake": {
-                    "Bool": true
-                },
-                "is_Start": {
-                    "Bool": false
+                    "ScriptAPI.GameObject": 11
                 }
             }
         },
+        "3": {},
         "4": {},
         "5": {
             "GhostMovement": {
                 "patrolSpeed": {
-                    "Float": 0.1
+                    "System.Single": "0.1"
                 },
                 "currTargetWaypt": {
-                    "Int": 0
+                    "System.Int32": "0"
                 },
                 "deltaTime": {
-                    "Float": 8.4700985
+                    "System.Single": "8.470099"
                 },
                 "NumOfWaypoints": {
-                    "Int": 2
+                    "System.Int32": "2"
                 },
                 "isPatrol": {
-                    "Bool": true
+                    "System.Boolean": "True"
                 },
                 "isChasingPlayer": {
-                    "Bool": false
+                    "System.Boolean": "False"
                 },
                 "gameObject": {
-                    "GameObject": 5
-                },
-                "is_Enabled": {
-                    "Bool": true
-                },
-                "is_Awake": {
-                    "Bool": true
-                },
-                "is_Start": {
-                    "Bool": false
+                    "ScriptAPI.GameObject": 5
                 }
             }
         },
         "10": {
             "Waypoint": {
                 "runtimePosx": {
-                    "Float": 156.58055
+                    "System.Single": "156.58055"
                 },
                 "runtimePosz": {
-                    "Float": -57.604584
+                    "System.Single": "-57.604584"
                 },
                 "gameObject": {
-                    "GameObject": 10
-                },
-                "is_Enabled": {
-                    "Bool": true
-                },
-                "is_Awake": {
-                    "Bool": true
-                },
-                "is_Start": {
-                    "Bool": false
+                    "ScriptAPI.GameObject": 10
                 }
             }
         }
     },
     "Active Archetype": {
-        "1": "110000100000",
         "9": "1100000000000",
-        "3": "110000100000",
+        "1": "110000100000",
         "11": "1100001000000",
+        "3": "110000100000",
         "4": "110000100000",
         "5": "110000100000",
         "10": "1100001000000"

@@ -35,6 +35,8 @@
 #include "Physics/PhysicsSystem.h"
 #include "Rendering/ObjectPicking.h"
 #include "Input/InputSystem.h"
+#include "Rendering/GridRenderer.h"
+#include "Tools/Pathfinder.h"
 
 bool isPlaying = false;
 bool startPlaying = false;
@@ -42,7 +44,7 @@ bool startPlaying = false;
 namespace TDS
 {
     bool SceneManager::isPlaying;
-    
+    Pathfinder pathfinder{};
 
     Application::Application(HINSTANCE hinstance, int& nCmdShow, const wchar_t* classname, WNDPROC wndproc)
         :m_window(hinstance, nCmdShow, classname)
@@ -160,6 +162,15 @@ namespace TDS
         AssetManager::GetInstance()->PreloadAssets();
         skyboxrender.Init();
 
+        //register the grid
+        for (size_t i = 0; i < pathfinder.GetGrid().size(); ++i)
+        {
+            for (size_t j = 0; j < pathfinder.GetGrid()[i].size(); ++j)
+            {
+                // do some RegisterEntity using pathfinder.GetGrid()[i][j].get();
+            }
+        }
+
         // Raw Input for Mouse Movement
         RAWINPUTDEVICE rid;
         rid.usUsagePage = 0x01;  // Mouse
@@ -267,6 +278,11 @@ namespace TDS
             GraphicsManager::getInstance().getRenderPass().beginRenderPass(commandBuffer, &GraphicsManager::getInstance().getFrameBuffer());
             if (GraphicsManager::getInstance().IsViewingFrom2D() == false)
                 skyboxrender.RenderSkyBox(commandBuffer, frame);
+
+            //render grid
+            //gridrender.Render(commandBuffer, frame);
+            //gridrender.SetColour(0, 0, Color(1.0f, 0.0f, 0.0f, 1.0f));
+            pathfinder.DisplayPathAnimated(DeltaTime); //display path
            
             if (isPlaying)
             {
@@ -337,6 +353,8 @@ namespace TDS
         skyboxrender.ShutDown();
         GraphicsManager::getInstance().ShutDown();
         DDSConverter::Destroy();
+        //shutdown grid
+        //gridrender.ShutDown();
 
         PhysicsSystem::JPH_SystemShutdown();
     }

@@ -20,6 +20,8 @@
 #include "dotnet/include/coreclrhost.h" 
 #include "Rendering/Skybox.h"
 
+#include "Rendering/GridRenderer.h"
+#include "GridManager/GridManager.h"
 namespace TDS
 {
 	class Application
@@ -63,6 +65,8 @@ namespace TDS
 		//std::shared_ptr<Renderer>		 m_Renderer/*{ m_window, * m_pVKInst.get() }*/;
 		TDSCamera m_camera{ -90.0f ,0.f };
 		TDSCamera m_GameCamera{ -90.0f, 0.f, 0.1f, 100.f, {0.0f,0.f, 0.f} };
+		//if u want to see top-down for pathfinding, can uncomment line below:
+		//TDSCamera m_GameCamera{ -90.0f, -89.f, 0.1f, 100.f, {0.0f,2500.f, 50.f} };
 		//std::shared_ptr<Model> models;
 		//VkSampler sampling;
 		struct UniformBufferObject
@@ -71,7 +75,11 @@ namespace TDS
 			Mat4 view;
 			Mat4 proj;
 		};
+		
 		SkyBoxRenderer skyboxrender{};
+		//commented out as grid cannot render:
+		//GridRenderer gridrender{};
+		//GridManagerBase gridmanager{};
 	private:
 
 		/*!*************************************************************************

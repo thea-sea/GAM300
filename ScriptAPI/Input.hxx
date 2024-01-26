@@ -2,6 +2,7 @@
 #include "IncludeFromEngine.hxx"
 #include "Vector3.hxx"
 #include "../GAM300Engine/Include/Input/Input.h"
+//#include "../GAM300Engine/Include/Rendering/GraphicsManager.h"
 #include <algorithm>
 #include "Vector2.hxx"
 
@@ -166,7 +167,7 @@ namespace ScriptAPI
 		static bool GetMouseButtonUp(uint32_t button);
 		static bool GetMouseButtonDown(uint32_t button);
 		static float GetLocalMousePosX();
-		static float GetLocalMousePoxY();
+		static float GetLocalMousePosY();
 		static float GetMousePositionDifferenceX();
 		static float GetMousePositionDifferenceY();
 		static void KeyRelease(uint32_t keycode);
@@ -188,8 +189,12 @@ namespace ScriptAPI
 		//static float Get2DMousePosX();
 		//static float Get2DMousePosY();
 		static Vector3 GetMousePosition();
+		
+		
 
 		static void InputUpdate();
+		//static float mousePickedPositionX = TDS::Input::final_x_pos;
+		//static float mousePickedPositionY = TDS::Input::final_y_pos;
 
 	private:
 		static System::Collections::Generic::Dictionary<System::String^, System::Tuple<uint32_t, uint32_t>^>^ AxisDictionary;

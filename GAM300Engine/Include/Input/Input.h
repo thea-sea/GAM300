@@ -242,6 +242,15 @@ namespace TDS
 		static float getLocalMousePosY();
 
 		static void centerandhidemouse(HWND hwnd);
+		//static inline float final_x_pos;
+		//static inline float final_y_pos;
+		//static float GetObjectPickPosX();
+		//static float GetObjectPickPosY();
+
+		static inline float mX;
+		static inline float mY;
+		static inline float mWidth;
+		static inline float mHeight;
 
 	private:
 		static bool exit_cursor;

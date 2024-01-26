@@ -1,6 +1,8 @@
 #include "Rendering/ObjectPicking.h"
 #include "Rendering/GraphicsManager.h"
 #include "vulkanTools/Renderer.h"
+#include "Input/Input.h"
+
 namespace TDS
 {
 	
@@ -56,6 +58,10 @@ namespace TDS
 
 		float xClipped = (mousePosition.x - mX) / (mWidth);
 		float yClipped = ((mousePosition.y - mY) - (GraphicsManager::getInstance().getOffset() - mHeight)) / (mHeight);
+
+		//accessing objectpick coordinates for pathfinding test in GhostPathfinding.cs
+		//Input::final_x_pos = xClipped;
+		//Input::final_y_pos = yClipped;
 		 
 		IDReadCompute idreadPush{};
 		idreadPush.mouseRelativeCoord = { xClipped, yClipped };

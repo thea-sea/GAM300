@@ -19,7 +19,7 @@ public class PlayButton : Script
         Vector3 ObjectPos = obj.GetComponent<TransformComponent>().GetPosition();//objectpos in ndc
         Vector3 ObjectScale = obj.GetComponent<TransformComponent>().GetScale();//obj scale in ndc
         float mouseX = Input.GetLocalMousePosX();
-        float mouseY = Input.GetLocalMousePoxY();
+        float mouseY = Input.GetLocalMousePosY();
         float minX = ObjectPos.X - ObjectScale.X / 2;
         float maxX = ObjectPos.X + ObjectScale.X / 2;
         float maxy = -ObjectPos.Y + ObjectScale.Y / 2;

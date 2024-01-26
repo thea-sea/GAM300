@@ -40,6 +40,7 @@ namespace TDS {
 
 		void resize(Vec3 newSize);
 
+		
 
 		void beginRenderPass(VkCommandBuffer commandbuffer);
 		void endRenderPass(VkCommandBuffer commandbuffer);

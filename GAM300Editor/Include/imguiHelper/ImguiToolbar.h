@@ -3,6 +3,7 @@
 
 #include "ImguiHelper.h"
 
+
 namespace TDS 
 {
 	class Toolbar : public LevelEditorPanel
@@ -20,6 +21,9 @@ namespace TDS
 		bool isPause;
 		bool isLoadScene;
 		bool isSaveScene;
+		//int rows = GridMap::m_NumRows;
+		//int cols = GridMap::m_NumCols;
+		bool grid_visible;
 
 	};
 }

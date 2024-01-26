@@ -71,8 +71,11 @@
     <ClInclude Include="Include\Tools\FontLoader.h" />
     <ClInclude Include="Include\Tools\GeomCompiler.h" />
     <ClInclude Include="Include\Tools\GeomStructures.h" />
+    <ClInclude Include="Include\Tools\Pathfinder.h" />
     <ClInclude Include="Include\Tools\ShaderReflector.h" />
     <ClInclude Include="Include\Tools\TextureCompressor.h" />
+    <ClInclude Include="Include\Tools\Tile.h" />
+    <ClInclude Include="Include\Tools\TileEntity.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Dependencies\imgui\imgui.cpp" />
@@ -114,9 +117,12 @@
     <ClCompile Include="Src\Tools\EditorHistory.cpp" />
     <ClCompile Include="Src\Tools\FileExtensions.cpp" />
     <ClCompile Include="Src\Tools\GeomCompiler.cpp" />
+    <ClCompile Include="Src\Tools\Pathfinder.cpp" />
     <ClCompile Include="Src\Tools\ShaderReflector.cpp" />
     <ClCompile Include="Src\Tools\FontLoader.cpp" />
     <ClCompile Include="Src\Tools\TextureCompressor.cpp" />
+    <ClCompile Include="Src\Tools\Tile.cpp" />
+    <ClCompile Include="Src\Tools\TileEntity.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="GAM300Engine.dll" />

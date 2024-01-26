@@ -13,6 +13,8 @@ namespace TDS
 		Mat4 proj = Mat4::identity();
 		Vec4 gridColor = { 0.f, 0.f, 0.f, 0.f };
 	};
+	
+
 
 	struct alignas(16) GridLineUniform
 	{
@@ -25,10 +27,11 @@ namespace TDS
 	class GridRenderer
 	{
 	public:
-		void Init();
-		void Render();
-		void ShutDown();
-		void SetColour(int row, int col, Color color);
+		DLL_API void Init();
+		DLL_API void Render(VkCommandBuffer commandBuffer, uint32_t frameIndex);
+		DLL_API void ShutDown();
+		DLL_API void SetColour(int row, int col, Color color);
+		DLL_API static std::shared_ptr<GridRenderer> GetInstance();
 
 	private:
 		std::array<GridUniform, 5000> m_GridUniform;
@@ -39,7 +42,8 @@ namespace TDS
 		std::shared_ptr<VulkanPipeline> m_GridPipeline = nullptr;
 		std::shared_ptr<VulkanPipeline> m_DebugPipeline = nullptr;
 		std::shared_ptr<AssetManager> m_pAssetManager = nullptr;
-		TypeReference<AssetModel> m_GridModel;
+		TypeReference<MeshController> m_GridModel;
+		inline static std::shared_ptr<GridRenderer> m_Instance = nullptr;
 
 
 

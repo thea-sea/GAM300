@@ -12,7 +12,7 @@ namespace TDS
 
 	struct GridData
 	{
-		int m_Row, m_Col;
+		int m_Row = 10, m_Col = 10;
 		GRID_STATE m_State;
 	};
 
@@ -22,10 +22,10 @@ namespace TDS
 	};
 	struct GridMap
 	{
-		std::uint32_t m_MapWidth{0}, m_MapHeight{ 0 };
-		int m_NumRows = 1;
-		int m_NumCols = 1;
-		Vec2 CellDimension = { 10.f, 10.f };
+		int m_MapWidth{5000}, m_MapHeight{ 3000 };
+		static inline int m_NumRows = 50;
+		static inline int m_NumCols = 30;
+		Vec2 CellDimension = { 100.f, 100.f };
 
 		inline int TotalNumberOfGrids() const
 		{
@@ -36,36 +36,46 @@ namespace TDS
 
 	class GridManagerBase
 	{
-	private:
 		GridMap m_GridMap;
+	private:
 		std::vector<std::vector<GridData>> m_Grids;
 
 	public:
-		GridManagerBase();
-		~GridManagerBase();
+		DLL_API GridManagerBase();
+		DLL_API ~GridManagerBase();
 
-		inline GridMap& GetMapInfo()
+		DLL_API inline GridMap& GetMapInfo()
 		{
 			return m_GridMap;
 		}
+		
 
-		void CreateTileMap(std::uint32_t Width, std::uint32_t Height);
+		DLL_API void CreateTileMap(std::uint32_t Width, std::uint32_t Height);
 
-		void ResizeMap(std::uint32_t Width, std::uint32_t Height);
+		DLL_API void ResizeMap(std::uint32_t Width, std::uint32_t Height);
 
-		void SetNumberOfGrids(int NumRows, int numCols);
+		DLL_API void SetNumberOfGrids(int NumRows, int numCols);
 
-		void SetTileState(GRID_STATE tileColor, Vec2 TilePos);
+		DLL_API void SetTileState(GRID_STATE tileColor, Vec2 TilePos);
 
-		void UpdateGridSize();
+		DLL_API void UpdateGridSize();
 
-		void DeserializeGridData(std::string_view path);
+		DLL_API void DeserializeGridData(std::string_view path);
 
-		void SerializeGridData(std::string_view path);
+		DLL_API void SerializeGridData(std::string_view path);
 
-		Vec3 GetWorldPos(int Row, int Col);
+		DLL_API Vec3 GetWorldPos(int Row, int Col);
 
-		std::pair<int, int> GetGridPos(Vec3 worldPos);
+		DLL_API std::pair<int, int> GetGridPos(Vec3 worldPos);
+
+		inline static std::shared_ptr<GridManagerBase> m_Instance = nullptr;
+
+		DLL_API std::shared_ptr<GridManagerBase> GetInstance()
+		{
+			if (m_Instance == nullptr)
+				m_Instance = std::make_shared<GridManagerBase>();
+			return m_Instance;
+		}
 
 
 	};

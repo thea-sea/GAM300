@@ -117,12 +117,26 @@ namespace ScriptAPI
 	float Input::GetLocalMousePosX()
 	{
 		return TDS::Input::getLocalMousePosX();
+		//return TDS::Input::final_x_pos;
+		//return TDS::Input::GetObjectPickPosX();
 	}
 
-	float Input::GetLocalMousePoxY()
+	float Input::GetLocalMousePosY()
 	{
 		return TDS::Input::getLocalMousePosY();
+		//return TDS::Input::final_y_pos;
+		//return TDS::Input::GetObjectPickPosY();
 	}
+
+	// float Input::GetPickedPosX()
+	// {
+	// 	return TDS::Input::GetObjectPickPosX();
+	// }
+
+	// float Input::GetPickedPosY()
+	// {
+	// 	return TDS::Input::GetObjectPickPosY();
+	// }
 
 	void Input::InputUpdate()
 	{

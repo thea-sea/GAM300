@@ -9,10 +9,10 @@ class Color
 {
 public:
 	// Constructor
-	Color();
-	constexpr Color(float fLinearRed, float fLinearGreen, float fLinearBlue, float fLinearAlpha = 1.0f);
-	Color(const ColorLinear& cc);
-	Color(const ColorGamma& cc);
+	DLL_API Color();
+	DLL_API constexpr Color(float fLinearRed, float fLinearGreen, float fLinearBlue, float fLinearAlpha = 1.0f);
+	DLL_API Color(const ColorLinear& cc);
+	DLL_API Color(const ColorGamma& cc);
 	void SetRGB(float fLinearRed, float fLinearGreen, float fLinearBlue);
 	void SetRGBA(float fLinearRed, float fLinearGreen, float fLinearBlue, float fLinearAlpha = 1.0f);
 
