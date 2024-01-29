@@ -145,11 +145,11 @@ namespace ScriptAPI
 		int width = TDS::GetScreenWidth();
 		int height = TDS::GetScreenHeight();
 		if (mousePositionX > 0.75f*width || mousePositionX < 0.25f*width) {
-			CenterMouseX();
+			//CenterMouseX();
 		}
 		if (mousePositionY > 0.9f * height || mousePositionY < 0.1f * height)
 		{
-			CenterMouseY();
+			//CenterMouseY();
 		}
 		//std::cout << mousePositionX << std::endl;
 	}
@@ -251,4 +251,83 @@ namespace ScriptAPI
 		GetCursorPos(&cursorPos);
 		return GetScreenMouseY() - cursorPos.y;
 	}
+
+
+	// NEW INPUT CLASS STUFF
+	bool InputSystem::GetKey(uint32_t keycode)
+	{
+		return TDS::InputSystem::GetInstance()->isKeyDown(keycode);
+	}
+
+	bool InputSystem::GetKeyDown(uint32_t keycode)
+	{
+		return TDS::InputSystem::GetInstance()->isKeyPressed(keycode);
+	}
+
+	bool InputSystem::GetKeyUp(uint32_t keycode)
+	{
+		return TDS::InputSystem::GetInstance()->isKeyReleased(keycode);
+	}
+
+	bool InputSystem::GetMouseButton(uint32_t keycode)
+	{
+		return TDS::InputSystem::GetInstance()->isMouseDown(keycode);
+	}
+
+	bool InputSystem::GetMouseButtonDown(uint32_t keycode)
+	{
+		return TDS::InputSystem::GetInstance()->isMousePressed(keycode);
+	}
+
+	bool InputSystem::GetMouseButtonUp(uint32_t keycode)
+	{
+		return TDS::InputSystem::GetInstance()->isMouseReleased(keycode);
+	}
+
+	void InputSystem::HideMouse(bool value)
+	{
+		return TDS::InputSystem::GetInstance()->setCursorVisible(value);
+	}
+
+	void InputSystem::Lock(bool value)
+	{
+		return TDS::InputSystem::GetInstance()->setMouseLock(value);
+	}
+
+	bool InputSystem::isMouseLocked()
+	{
+		return TDS::InputSystem::GetInstance()->getMouseLock();
+	}
+
+	float InputSystem::GetLocalMousePosX()
+	{
+		return TDS::InputSystem::GetInstance()->getLocalMousePosX();
+	}
+
+	float InputSystem::GetLocalMousePoxY()
+	{
+		return TDS::InputSystem::GetInstance()->getLocalMousePosY();
+	}
+
+	float InputSystem::GetMouseDeltaX()
+	{
+		return TDS::InputSystem::GetInstance()->getMouseDeltaX();
+	}
+
+	float InputSystem::GetMouseDeltaY()
+	{
+		return TDS::InputSystem::GetInstance()->getMouseDeltaY();
+	}
+
+	float InputSystem::GetRawMouseAxisX()
+	{
+		return TDS::InputSystem::GetInstance()->getRawMouseInputX();
+	}
+
+	float InputSystem::GetRawMouseAxisY()
+	{
+		return TDS::InputSystem::GetInstance()->getRawMouseInputY();
+	}
+
+
 }

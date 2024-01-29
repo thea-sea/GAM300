@@ -388,6 +388,7 @@ public class FPS_Controller_Script : Script
             //HeadBob();
         }
         startingVO.play(startingVOstr);
+
     }
     public override void FixedUpdate()
     {
@@ -418,6 +419,26 @@ public class FPS_Controller_Script : Script
                 isWalking = false;
                 //audio.stop(footStepSoundEffects[0]);
             }
+
+            //FOR DEBUG USE
+            /*if (InputSystem.GetKeyDown(VirtualKeyCodes.F))
+            {
+                Console.WriteLine("Called from scripts F pressed");
+                InputSystem.Lock(true);
+            }
+
+            if (InputSystem.GetKey(VirtualKeyCodes.F))
+            {
+                Console.WriteLine("Called from scripts F down");
+                InputSystem.HideMouse(true);
+            }
+
+            if (InputSystem.GetMouseButtonUp(VirtualKeyCodes.M1))
+            {
+                InputSystem.Lock(false);
+                InputSystem.HideMouse(false);
+                Console.WriteLine("Called from scripts Mouse1 up");
+            }*/
 
             // All movement calculations shile sprint is active
             if (enableSprint && Input.GetKey(sprintKey) && sprintRemaining > 0f && !isSprintCooldown)

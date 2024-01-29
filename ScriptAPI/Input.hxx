@@ -3,84 +3,16 @@
 #include "Vector3.hxx"
 #include "../GAM300Engine/Include/Input/Input.h"
 //#include "../GAM300Engine/Include/Rendering/GraphicsManager.h"
+#include "../GAM300Engine/Include/Input/InputSystem.h"
 #include <algorithm>
 #include "Vector2.hxx"
 
 #define Mouse_X TDS::Input::getMousePosition()->x
 #define Mouse_Y TDS::Input::getMousePosition()->y
+#define TDSInput TDS::InputSystem::GetInstance();
 
 namespace ScriptAPI
 {
-	/*enum class Keycode : uint32_t
-	{
-		A = TDS_A,
-		B = TDS_B,
-		C = TDS_C,
-		D = TDS_D,
-		E = TDS_E,
-		F = TDS_F,
-		G = TDS_G,
-		H = TDS_H,
-		I = TDS_I,
-		J = TDS_J,
-		K = TDS_K,
-		L = TDS_L,
-		M = TDS_M,
-		N = TDS_N,
-		O = TDS_O,
-		P = TDS_P,
-		Q = TDS_Q,
-		R = TDS_R,
-		S = TDS_S,
-		T = TDS_T,
-		U = TDS_U,
-		V = TDS_V,
-		W = TDS_W,
-		X = TDS_X,
-		Y = TDS_Y,
-		Z = TDS_Z,
-
-		UP = TDS_UP,
-		DOWN = TDS_DOWN,
-		LEFT = TDS_LEFT,
-		RIGHT = TDS_RIGHT,
-
-		ZERO = TDS_0,
-		ONE = TDS_1,
-		TWO = TDS_2,
-		THREE = TDS_3,
-		FOUR = TDS_4,
-		FIVE = TDS_5,
-		SIX = TDS_6,
-		SEVEN = TDS_7,
-		EIGHT = TDS_8,
-		NINE = TDS_9,
-		MINUS = TDS_MINUS,
-		PLUS = TDS_PLUS,
-
-		SHIFT = TDS_SHIFT,
-		CTRL = TDS_CONTROL,
-		ALT = TDS_ALT,
-		SPACE = TDS_SPACE,
-		ESC = TDS_ESCAPE,
-		CAPS = TDS_CAPSLOCK,
-		TAB = TDS_TAB,
-		ENTER = TDS_ENTER,
-		BACKSPACE = TDS_BACKSPACE,
-		TILDE = TDS_TILDE,
-		COMMA = TDS_COMMA,
-		PERIOD = TDS_PERIOD,
-		SLASH = TDS_SLASH,
-		SEMICOLON = TDS_SEMICOLON,
-
-		M1 = TDS_MOUSE_LEFT,
-		M2 = TDS_MOUSE_RIGHT,
-		MIDDLE = TDS_MOUSE_MIDDLE,
-		M4 = TDS_MOUSE_X1,
-		M5 = TDS_MOUSE_X2,
-		SCROLL = TDS_MOUSE_SCROLL,
-	};*/
-
 	public ref class Keycode
 	{
 	public:
@@ -154,6 +86,106 @@ namespace ScriptAPI
 		static uint32_t SCROLL = TDS_MOUSE_SCROLL + MAX_KEYS;
 	};
 
+	public ref class VirtualKeyCodes
+	{
+	public:
+		// Alphabets
+		static uint32_t A = 0x41;
+		static uint32_t B = 0x42;
+		static uint32_t C = 0x43;
+		static uint32_t D = 0x44;
+		static uint32_t E = 0x45;
+		static uint32_t F = 0x46;
+		static uint32_t G = 0x47;
+		static uint32_t H = 0x48;
+		static uint32_t I = 0x49;
+		static uint32_t J = 0x4A;
+		static uint32_t K = 0x4B;
+		static uint32_t L = 0x4C;
+		static uint32_t M = 0x4D;
+		static uint32_t N = 0x4E;
+		static uint32_t O = 0x4F;
+		static uint32_t P = 0x50;
+		static uint32_t Q = 0x51;
+		static uint32_t R = 0x52;
+		static uint32_t S = 0x53;
+		static uint32_t T = 0x54;
+		static uint32_t U = 0x55;
+		static uint32_t V = 0x56;
+		static uint32_t W = 0x57;
+		static uint32_t X = 0x58;
+		static uint32_t Y = 0x59;
+		static uint32_t Z = 0x5A;
+
+		// Arrows
+		static uint32_t UP = 0x26;
+		static uint32_t DOWN = 0x28;
+		static uint32_t LEFT = 0x25;
+		static uint32_t RIGHT = 0x27;
+
+		// Numbers
+		static uint32_t NUM0 = 0x30;
+		static uint32_t NUM1 = 0x31;
+		static uint32_t NUM2 = 0x32;
+		static uint32_t NUM3 = 0x33;
+		static uint32_t NUM4 = 0x34;
+		static uint32_t NUM5 = 0x35;
+		static uint32_t NUM6 = 0x36;
+		static uint32_t NUM7 = 0x37;
+		static uint32_t NUM8 = 0x38;
+		static uint32_t NUM9 = 0x39;
+
+		// Special characters
+		static uint32_t MINUS = 0xBD;    // -
+		static uint32_t PLUS = 0xBB;     // +
+		static uint32_t SHIFT = 0x10;
+		static uint32_t LSHIFT = 0xA0;   // Left SHIFT
+		static uint32_t RSHIFT = 0xA1;   // Right SHIFT
+		static uint32_t CTRL = 0x11;
+		static uint32_t LCTRL = 0xA2;   // Left CTRL
+		static uint32_t RCTRL = 0xA3;   // Right CTRL
+		static uint32_t ALT = 0x12;
+		static uint32_t SPACE = 0x20;
+		static uint32_t ESC = 0x1B;
+		static uint32_t CAPS = 0x14;
+		static uint32_t TAB = 0x09;
+		static uint32_t ENTER = 0x0D;
+		static uint32_t BACKSPACE = 0x08;
+		static uint32_t TILDE = 0xC0;    // `
+		static uint32_t COMMA = 0xBC;    // ,
+		static uint32_t PERIOD = 0xBE;   // .
+		static uint32_t SLASH = 0xBF;    // /
+		static uint32_t SEMICOLON = 0xBA; // ;
+
+		// Function keys (F1-F12)
+		static uint32_t F1 = 0x70;
+		static uint32_t F2 = 0x71;
+		static uint32_t F3 = 0x72;
+		static uint32_t F4 = 0x73;
+		static uint32_t F5 = 0x74;
+		static uint32_t F6 = 0x75;
+		static uint32_t F7 = 0x76;
+		static uint32_t F8 = 0x77;
+		static uint32_t F9 = 0x78;
+		static uint32_t F10 = 0x79;
+		static uint32_t F11 = 0x7A;
+		static uint32_t F12 = 0x7B;
+
+		// Mouse buttons
+		static uint32_t M1 = 0x01;
+		static uint32_t M2 = 0x02;
+		static uint32_t MIDDLE = 0x04;
+		static uint32_t M4 = 0x05;
+		static uint32_t M5 = 0x06;
+		static uint32_t SCROLL = 0x07;
+
+		// Maximum number of keys
+		static uint32_t MAX_KEYS = 256;  // Total number of virtual key codes
+
+		// Additional keys
+		// Add more keys as needed
+	};
+
 	public ref class Input
 	{
 	public:
@@ -206,4 +238,109 @@ namespace ScriptAPI
 		static int LastMousePosX;
 		static int LastMousePosY;
 	};
+
+
+	// NEW INPUT CLASS STUFF
+	public ref class InputSystem
+	{
+	public:
+		//Get key is held
+		static bool GetKey(uint32_t keycode);
+		//Get key is pressed
+		static bool GetKeyDown(uint32_t keycode);
+		//Get key is released
+		static bool GetKeyUp(uint32_t keycode);
+		//Get mouse is held
+		static bool GetMouseButton(uint32_t button);
+		//Get mouse is pressed
+		static bool GetMouseButtonDown(uint32_t button);
+		//Get mouse is released
+		static bool GetMouseButtonUp(uint32_t button);
+		//Hide mouse
+		static void HideMouse(bool value);
+		//Lock the mouse in the center of the screen
+		static void Lock(bool value);
+		//Check mouse lock
+		static bool isMouseLocked();
+
+		static float GetLocalMousePosX();
+		static float GetLocalMousePoxY();
+
+		static float GetMouseDeltaX();
+		static float GetMouseDeltaY();
+
+		static float GetRawMouseAxisX();
+		static float GetRawMouseAxisY();
+	};
 }
+
+/*enum class Keycode : uint32_t
+	{
+		A = TDS_A,
+		B = TDS_B,
+		C = TDS_C,
+		D = TDS_D,
+		E = TDS_E,
+		F = TDS_F,
+		G = TDS_G,
+		H = TDS_H,
+		I = TDS_I,
+		J = TDS_J,
+		K = TDS_K,
+		L = TDS_L,
+		M = TDS_M,
+		N = TDS_N,
+		O = TDS_O,
+		P = TDS_P,
+		Q = TDS_Q,
+		R = TDS_R,
+		S = TDS_S,
+		T = TDS_T,
+		U = TDS_U,
+		V = TDS_V,
+		W = TDS_W,
+		X = TDS_X,
+		Y = TDS_Y,
+		Z = TDS_Z,
+
+		UP = TDS_UP,
+		DOWN = TDS_DOWN,
+		LEFT = TDS_LEFT,
+		RIGHT = TDS_RIGHT,
+
+		ZERO = TDS_0,
+		ONE = TDS_1,
+		TWO = TDS_2,
+		THREE = TDS_3,
+		FOUR = TDS_4,
+		FIVE = TDS_5,
+		SIX = TDS_6,
+		SEVEN = TDS_7,
+		EIGHT = TDS_8,
+		NINE = TDS_9,
+		MINUS = TDS_MINUS,
+		PLUS = TDS_PLUS,
+
+		SHIFT = TDS_SHIFT,
+		CTRL = TDS_CONTROL,
+		ALT = TDS_ALT,
+		SPACE = TDS_SPACE,
+		ESC = TDS_ESCAPE,
+		CAPS = TDS_CAPSLOCK,
+		TAB = TDS_TAB,
+		ENTER = TDS_ENTER,
+		BACKSPACE = TDS_BACKSPACE,
+		TILDE = TDS_TILDE,
+		COMMA = TDS_COMMA,
+		PERIOD = TDS_PERIOD,
+		SLASH = TDS_SLASH,
+		SEMICOLON = TDS_SEMICOLON,
+
+		M1 = TDS_MOUSE_LEFT,
+		M2 = TDS_MOUSE_RIGHT,
+		MIDDLE = TDS_MOUSE_MIDDLE,
+		M4 = TDS_MOUSE_X1,
+		M5 = TDS_MOUSE_X2,
+		SCROLL = TDS_MOUSE_SCROLL,
+	};
+*/

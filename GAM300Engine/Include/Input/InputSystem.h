@@ -32,6 +32,8 @@ namespace TDS
 		bool isMouseScrollDown();
 		bool mouseMoved();
 		TDS::Vec2 getLocalMousePos();
+		int getLocalMousePosX();
+		int getLocalMousePosY();
 		TDS::Vec2 getMouseDelta();
 		int getMouseDeltaX();
 		int getMouseDeltaY();

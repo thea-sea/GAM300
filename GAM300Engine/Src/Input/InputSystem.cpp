@@ -57,7 +57,6 @@ namespace TDS
 				{
 					allKeyStates[i].pressed = true;
 					m_KeyDelayTimer = 0.25f;
-
 					// For Debug Purposes
 					/*if (i == 'G')
 					{
@@ -100,7 +99,6 @@ namespace TDS
 		}
 	}
 
-
 	bool InputSystem::isKeyPressed(int key)
 	{
 		return allKeyStates[key].pressed;
@@ -132,6 +130,14 @@ namespace TDS
 	TDS::Vec2 InputSystem::getLocalMousePos()
 	{
 		return TDS::Vec2(m_old_mouse_pos.x, m_old_mouse_pos.y);
+	}
+	int InputSystem::getLocalMousePosX()
+	{
+		return m_old_mouse_pos.x;
+	}
+	int InputSystem::getLocalMousePosY()
+	{
+		return m_old_mouse_pos.y;
 	}
 	TDS::Vec2 InputSystem::getMouseDelta()
 	{
