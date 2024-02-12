@@ -125,7 +125,7 @@ public class FPS_Controller_Script : Script
         rb = gameObject.GetComponent<RigidBodyComponent>();
         //playerCamera = GameObjectScriptFind("playerCameraObject").GetComponent<CameraComponent>();
         startingVO = gameObject.GetComponent<AudioComponent>();
-        startingVOstr = "pc_lockpickstart";
+        //startingVOstr = "pc_lockpickstart";
         // Set internal variables
         playerCamera.SetFieldOfView(fov);
         originalScale = transform.GetScale();
@@ -146,7 +146,7 @@ public class FPS_Controller_Script : Script
 
         currentFootStepPlaying = 0;
         audio = gameObject.GetComponent<AudioComponent>();
-        startingVO.stop(startingVOstr);
+        //startingVO.stop(startingVOstr);
     }
     public override void Start()
     {
@@ -287,7 +287,7 @@ public class FPS_Controller_Script : Script
         {
             HeadBob();
         }
-        startingVO.play(startingVOstr);
+        //startingVO.play(startingVOstr);
 
     }
     public override void FixedUpdate()

@@ -4837,9 +4837,9 @@
                     "w": 0.0
                 },
                 "direction": {
-                    "x": -0.22575512528419495,
-                    "y": -0.08889424055814743,
-                    "z": -0.970119833946228,
+                    "x": 0.8960040807723999,
+                    "y": 0.20961853861808777,
+                    "z": -0.39145469665527344,
                     "w": 0.0
                 },
                 "color": {
@@ -83277,6 +83277,153 @@
     },
     "Scripts": {
         "1": {
+            "FPS_Controller_Script": {
+                "rb": {
+                    "ScriptAPI.RigidBodyComponent": 0
+                },
+                "startingVO": {
+                    "ScriptAPI.AudioComponent": 0
+                },
+                "playerCamera": {
+                    "ScriptAPI.CameraComponent": 0
+                },
+                "fov": {
+                    "System.Single": "60"
+                },
+                "invertCamera": {
+                    "System.Boolean": "False"
+                },
+                "cameraCanMove": {
+                    "System.Boolean": "True"
+                },
+                "mouseSensitivity": {
+                    "System.Single": "2"
+                },
+                "maxLookAngle": {
+                    "System.Single": "89"
+                },
+                "lockCursor": {
+                    "System.Boolean": "True"
+                },
+                "crosshair": {
+                    "System.Boolean": "True"
+                },
+                "enableZoom": {
+                    "System.Boolean": "True"
+                },
+                "holdToZoom": {
+                    "System.Boolean": "False"
+                },
+                "zoomKey": {
+                    "System.UInt32": "56"
+                },
+                "zoomFOV": {
+                    "System.Single": "30"
+                },
+                "zoomStepTime": {
+                    "System.Single": "5"
+                },
+                "playerCanMove": {
+                    "System.Boolean": "True"
+                },
+                "walkSpeed": {
+                    "System.Single": "2"
+                },
+                "maxVelocityChange": {
+                    "System.Single": "10"
+                },
+                "isWalking": {
+                    "System.Boolean": "False"
+                },
+                "enableSprint": {
+                    "System.Boolean": "True"
+                },
+                "unlimitedSprint": {
+                    "System.Boolean": "False"
+                },
+                "sprintKey": {
+                    "System.UInt32": "42"
+                },
+                "sprintSpeed": {
+                    "System.Single": "3"
+                },
+                "currentSprintSpeed": {
+                    "System.Single": "3"
+                },
+                "sprintDuration": {
+                    "System.Single": "5"
+                },
+                "sprintCooldown": {
+                    "System.Single": "0"
+                },
+                "sprintFOV": {
+                    "System.Single": "80"
+                },
+                "sprintFOVStepTime": {
+                    "System.Single": "10"
+                },
+                "useSprintBar": {
+                    "System.Boolean": "True"
+                },
+                "hideBarWhenFull": {
+                    "System.Boolean": "True"
+                },
+                "sprintBarWidthPercent": {
+                    "System.Single": "0.3"
+                },
+                "sprintBarHeightPercent": {
+                    "System.Single": "0.015"
+                },
+                "isSprinting": {
+                    "System.Boolean": "False"
+                },
+                "enableJump": {
+                    "System.Boolean": "True"
+                },
+                "jumpKey": {
+                    "System.UInt32": "45"
+                },
+                "jumpPower": {
+                    "System.Single": "5"
+                },
+                "enableCrouch": {
+                    "System.Boolean": "True"
+                },
+                "holdToCrouch": {
+                    "System.Boolean": "True"
+                },
+                "crouchKey": {
+                    "System.UInt32": "43"
+                },
+                "crouchHeight": {
+                    "System.Single": "0.75"
+                },
+                "speedReduction": {
+                    "System.Single": "0.5"
+                },
+                "playerHealth": {
+                    "System.Int32": "100"
+                },
+                "enableHeadBob": {
+                    "System.Boolean": "True"
+                },
+                "joint": {
+                    "ScriptAPI.TransformComponent": 0
+                },
+                "bobSpeed": {
+                    "System.Single": "10"
+                },
+                "bobAmount": {
+                    "ScriptAPI.Vector3": {
+                        "X": 0.15000000596046448,
+                        "Y": 0.05000000074505806,
+                        "Z": 0.0
+                    }
+                },
+                "gameObject": {
+                    "ScriptAPI.GameObject": 1
+                }
+            },
             "FPS_Controller_Script": {
                 "rb": {
                     "ScriptAPI.RigidBodyComponent": 0
