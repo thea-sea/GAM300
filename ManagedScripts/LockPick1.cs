@@ -79,8 +79,8 @@ public class LockPick1 : Script
     private Vector3 originalPosition = new Vector3(0.0f, 350.0f, 1500.0f);
     private Vector3 originalRotation;
     AudioComponent audio;
-    bool failed;
-    bool passed;
+    public static bool failed;
+    public static bool passed;
     float timer;
     
     public int doorIndex;
@@ -166,11 +166,16 @@ public class LockPick1 : Script
 
         //subtitles
         UISpriteComponent Sprite = GameObjectScriptFind("VOSubtitles").GetComponent<UISpriteComponent>();
+        UISpriteComponent ClosedSub = GameObjectScriptFind("Subtitles").GetComponent<UISpriteComponent>();
         //UISpriteComponent Sprite = gameObject.GetComponent<UISpriteComponent>();
         Sprite.SetFontMessage(Subtitles[counter]);
 
         if (counter < 5)
         audio.play(playerGuideVO[counter]);
+        // if (audio.finished(playerGuideVO[counter]))
+        // {
+        //     audio.stop(playerGuideVO[counter]);
+        // }
 
         #region Move Pick
         if (movePick)
@@ -317,15 +322,18 @@ public class LockPick1 : Script
                 newLock();
                 GraphicsManagerWrapper.ToggleViewFrom2D(false);
                 popupUI.GetComponent<PopupUI>().lockpickDisplayed = false;
+                
+                    ClosedSub.SetFontMessage(Subtitles[1]);
+                
+                
             }
             else
             {
                 timer -= Time.deltaTime;
             }
-            if (audio.finished(playerGuideVO[1]))
-            {
-            counter = 2;
-            }
+            
+          
+           
         }
 
         if (failed)
