@@ -112,9 +112,11 @@ public class GameplaySubtitles : Script
         {
             //this is already handled in lockpick script
             //counter = 7; 
-            if (LockPick1.audio.finished(LockPick1.playerGuideVO[2]))
+            if (LockPick1.audio.finished(LockPick1.playerGuideVO[2])) //no turning back now
             {
+                LockPick1.audio.stop(LockPick1.playerGuideVO[2]);
                 counter = 5;
+                LockPick1.counter = 6;//prevent audio repeat
             }
 
         }

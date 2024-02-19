@@ -352,7 +352,7 @@ public class LockPick1 : Script
                 // }
             
 
-                // if (audio.finished(playerGuideVO[1]))
+                // if (audio.finished(playerGuideVO[1])) //also no effect, doont do this
                 // {
                 //     audio.stop(playerGuideVO[1]);
                 //     counter = 2;
