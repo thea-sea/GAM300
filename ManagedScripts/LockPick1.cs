@@ -341,24 +341,28 @@ public class LockPick1 : Script
                 GraphicsManagerWrapper.ToggleViewFrom2D(false);
                 popupUI.GetComponent<PopupUI>().lockpickDisplayed = false;
                 
-                //no turning back now
-                //ClosedSub.SetFontMessage(Subtitles[1]); no effect
-                counter = 2;
-                audio.play(playerGuideVO[2]);
-                GameplaySubtitles.counter = 7;
-                // if (audio.finished(playerGuideVO[2]))
-                // {
-                //     GameplaySubtitles.counter = 5; //no effect
-                // }
-            
+                if (doorIndex == 0)
+                {
+                    //"no turning back now" VO only plays for 1st door
+                    //ClosedSub.SetFontMessage(Subtitles[1]); no effect
+                    counter = 2;
+                    audio.play(playerGuideVO[2]);
+                    GameplaySubtitles.counter = 7;
+                    // if (audio.finished(playerGuideVO[2]))
+                    // {
+                    //     GameplaySubtitles.counter = 5; //no effect
+                    // }
+                
 
-                // if (audio.finished(playerGuideVO[1])) //also no effect, doont do this
-                // {
-                //     audio.stop(playerGuideVO[1]);
-                //     counter = 2;
-                //     audio.play(playerGuideVO[2]);
+                    // if (audio.finished(playerGuideVO[1])) //also no effect, doont do this
+                    // {
+                    //     audio.stop(playerGuideVO[1]);
+                    //     counter = 2;
+                    //     audio.play(playerGuideVO[2]);
 
-                // }
+                    // }  
+                }
+                
                 
             }
             else
