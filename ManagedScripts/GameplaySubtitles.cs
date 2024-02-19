@@ -26,18 +26,18 @@ public class GameplaySubtitles : Script
         Subtitles[0] = "Press [F] for flashlight";
         Subtitles[1] = "Press [WASD] to move";
         Subtitles[2] = "Press [I] to open/close Inventory";
-        Subtitles[3] = "Press [E] to interact with objects"; //do lockpicking
+        Subtitles[3] = "Press [I] to open/close Inventory";
+        Subtitles[4] = "Press [E] to interact with objects"; //do lockpicking
         //note: 
         // these subtitles: "Martin (Internal): Hopefully, I won\’t forget how to do this.";
         //"Move [mouse] to adjust pick", "Press [E] to turn lock"
         //are done in LockPick1.cs already, so this handles overall gameplay subtitles
         
-        Subtitles[4] = "";
-        Subtitles[5] = "Martin (Internal): Alright, looks like I\'m in.";
+        Subtitles[5] = "";
+        Subtitles[6] = "Martin (Internal): Alright, looks like I\'m in.";
 
-        Subtitles[6] = "Martin (Internal): No turning back now.";
+        Subtitles[7] = "Martin (Internal): No turning back now.";
 
-        Subtitles[7] = "";
 
         Subtitles[8] = "";
         Subtitles[9] = "";
@@ -79,6 +79,7 @@ public class GameplaySubtitles : Script
 
     public override void Update()
     {
+        
         UISpriteComponent Sprite = gameObject.GetComponent<UISpriteComponent>();
         AudioComponent audio = gameObject.GetComponent<AudioComponent>();
 
@@ -95,23 +96,29 @@ public class GameplaySubtitles : Script
                 counter++;
             }
         }
-        if (counter == 2)
+        if (counter == 2 || counter == 3)
         {
             if (Input.GetKeyDown(Keycode.I))
                 counter++;
             
         }
-        if (counter == 3)
+        if (counter == 4)
         {
             if (Input.GetKeyDown(Keycode.E))
                 counter++;
           
         }
-        if (LockPick1.passed)
+        if (LockPick1.counter == 2) //only this works when LockPick1 script is no longer active, checking passed doesnt work
         {
-            //counter = 5;
+            //this is already handled in lockpick script
+            //counter = 7; 
+            if (LockPick1.audio.finished(LockPick1.playerGuideVO[2]))
+            {
+                counter = 5;
+            }
 
         }
+        
         // if (Input.GetKeyDown(Keycode.SPACE))
         // {
         //     audio.stop(Audiofiles[counter]);
