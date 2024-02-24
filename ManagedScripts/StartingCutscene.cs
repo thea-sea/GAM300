@@ -19,7 +19,7 @@ public class StartingCutscene : Script
     {
         GraphicsManagerWrapper.ToggleViewFrom2D(true);
         Textures = new string[9];
-        Textures[0] = "Draft Journal Image.dds";
+        Textures[0] = "Scene00.dds";
         Textures[1] = "Scene01.dds";
         Textures[2] = "scene02.dds";
         Textures[3] = "scene03.dds";
@@ -34,6 +34,7 @@ public class StartingCutscene : Script
 
     public override void Update()
     {
+        
         counter = CutsceneSubtitle.counter;
 
         UISpriteComponent Sprite = gameObject.GetComponent<UISpriteComponent>();

@@ -14,6 +14,7 @@ using System;
 public class GameplaySubtitles : Script
 {
     String[] Audiofiles;
+    String[] BGMfile;
     String[] Subtitles;
     [SerializeField]
     public static int counter;
@@ -60,7 +61,7 @@ public class GameplaySubtitles : Script
         Audiofiles[3] = "";
         Audiofiles[4] = "";
         Audiofiles[5] = "";
-        Audiofiles[6] = "";
+        Audiofiles[6] = "houseenter";
         Audiofiles[7] = "";
         Audiofiles[8] = "";
         Audiofiles[9] = "";
@@ -71,6 +72,9 @@ public class GameplaySubtitles : Script
         Audiofiles[14] = "intro8_2";
         Audiofiles[15] = "intro9_1";
         Audiofiles[16] = "intro9_2";
+
+        BGMfile = new String[1];
+        BGMfile[0] = "houseenter";
 
         counter = 0;
         next = true;
@@ -117,6 +121,8 @@ public class GameplaySubtitles : Script
                 LockPick1.audio.stop(LockPick1.playerGuideVO[2]);
                 counter = 5;
                 LockPick1.counter = 6;//prevent audio repeat
+                //play enter house bgm
+                audio.play(BGMfile[0]);
             }
 
         }

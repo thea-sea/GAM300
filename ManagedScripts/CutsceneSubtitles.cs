@@ -14,12 +14,15 @@ using System;
 public class CutsceneSubtitle : Script
 {
     String[] Audiofiles;
+    String[] BGMfile;
     String[] Subtitles;
     [SerializeField]
     public static int counter;
     public static bool next = true;
     public override void Awake()
     {
+        BGMfile = new String[1];
+        BGMfile[0] = "cutscene_music_and_sfx_only";
         Audiofiles = new String[17];
         Subtitles = new String[17];
         GraphicsManagerWrapper.ToggleViewFrom2D(true);
@@ -76,18 +79,35 @@ public class CutsceneSubtitle : Script
     {
         UISpriteComponent Sprite = gameObject.GetComponent<UISpriteComponent>();
         AudioComponent audio = gameObject.GetComponent<AudioComponent>();
+        if (counter > 1 && counter < 5)
+        {
+            Vector4 white = new Vector4(255.0f, 255.0f, 255.0f, 1.0f);
+            Sprite.SetFontColour(white);
+            Sprite.SetFontBackgroundColor(white);
+        }
+        if (counter >= 5)
+        {
+            Vector4 black = new Vector4(0.0f, 0.0f, 0.0f, 1.0f);
+            Sprite.SetFontColour(black);
+            Sprite.SetFontBackgroundColor(black);
+
+        }
+
         if (Input.GetKeyDown(Keycode.SPACE))
         {
             audio.stop(Audiofiles[counter]);
+            audio.stop(BGMfile[0]);
             GraphicsManagerWrapper.ToggleViewFrom2D(false);
             SceneLoader.LoadMainGame();
         }
         else
         {
+            audio.play(BGMfile[0]);
             audio.playQueue();
 
             if (counter > 16)//cutscene over
             {
+                audio.stop(BGMfile[0]);
                 GraphicsManagerWrapper.ToggleViewFrom2D(false);
                 SceneLoader.LoadMainGame();
             }
