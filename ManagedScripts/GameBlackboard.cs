@@ -22,10 +22,10 @@ public class GameBlackboard : Script
         Paused
     }
 
-    [DontSerializeField]
+    //[DontSerializeField]
     [HideInInspector]
     public GameState gameState;
-    [DontSerializeField]
+    //[DontSerializeField]
     [HideInInspector]
     public GameState previousGameState;
 
@@ -37,7 +37,7 @@ public class GameBlackboard : Script
         ForcedLock
     }
 
-    [DontSerializeField]    
+    //[DontSerializeField]    
     [HideInInspector]
     public DoorState[] doorStates;
 

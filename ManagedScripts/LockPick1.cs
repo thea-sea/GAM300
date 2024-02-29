@@ -76,6 +76,9 @@ public class LockPick1 : Script
     private bool movePick;
     private bool deduct;
     private bool displayTutorial;
+    private bool pickWasCloseButYouMovedAway;
+    private bool firstTimeTutorial = true;
+    private bool playOnce = true;
     [SerializeField] bool played;
 
     private Vector3 originalPosition = new Vector3(0.0f, 350.0f, 1500.0f);
@@ -99,24 +102,25 @@ public class LockPick1 : Script
         lockSoundEffects[1] = "lockpick success";
         lockSoundEffects[2] = "lockpick_failtry";
 
-        rattleSoundEffects = new String[6];
+        rattleSoundEffects = new String[7];
         rattleSoundEffects[0] = "lockpick_move1";
         rattleSoundEffects[1] = "lockpick_move2";
         rattleSoundEffects[2] = "lockpick_move3";
         rattleSoundEffects[3] = "lockpick_move4";
         rattleSoundEffects[4] = "lockpick_move5";
         rattleSoundEffects[5] = "lockpick_move6";
+        rattleSoundEffects[6] = "lockpick_move7";
 
         playerGuideVO = new String[7];
         playerGuideVO[0] = "pc_lockpickstart";
         playerGuideVO[1] = "pc_lockpicksuccess1";
         playerGuideVO[2] = "pc_lockpicksuccess2";
         playerGuideVO[3] = "pc_lockpickfail";
-        playerGuideVO[4] = "";
-        playerGuideVO[5] = "";
+        playerGuideVO[4] = "pc_findtherightspot";
+        playerGuideVO[5] = "pc_turnthelock";
         playerGuideVO[6] = "";
 
-        Subtitles = new String[7];
+        Subtitles = new String[9];
         Subtitles[0] = "Martin (Internal): Hopefully, I won\'t forget how to do this.";
         Subtitles[1] = "Martin (Internal): Alright, looks like I\'m in.";
         Subtitles[2] = "Martin (Internal): No turning back now.";
@@ -124,6 +128,8 @@ public class LockPick1 : Script
         Subtitles[4] = "";
         Subtitles[5] = "Move [mouse] to adjust pick";
         Subtitles[6] = "Press [E] to turn lock";
+        Subtitles[7] = "Martin (Internal): Find the right spot, and it should click...";
+        Subtitles[8] = "Martin (Internal): There, now to turn the lock.";
 
         counter = 0;
         audio = gameObject.GetComponent<AudioComponent>();
@@ -136,6 +142,7 @@ public class LockPick1 : Script
     {
         //audio.play(startingVOstr);
         movePick = true;
+        pickWasCloseButYouMovedAway = false;
     }
 
     // Update is called once per frame
@@ -196,9 +203,13 @@ public class LockPick1 : Script
         // }
 
         #region Move Pick
+        float eulerAngleDegree = toDegree(eulerAngle);
+        percentage = Mathf.Round(100 - Mathf.Abs(((eulerAngleDegree - unlockAngle) / 100) * 100));
+        float maxRotation = (percentage / 100) * maxAngle;
+        float lockRotation = maxRotation * keyPressTime;
+
         if (movePick)
         {
-            
             //Vector3 dir = Input.mousePosition - cam.WorldToScreenPoint(transform.position);
             Vector3 dir = Input.GetLocalMousePos() - new Vector3(Screen.width / 2, Screen.height / 2, 0);  //cam.WorldToScreenPoint(transform.GetPosition());
 
@@ -218,6 +229,282 @@ public class LockPick1 : Script
             Vector2 newPosition = new Vector2(originalPosition.X * Mathf.Cos(-eulerAngle) - originalPosition.Y * Mathf.Sin(-eulerAngle),
                                                 originalPosition.X * Mathf.Sin(-eulerAngle) + originalPosition.Y * Mathf.Cos(-eulerAngle));
             transform.SetPosition(new Vector3(newPosition.X, newPosition.Y, originalPosition.Z));
+
+            //do rattling sounds based on pick angle
+
+            //note on ranges (the wider the range in if statement, the further the pick is)
+            // STRICTEST if statement first (small range to wide range)
+            //perfect! 1 is when eulerAngleDegree < unlockRange.Y && eulerAngleDegree > unlockRange.X
+            //VERY close! 2 is when eulerAngleDegree < unlockRange.Y + 10 && eulerAngleDegree > unlockRange.X -10
+            //almost close 3 is when eulerAngleDegree < unlockRange.Y + 20 && eulerAngleDegree > unlockRange.X - 20
+            //close 4 is when eulerAngleDegree < unlockRange.Y + 30 && eulerAngleDegree > unlockRange.X - 30
+            //not very close 5 is when eulerAngleDegree < unlockRange.Y + 40 && eulerAngleDegree > unlockRange.X - 40
+            //not close 6 is when eulerAngleDegree < unlockRange.Y + 50 && eulerAngleDegree > unlockRange.X - 50
+            //7 is if u were in 2 previously but are in range 3 to 6 now
+            //(else) no sound when none of the cases above
+
+            //range 1
+            if (eulerAngleDegree < unlockRange.Y && eulerAngleDegree > unlockRange.X)
+            {
+               
+                if (audio.finished(lockSoundEffects[0]))
+                {
+                    audio.stop(lockSoundEffects[0]);
+                    delay -= Time.deltaTime;
+
+                    if (delay <= 0)
+                    {
+                        // Not sure if there is a better way to do this
+                        if (audio.finished(rattleSoundEffects[0]))
+                            audio.stop(rattleSoundEffects[0]);
+                        if (audio.finished(rattleSoundEffects[1]))
+                            audio.stop(rattleSoundEffects[1]);
+                        if (audio.finished(rattleSoundEffects[2]))
+                            audio.stop(rattleSoundEffects[2]);
+                        if (audio.finished(rattleSoundEffects[3]))
+                            audio.stop(rattleSoundEffects[3]);
+                        if (audio.finished(rattleSoundEffects[4]))
+                            audio.stop(rattleSoundEffects[4]);
+                        if (audio.finished(rattleSoundEffects[5]))
+                            audio.stop(rattleSoundEffects[5]);
+
+                        //audio.setVolume(50.0f);
+                        audio.play(rattleSoundEffects[0]);
+                        delay = 0.4f;
+                    }
+                }
+
+                //play VO
+                if (playOnce)
+                {
+                    audio.play("pc_turnthelock");
+                    
+                    playOnce = false;
+                }
+                if (audio.finished("pc_turnthelock"))
+                {
+                    audio.stop("pc_turnthelock");
+                }
+                //if (audio.finished(rattleSoundEffects[0]))
+                //{
+                //    audio.stop(rattleSoundEffects[0]);
+
+                //    audio.play("pc_findtherightspot");
+                //    if (audio.finished("pc_findtherightspot"))
+                //    {
+                //        audio.stop("pc_findtherightspot");
+                //        audio.play("pc_turnthelock");
+                //        if (audio.finished("pc_turnthelock"))
+                //        {
+                //            audio.stop("pc_turnthelock");
+                //        }
+                //    }
+                //}
+                pickWasCloseButYouMovedAway = true;
+            }
+            //range 2
+            else if (eulerAngleDegree < unlockRange.Y + 15 && eulerAngleDegree > unlockRange.X - 15)
+            {
+                
+                if (audio.finished(lockSoundEffects[0]))
+                {
+                    audio.stop(lockSoundEffects[0]);
+                    delay -= Time.deltaTime;
+
+                    if (delay <= 0)
+                    {
+                        // Not sure if there is a better way to do this
+                        if (audio.finished(rattleSoundEffects[0]))
+                            audio.stop(rattleSoundEffects[0]);
+                        if (audio.finished(rattleSoundEffects[1]))
+                            audio.stop(rattleSoundEffects[1]);
+                        if (audio.finished(rattleSoundEffects[2]))
+                            audio.stop(rattleSoundEffects[2]);
+                        if (audio.finished(rattleSoundEffects[3]))
+                            audio.stop(rattleSoundEffects[3]);
+                        if (audio.finished(rattleSoundEffects[4]))
+                            audio.stop(rattleSoundEffects[4]);
+                        if (audio.finished(rattleSoundEffects[5]))
+                            audio.stop(rattleSoundEffects[5]);
+
+                        //audio.setVolume(50.0f);
+                        audio.play(rattleSoundEffects[1]);
+                        delay = 0.4f;
+                    }
+                }
+
+                
+            }
+            //range 3
+            else if (eulerAngleDegree < unlockRange.Y + 30 && eulerAngleDegree > unlockRange.X - 30)
+            {
+                
+                if (audio.finished(lockSoundEffects[0]))
+                {
+                    audio.stop(lockSoundEffects[0]);
+                    delay -= Time.deltaTime;
+
+                    if (delay <= 0)
+                    {
+                        // Not sure if there is a better way to do this
+                        if (audio.finished(rattleSoundEffects[0]))
+                            audio.stop(rattleSoundEffects[0]);
+                        if (audio.finished(rattleSoundEffects[1]))
+                            audio.stop(rattleSoundEffects[1]);
+                        if (audio.finished(rattleSoundEffects[2]))
+                            audio.stop(rattleSoundEffects[2]);
+                        if (audio.finished(rattleSoundEffects[3]))
+                            audio.stop(rattleSoundEffects[3]);
+                        if (audio.finished(rattleSoundEffects[4]))
+                            audio.stop(rattleSoundEffects[4]);
+                        if (audio.finished(rattleSoundEffects[5]))
+                            audio.stop(rattleSoundEffects[5]);
+
+                        //audio.setVolume(51.0f);
+                        audio.play(rattleSoundEffects[2]);
+                        delay = 0.4f;
+                    }
+                }
+
+            }
+            //range 4
+            else if (eulerAngleDegree < unlockRange.Y + 45 && eulerAngleDegree > unlockRange.X - 45)
+            {
+
+                if (audio.finished(lockSoundEffects[0]))
+                {
+                    audio.stop(lockSoundEffects[0]);
+                    delay -= Time.deltaTime;
+
+                    if (delay <= 0)
+                    {
+                        // Not sure if there is a better way to do this
+                        if (audio.finished(rattleSoundEffects[0]))
+                            audio.stop(rattleSoundEffects[0]);
+                        if (audio.finished(rattleSoundEffects[1]))
+                            audio.stop(rattleSoundEffects[1]);
+                        if (audio.finished(rattleSoundEffects[2]))
+                            audio.stop(rattleSoundEffects[2]);
+                        if (audio.finished(rattleSoundEffects[3]))
+                            audio.stop(rattleSoundEffects[3]);
+                        if (audio.finished(rattleSoundEffects[4]))
+                            audio.stop(rattleSoundEffects[4]);
+                        if (audio.finished(rattleSoundEffects[5]))
+                            audio.stop(rattleSoundEffects[5]);
+
+                        //audio.setVolume(51.0f);
+
+                        audio.play(rattleSoundEffects[3]);
+                        delay = 0.4f;
+                    }
+                }
+
+                
+            }
+            //range 5
+            else if (eulerAngleDegree < unlockRange.Y + 60 && eulerAngleDegree > unlockRange.X - 60)
+            {
+
+                if (audio.finished(lockSoundEffects[0]))
+                {
+                    audio.stop(lockSoundEffects[0]);
+                    delay -= Time.deltaTime;
+
+                    if (delay <= 0)
+                    {
+                        // Not sure if there is a better way to do this
+                        if (audio.finished(rattleSoundEffects[0]))
+                            audio.stop(rattleSoundEffects[0]);
+                        if (audio.finished(rattleSoundEffects[1]))
+                            audio.stop(rattleSoundEffects[1]);
+                        if (audio.finished(rattleSoundEffects[2]))
+                            audio.stop(rattleSoundEffects[2]);
+                        if (audio.finished(rattleSoundEffects[3]))
+                            audio.stop(rattleSoundEffects[3]);
+                        if (audio.finished(rattleSoundEffects[4]))
+                            audio.stop(rattleSoundEffects[4]);
+                        if (audio.finished(rattleSoundEffects[5]))
+                            audio.stop(rattleSoundEffects[5]);
+
+                        //audio.setVolume(51.0f);
+                        audio.play(rattleSoundEffects[4]);
+                        delay = 0.4f;
+                    }
+                }
+
+                
+            }
+            //range 6
+            else if (eulerAngleDegree < unlockRange.Y + 75 && eulerAngleDegree > unlockRange.X - 75)
+            {
+
+                if (audio.finished(lockSoundEffects[0]))
+                {
+                    audio.stop(lockSoundEffects[0]);
+                    delay -= Time.deltaTime;
+
+                    if (delay <= 0)
+                    {
+                        // Not sure if there is a better way to do this
+                        if (audio.finished(rattleSoundEffects[0]))
+                            audio.stop(rattleSoundEffects[0]);
+                        if (audio.finished(rattleSoundEffects[1]))
+                            audio.stop(rattleSoundEffects[1]);
+                        if (audio.finished(rattleSoundEffects[2]))
+                            audio.stop(rattleSoundEffects[2]);
+                        if (audio.finished(rattleSoundEffects[3]))
+                            audio.stop(rattleSoundEffects[3]);
+                        if (audio.finished(rattleSoundEffects[4]))
+                            audio.stop(rattleSoundEffects[4]);
+                        if (audio.finished(rattleSoundEffects[5]))
+                            audio.stop(rattleSoundEffects[5]);
+
+                        //audio.setVolume(51.0f);
+                        audio.play(rattleSoundEffects[5]);
+                        delay = 0.4f;
+                    }
+                }
+            }
+            else if (pickWasCloseButYouMovedAway) //range 7
+            {
+                if (audio.finished(lockSoundEffects[0]))
+                {
+                    audio.stop(lockSoundEffects[0]);
+                    delay -= Time.deltaTime;
+
+                    if (delay <= 0)
+                    {
+                        // Not sure if there is a better way to do this
+                        if (audio.finished(rattleSoundEffects[0]))
+                            audio.stop(rattleSoundEffects[0]);
+                        if (audio.finished(rattleSoundEffects[1]))
+                            audio.stop(rattleSoundEffects[1]);
+                        if (audio.finished(rattleSoundEffects[2]))
+                            audio.stop(rattleSoundEffects[2]);
+                        if (audio.finished(rattleSoundEffects[3]))
+                            audio.stop(rattleSoundEffects[3]);
+                        if (audio.finished(rattleSoundEffects[4]))
+                            audio.stop(rattleSoundEffects[4]);
+                        if (audio.finished(rattleSoundEffects[5]))
+                            audio.stop(rattleSoundEffects[5]);
+
+                        //audio.setVolume(51.0f);
+                        audio.play(rattleSoundEffects[6]); //play 7
+                        delay = 0.4f;
+                    }
+                }
+                if (audio.finished(rattleSoundEffects[6]))
+                {
+                    audio.stop(rattleSoundEffects[0]);
+
+                    audio.play("pc_findtherightspot");
+                }
+                playOnce = true;
+            }
+            if (audio.finished("pc_findtherightspot"))
+            {
+                audio.stop("pc_findtherightspot");
+            }
         }
         
         if (!failed && Input.GetKeyDown(Keycode.E)) //lock turns
@@ -250,15 +537,14 @@ public class LockPick1 : Script
         #endregion
 
         #region Check if pick is at correct position
-        float eulerAngleDegree = toDegree(eulerAngle);
-        percentage = Mathf.Round(100 - Mathf.Abs(((eulerAngleDegree - unlockAngle) / 100) * 100));
-        float maxRotation = (percentage / 100) * maxAngle;
-        float lockRotation = maxRotation * keyPressTime;
         float lockLerp = Mathf.LerpAngle(toDegree(innerLock.GetRotation().Z), lockRotation, Time.deltaTime * lockSpeed);
         innerLock.SetRotation(new Vector3(0, 0, toRadians(lockLerp)));
 
+        
+
         if (!movePick && (lockLerp >= maxRotation - 1))
         {
+            //if you pick correct
             if (eulerAngleDegree < unlockRange.Y && eulerAngleDegree > unlockRange.X)
             {
                 audio.stop(lockSoundEffects[0]);
@@ -268,48 +554,11 @@ public class LockPick1 : Script
                 audio.play(lockSoundEffects[1]);
                 timer = 1.2f;
                 passed = true;
-                
+
             }
+            //you pick but it wasnt correct
             else
             {
-                //float randomRotation = ScriptAPI.Random.insideUnitCircle.x;
-                float randomRotation = ScriptAPI.Random.Range(-1,1); // NOTE: Not sure if insideUnitCircle keeps changing or is a fixed Vector2 that is reset on Start
-                transform.SetRotationZ(originalRotation.Z + (float)(randomRotation / 180.0 * Math.PI));
-
-                if (Input.GetKeyDown(Keycode.E) || Input.GetKey(Keycode.E))
-                {
-                    // NOTE: Audio
-                    // as of 19 Feb meeting, rattling sounds are now used to 
-                    //hint to the player on how close their pick is to the correct position
-                    // TO DO: set more frequent rattling audios to play when 
-                    //lock pick passes when (eulerAngleDegree < unlockRange.Y && eulerAngleDegree > unlockRange.X)
-                    if (audio.finished(lockSoundEffects[0]))
-                    {
-                        audio.stop(lockSoundEffects[0]);
-                        delay -= Time.deltaTime;
-
-                        if (delay <= 0)
-                        {
-                            // Not sure if there is a better way to do this
-                            if (audio.finished(rattleSoundEffects[0]))
-                                audio.stop(rattleSoundEffects[0]);
-                            if (audio.finished(rattleSoundEffects[1]))
-                                audio.stop(rattleSoundEffects[1]);
-                            if (audio.finished(rattleSoundEffects[2]))
-                                audio.stop(rattleSoundEffects[2]);
-                            if (audio.finished(rattleSoundEffects[3]))
-                                audio.stop(rattleSoundEffects[3]);
-                            if (audio.finished(rattleSoundEffects[4]))
-                                audio.stop(rattleSoundEffects[4]);
-                            if (audio.finished(rattleSoundEffects[5]))
-                                audio.stop(rattleSoundEffects[5]);
-
-                            audio.play(rattleSoundEffects[(int)ScriptAPI.Random.Range(0, 5)]);
-                            delay = 0.4f;
-                        }
-                    }
-                }
-
                 if (deduct == true)
                 {
                     numOfTries -= 1;
@@ -337,7 +586,9 @@ public class LockPick1 : Script
 
         if (passed)
         {
+            audio.stop(rattleSoundEffects[0]);
             counter = 1;
+            firstTimeTutorial = false;
             if (timer <= 0 && audio.finished(playerGuideVO[1]))
             {
                 playerController.SetActive(true);
