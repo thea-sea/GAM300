@@ -240,9 +240,19 @@
                 "gameObject": {
                     "ScriptAPI.GameObject": 1
                 }
+            },
+            "StartingCutscene": {
+                "gameObject": {
+                    "ScriptAPI.GameObject": 1
+                }
             }
         },
         "2": {
+            "CutsceneSubtitle": {
+                "gameObject": {
+                    "ScriptAPI.GameObject": 2
+                }
+            },
             "CutsceneSubtitle": {
                 "gameObject": {
                     "ScriptAPI.GameObject": 2

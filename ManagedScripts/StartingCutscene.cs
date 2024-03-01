@@ -21,13 +21,13 @@ public class StartingCutscene : Script
         Textures = new string[9];
         Textures[0] = "Scene00.dds";
         Textures[1] = "Scene01.dds";
-        Textures[2] = "Scene02.dds";
-        Textures[3] = "Scene03.dds";
-        Textures[4] = "Scene04.dds";
-        Textures[5] = "Scene05.dds";
-        Textures[6] = "Scene06.dds";
-        Textures[7] = "Scene07.dds";
-        Textures[8] = "Scene08.dds";
+        Textures[2] = "NEW_Scene02.dds";
+        Textures[3] = "NEW_Scene03.dds";
+        Textures[4] = "NEW_Scene04.dds";
+        Textures[5] = "NEW_Scene05.dds";
+        Textures[6] = "NEW_Scene06.dds";
+        Textures[7] = "NEW_Scene07.dds";
+        Textures[8] = "NEW_Scene08.dds";
 
         counter = 0;
     }
