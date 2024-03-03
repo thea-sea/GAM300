@@ -31,7 +31,7 @@ public class Hiding : Script
     String[] voClips;
     public String[] subtitles;
     int counter;
-    bool playOnce = true;
+    public static bool playOnce = true;
     GameObject textmachine;
 
     private float timer = 1.0f;
@@ -49,7 +49,7 @@ public class Hiding : Script
         voClips = new string[3];
         voClips[0] = "pc_hideinclosetfirst";
         voClips[1] = "pc_wanderingcloset";
-        voClips[2] = "pc_monstergoesaway2";
+        voClips[2] = "pc_monstergoesaway2"; //i have to watch my back
         subtitles = new String[2];
         subtitles[0] = "Nothing inside";
         subtitles[1] = "But I could hide in here in case someone shows up";
@@ -67,36 +67,31 @@ public class Hiding : Script
 
     public override void Update()
     {
-        
+
         if (interactable && gameObject.GetComponent<RigidBodyComponent>().IsRayHit())
         {
             _InteractUI.SetActive(true);
 
-            //textmachine.SetActive(false);
-            //UISpriteComponent Sprite = GameObjectScriptFind("VOSubtitles").GetComponent<UISpriteComponent>();
-            if(timer <= 0.0f)
+
+            if (playOnce && !Painting_Script.isPaintingCollected)
             {
-                //counter = 1;
-                if (playOnce)
+                //textmachine.SetActive(false);
+                //UISpriteComponent Sprite = GameObjectScriptFind("VOSubtitles").GetComponent<UISpriteComponent>();
+                if (timer <= 0.0f)
                 {
+                    //counter = 1;
+
                     GameplaySubtitles.counter = 10; //but i could hide
                     playOnce = false;
                 }
-                if (audioPlayer.finished(voClips[0]))
+                else
                 {
-                    audioPlayer.stop(voClips[0]);
-                    GameplaySubtitles.counter = 8;
+                    timer -= Time.deltaTime;
+                    GameplaySubtitles.counter = 9; //nothing inside
+                    audioPlayer.play(voClips[0]);
+
+
                 }
-
-
-            }
-            else
-            {
-                timer -= Time.deltaTime;
-                GameplaySubtitles.counter = 9; //nothing inside
-                audioPlayer.play(voClips[0]);
-                
-
             }
             
             
@@ -161,7 +156,11 @@ public class Hiding : Script
                 player.GetComponent<FPS_Controller_Script>().playerCanMove = true;
                 player.GetComponent<FPS_Controller_Script>().enableHeadBob = true;
                 _flashlight.SetActive(true);
-                audioPlayer.play(voClips[2]);
+                if (GhostMovement.GhostGone)
+                {
+                    audioPlayer.play(voClips[2]);
+                    GameplaySubtitles.counter = 15;
+                }
                 
 
                 //Input.KeyRelease(Keycode.E);

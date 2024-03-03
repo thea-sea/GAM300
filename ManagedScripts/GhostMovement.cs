@@ -60,6 +60,7 @@ public class GhostMovement : Script
 
     public bool playerMoved;
     public bool hideEventDone;
+    public static bool GhostGone;
     public bool hideEvent;
     public int hideEventStep;
     public GameObject SHDoor;
@@ -134,6 +135,7 @@ public class GhostMovement : Script
         playerMoved = false;
         hideEvent = false;
         hideEventDone = false;
+        GhostGone = false;
 
         transform.SetPositionX(-2840.0f);
         transform.SetPositionZ(-650.0f);
@@ -273,12 +275,13 @@ public class GhostMovement : Script
 
         if (hideEventDone)
         {
-            AudioComponent audio = gameObject.GetComponent<AudioComponent>();
-            if (audio.finished(voiceClips))
-            {
-                audio.stop(voiceClips);
-                GameplaySubtitles.counter = 8;
-            }
+            // AudioComponent audio = gameObject.GetComponent<AudioComponent>();
+            // if (audio.finished(voiceClips))
+            // {
+            //     audio.stop(voiceClips);
+            //     GameplaySubtitles.counter = 8;
+            // }
+            GhostGone = true;
         }
         
 
@@ -390,7 +393,8 @@ public class GhostMovement : Script
                 hideEvent = false;
                 isChasingPlayer = false;
                 SHDoor.GetComponent<Door_Script>().forcedLocked = false;
-                
+
+                audio.stop("pc_afterscare_breathing"); 
                 audio.play(voiceClips);
                 GameplaySubtitles.counter = 11; // wth was that
 
