@@ -613,10 +613,15 @@ public class LockPick1 : Script
 
                 //no turning back now
                 //ClosedSub.SetFontMessage(Subtitles[1]); no effect
-                counter = 2;
-                audio.play(playerGuideVO[2]);
-                next_VO = true;
-                GameplaySubtitles.counter = 7;
+
+                if (doorIndex == 0)
+                {
+                    counter = 2;
+                    audio.play(playerGuideVO[2]); //aite looks like im in
+                    next_VO = true;
+                    GameplaySubtitles.counter = 7;
+                }
+
                 // if (audio.finished(playerGuideVO[2]))
                 // {
                 //     GameplaySubtitles.counter = 5; //no effect

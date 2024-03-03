@@ -32,11 +32,12 @@ public class Painting_Script : Script
     public float timer;
     public GameObject hidingGameObject;
     public GameObject ghost;
+    public static bool isPaintingCollected = false;
 
     override public void Awake()
     {
         voClip = new string[3];
-        voClip[0] = "pc_stealpainting1";
+        voClip[0] = "pc_stealpainting1"; 
         voClip[1] = "pc_shinelightbeforereceipt";
         voClip[2] = "pc_shinelightafterreceipt";
         AudioPlayer = gameObject.GetComponent<AudioComponent>();
@@ -61,10 +62,13 @@ public class Painting_Script : Script
             if (Input.GetKeyDown(Keycode.E))
             {
                 Console.WriteLine("Picked up painting");
+                isPaintingCollected = true;
                 InventoryScript.addPaintingIntoInventory(Painting_Name, Painting_Texture);
                 gameObject.GetComponent<GraphicComponent>().SetView2D(true);
                 gameObject.SetActive(false);
                 AudioPlayer.play(voClip[0]);
+                GameplaySubtitles.counter = 13;
+                
 
                 // hiding event 
                 hidingGameObject.GetComponent<Hiding>().numOfPaintingsTook++;
@@ -74,6 +78,7 @@ public class Painting_Script : Script
                 }
             }
         }
+        
     }
 
     public override void LateUpdate()

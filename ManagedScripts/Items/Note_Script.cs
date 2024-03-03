@@ -25,6 +25,7 @@ public class Note_Script : Script
     public string Note_Texture;
     public string Note_VO;
     public GameObject? _InteractUI;
+    public static bool isNotePicked = false;
 
     public override void Awake()
     {
@@ -51,13 +52,17 @@ public class Note_Script : Script
                 gameObject.GetComponent<GraphicComponent>().SetView2D(true);
                 gameObject.SetActive(false);
                 clip.play(Note_VO);
+                GameplaySubtitles.counter = 14;
+                isNotePicked = true;
+
             }
         }
+        
         
     }
 
     public override void LateUpdate()
-    {
+    {   
         if (gameObject.GetComponent<RigidBodyComponent>().IsRayHit())
         {
             _InteractUI.SetActive(true);
@@ -66,5 +71,6 @@ public class Note_Script : Script
         {
             _InteractUI.SetActive(false);
         }
+        
     }
 }

@@ -31,6 +31,7 @@ public class Hiding : Script
     String[] voClips;
     public String[] subtitles;
     int counter;
+    bool playOnce = true;
     GameObject textmachine;
 
     private float timer = 1.0f;
@@ -43,7 +44,7 @@ public class Hiding : Script
     {
         numOfPaintingsTook = 0;
 
-        counter = 0;
+        //counter = 0;
         audioPlayer = gameObject.GetComponent<AudioComponent>();
         voClips = new string[3];
         voClips[0] = "pc_hideinclosetfirst";
@@ -60,7 +61,8 @@ public class Hiding : Script
         hidingPos = closet.transform.GetPosition();
         _RotationAngle = 180.0f;
 
-        timer = 0.7f;
+        timer = 0.8f;
+
     }
 
     public override void Update()
@@ -71,18 +73,36 @@ public class Hiding : Script
             _InteractUI.SetActive(true);
 
             //textmachine.SetActive(false);
-            UISpriteComponent Sprite = GameObjectScriptFind("VOSubtitles").GetComponent<UISpriteComponent>();
+            //UISpriteComponent Sprite = GameObjectScriptFind("VOSubtitles").GetComponent<UISpriteComponent>();
             if(timer <= 0.0f)
             {
-                counter = 1;
+                //counter = 1;
+                if (playOnce)
+                {
+                    GameplaySubtitles.counter = 10; //but i could hide
+                    playOnce = false;
+                }
+                if (audioPlayer.finished(voClips[0]))
+                {
+                    audioPlayer.stop(voClips[0]);
+                    GameplaySubtitles.counter = 8;
+                }
+
+
             }
             else
             {
                 timer -= Time.deltaTime;
-            }
-            Sprite.SetFontMessage(subtitles[counter]);
+                GameplaySubtitles.counter = 9; //nothing inside
+                audioPlayer.play(voClips[0]);
+                
 
-            audioPlayer.play(voClips[0]);
+            }
+            
+            
+            //Sprite.SetFontMessage(subtitles[counter]); //no effect
+
+            
 
             if (Input.GetKeyDown(Keycode.E) && hiding == false)
             {
@@ -90,7 +110,7 @@ public class Hiding : Script
                 interactable = false;
                 nonHidingPos = player.transform.GetPosition();
                 //player.transform.SetPosition(closet.transform.GetPosition());
-                counter = 1;
+                //counter = 1;
 
                 Vector3 rotation = new Vector3(0, 0, 0);
                 //player.transform.SetRotation(rotation);
@@ -142,14 +162,18 @@ public class Hiding : Script
                 player.GetComponent<FPS_Controller_Script>().enableHeadBob = true;
                 _flashlight.SetActive(true);
                 audioPlayer.play(voClips[2]);
+                
+
                 //Input.KeyRelease(Keycode.E);
             }
         }
         else
         {
             _InteractUI.SetActive(false);
+            
+
         }
-        
+
     }
 
     /*private void OnTriggerEnter(GameObject other)
