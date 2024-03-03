@@ -621,6 +621,23 @@ public class LockPick1 : Script
                     next_VO = true;
                     GameplaySubtitles.counter = 7;
                 }
+                if (doorIndex == 1)
+                {
+                    GameplaySubtitles.counter = 21;
+                    audio.play("creak3"); 
+                    audio.play("pc_approachbedroom"); //placeholder
+                }
+
+                if (doorIndex == 3)
+                {
+                    //bathroom is near
+
+                }
+                if (doorIndex == 4) //you are in bathroom
+                {
+                   
+
+                }
 
                 // if (audio.finished(playerGuideVO[2]))
                 // {

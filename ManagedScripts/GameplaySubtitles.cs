@@ -24,18 +24,18 @@ public class GameplaySubtitles : Script
     public override void Awake()
     {
         Audiofiles = new String[17];
-        Subtitles = new String[21];
+        Subtitles = new String[23];
         GraphicsManagerWrapper.ToggleViewFrom2D(false);
         Subtitles[0] = "Press [F] for flashlight";
         Subtitles[1] = "Press [WASD] to move";
         Subtitles[2] = "Press [I] to open/close Inventory";
         Subtitles[3] = "Press [I] to open/close Inventory";
         Subtitles[4] = "Press [E] to interact with objects"; //do lockpicking
-        //note: 
-        // these subtitles: "Martin (Internal): Hopefully, I won\’t forget how to do this.";
-        //"Move [mouse] to adjust pick", "Press [E] to turn lock"
-        //are done in LockPick1.cs already, so this handles overall gameplay subtitles
-        
+                                                             //note: 
+                                                             // these subtitles: "Martin (Internal): Hopefully, I won\’t forget how to do this.";
+                                                             //"Move [mouse] to adjust pick", "Press [E] to turn lock"
+                                                             //are done in LockPick1.cs already, so this handles overall gameplay subtitles
+
         Subtitles[5] = "";
         Subtitles[6] = "Alright, looks like I\'m in.";
 
@@ -60,6 +60,8 @@ public class GameplaySubtitles : Script
         Subtitles[18] = "that means you've got paintings for me to steal.";
         Subtitles[19] = "Let's see where you're keeping them.";
         Subtitles[20] = "Something's behind this painting.";
+        Subtitles[21] = "Is someone here?";
+        Subtitles[22] = "Someone's coming... I better hide.";
 
         Audiofiles[0] = ""; //wasd no audio
         Audiofiles[1] = ""; //no audio
@@ -89,18 +91,18 @@ public class GameplaySubtitles : Script
 
     public override void Update()
     {
-        
+
         UISpriteComponent Sprite = gameObject.GetComponent<UISpriteComponent>();
         AudioComponent audio = gameObject.GetComponent<AudioComponent>();
 
-         if (counter == 0)
+        if (counter == 0)
         {
             if (Input.GetKeyDown(Keycode.F))
                 counter++;
-            
-        }if (counter == 1)
+
+        } if (counter == 1)
         {
-            if (Input.GetKeyDown(Keycode.W)|| Input.GetKeyDown(Keycode.A) || Input.GetKeyDown(Keycode.S) || Input.GetKeyDown(Keycode.D))
+            if (Input.GetKeyDown(Keycode.W) || Input.GetKeyDown(Keycode.A) || Input.GetKeyDown(Keycode.S) || Input.GetKeyDown(Keycode.D))
             {
                 //go next line
                 counter++;
@@ -110,13 +112,13 @@ public class GameplaySubtitles : Script
         {
             if (Input.GetKeyDown(Keycode.I))
                 counter++;
-            
+
         }
         if (counter == 4)
         {
             if (Input.GetKeyDown(Keycode.E))
                 counter++;
-          
+
         }
         if (LockPick1.counter == 2) //only this works when LockPick1 script is no longer active, checking passed doesnt work
         {
@@ -132,6 +134,32 @@ public class GameplaySubtitles : Script
                 audio.play("pc_okuncle"); //placeholder
             }
 
+        }
+        if (counter == 9 || counter == 10)
+        {
+            if (audio.finished("pc_hideinclosetfirst"))
+            {
+                audio.stop("pc_hideinclosetfirst");
+                GameplaySubtitles.counter = 8;
+            }
+        }
+        if (counter == 13)
+        {
+            if(audio.finished("gallery_movepainting"))
+            {
+                audio.play("pc_monsterrattledoor"); //someone's coming...better hide
+                GameplaySubtitles.counter = 22;
+
+            }
+
+        }
+        if (counter == 15)
+        {
+            if (audio.finished("pc_monstergoesaway2"))
+            {
+                audio.stop("pc_monstergoesaway2");
+                GameplaySubtitles.counter = 8;
+            }
         }
         if (counter == 17)
         { 
@@ -159,6 +187,29 @@ public class GameplaySubtitles : Script
                 counter = 8;
             }
         }
+        if (counter == 20)
+        {
+            if (audio.finished("pc_shinelightbeforereceipt") && audio.finished("pc_stealpainting1"))
+            {
+                counter = 8;
+            }
+        }
+        if (counter == 21)
+        {
+            if (audio.finished("pc_approachbedroom"))
+            {
+                audio.stop("pc_approachbedroom");
+                counter = 8;
+            }
+        }
+        if (counter == 22)
+        {
+            if (audio.finished("pc_monsterrattledoor"))
+            {
+                audio.stop("pc_monsterrattledoor");
+                GameplaySubtitles.counter = 8;
+            }
+        }
         if (Note_Script.isNotePicked)
         {
             if (audio.finished("pc_checkreceipt"))
@@ -173,11 +224,11 @@ public class GameplaySubtitles : Script
         
         if (Painting_Script.isPaintingCollected)
         {
-            if (audio.finished("pc_stealpainting1"))
-            {
-                audio.stop("pc_stealpainting1");
-                GameplaySubtitles.counter = 8;
-            }
+            //if (audio.finished("pc_stealpainting1"))
+            //{
+            //    audio.stop("pc_stealpainting1");
+            //    GameplaySubtitles.counter = 8;
+            //}
             //Painting_Script.isPaintingCollected = false; //reset for other paintings
         }
         if (counter == 8)

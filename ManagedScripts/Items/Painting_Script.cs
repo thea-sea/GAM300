@@ -19,7 +19,7 @@ public class Painting_Script : Script
     public string Painting_Name;
     public string Painting_Texture;
     public bool opened;
-    public GameObject? _InteractUI;
+    public GameObject _InteractUI;
 
     //public Animator _PaintingAnimator;
     //public Flashlight_Script _FlashlightScript;
@@ -32,7 +32,8 @@ public class Painting_Script : Script
     public float timer;
     public GameObject hidingGameObject;
     public GameObject ghost;
-    public static bool isPaintingCollected = false;
+    public static bool isPaintingCollected;
+    bool once = true;
 
     override public void Awake()
     {
@@ -44,6 +45,7 @@ public class Painting_Script : Script
         //_color.a = 1;
         //timer = 1.0f;
         //Console.WriteLine("Painting script");
+        isPaintingCollected = false;
     }
 
     public override void Start()
@@ -57,10 +59,18 @@ public class Painting_Script : Script
         if (gameObject.GetComponent<RigidBodyComponent>().IsRayHit())
         {
             Console.WriteLine("Painting");
-            AudioPlayer.play(voClip[1]);
+            _InteractUI.SetActive(true);
+
+            if (once)
+            {
+                AudioPlayer.play(voClip[1]);
+                GameplaySubtitles.counter = 20;
+                once = false;
+            }
 
             if (Input.GetKeyDown(Keycode.E))
             {
+                Hiding.playOnce = false;
                 Console.WriteLine("Picked up painting");
                 isPaintingCollected = true;
                 InventoryScript.addPaintingIntoInventory(Painting_Name, Painting_Texture);
@@ -68,6 +78,7 @@ public class Painting_Script : Script
                 gameObject.SetActive(false);
                 AudioPlayer.play(voClip[0]);
                 GameplaySubtitles.counter = 13;
+                AudioPlayer.play("gallery_movepainting");
                 
 
                 // hiding event 

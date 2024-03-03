@@ -140,15 +140,17 @@ public class FPS_Controller_Script : Script
             sprintCooldownReset = sprintCooldown;
         }
 
-        footStepSoundEffects = new string[8];
+        footStepSoundEffects = new string[10];
         footStepSoundEffects[0] = "pc_woodstep1";
         footStepSoundEffects[1] = "pc_woodstep2";
         footStepSoundEffects[2] = "pc_woodstep3";
-        footStepSoundEffects[3] = "pc_woodstep4";
-        footStepSoundEffects[4] = "pc_woodstep5";
-        footStepSoundEffects[5] = "pc_woodstep6";
-        footStepSoundEffects[6] = "pc_woodstep7";
-        footStepSoundEffects[7] = "pc_woodstep8";
+        footStepSoundEffects[3] = "creak1";
+        footStepSoundEffects[4] = "pc_woodstep4";
+        footStepSoundEffects[5] = "pc_woodstep5";
+        footStepSoundEffects[6] = "pc_woodstep6";
+        footStepSoundEffects[7] = "pc_woodstep7";
+        footStepSoundEffects[8] = "pc_woodstep8";
+        footStepSoundEffects[9] = "creak3";
         currentFootStepPlaying = 0;
         audioTimer = 1.0f;
 
@@ -630,13 +632,13 @@ public class FPS_Controller_Script : Script
             {
                 if (isSprinting)
                 {
-                    currentFootStepPlaying = (currentFootStepPlaying > 6 ? 0 : currentFootStepPlaying + 1);
+                    currentFootStepPlaying = (currentFootStepPlaying > 10 ? 0 : currentFootStepPlaying + 1);
                     audio.play(footStepSoundEffects[currentFootStepPlaying]);
                     audioTimer = 0.5f;
                 }
                 else
                 {
-                    currentFootStepPlaying = (currentFootStepPlaying > 6 ? 0 : currentFootStepPlaying + 1);
+                    currentFootStepPlaying = (currentFootStepPlaying > 10 ? 0 : currentFootStepPlaying + 1);
                     audio.play(footStepSoundEffects[currentFootStepPlaying]);
                     audioTimer = 1.0f;
                 }
