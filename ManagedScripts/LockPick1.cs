@@ -277,7 +277,7 @@ public class LockPick1 : Script
                 }
 
                 //play VO
-                if (playOnce)
+                if (playOnce && audio.finished("pc_findtherightspot") && audio.finished(playerGuideVO[0]))
                 {
                     audio.play("pc_turnthelock");
                     
@@ -495,7 +495,7 @@ public class LockPick1 : Script
                         delay = 0.4f;
                     }
                 }
-                if (audio.finished(rattleSoundEffects[6]))
+                if (audio.finished(rattleSoundEffects[6]) && audio.finished(playerGuideVO[0]) && audio.finished("pc_turnthelock")) //prevent multiple VO playing
                 {
                     audio.stop(rattleSoundEffects[0]);
 
