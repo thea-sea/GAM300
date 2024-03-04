@@ -1,11 +1,11 @@
 ﻿/*!*************************************************************************
 ****
-\file Flashlight_Script.cs
-\author Go Ruo Yan
-\par DP email: ruoyan.go@digipen.edu
+\file FlashlightBattery.cs
+\author Thea Sea
+\par DP email: thea.sea@digipen.edu
 \par Course: csd3450
-\date 9-2-2024
-\brief  Script for flashlight
+\date 4-3-2024
+\brief  Script for flashlight battery
 ****************************************************************************
 ***/
 using ScriptAPI;
