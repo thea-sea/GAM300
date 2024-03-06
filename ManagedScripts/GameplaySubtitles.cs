@@ -25,7 +25,7 @@ public class GameplaySubtitles : Script
     public override void Awake()
     {
         Audiofiles = new String[17];
-        Subtitles = new String[25];
+        Subtitles = new String[28];
         GraphicsManagerWrapper.ToggleViewFrom2D(false);
         Subtitles[0] = "Press [F] for flashlight";
         Subtitles[1] = "Press [WASD] to move";
@@ -65,6 +65,9 @@ public class GameplaySubtitles : Script
         Subtitles[22] = "Someone's coming... I better hide.";
         Subtitles[23] = "Flashlight's running out of juice... better replace the battery.";
         Subtitles[24] = "Press [Ctrl] to toggle crouch";
+        Subtitles[25] = "Something’s different about this one. What’s this symbol on the back?";
+        Subtitles[26] = "<Painting drops into fire>";
+        Subtitles[27] = "<Painting burns in fire>";
 
         Audiofiles[0] = ""; //wasd no audio
         Audiofiles[1] = ""; //no audio

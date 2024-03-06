@@ -63,8 +63,16 @@ public class Painting_Script : Script
 
             if (once)
             {
-                AudioPlayer.play(voClip[1]);
-                GameplaySubtitles.counter = 20;
+                if(Painting_Texture == "p07.dds") //bedrooom
+                {
+                    AudioPlayer.play(voClip[1]); //something's behing this painting
+                    GameplaySubtitles.counter = 20;
+                }
+                if (Painting_Texture == "p03.dds")
+                    {
+                    //Something’s different about this one. What’s this symbol on the back?
+                }
+
                 once = false;
             }
 
@@ -79,8 +87,28 @@ public class Painting_Script : Script
                 gameObject.transform.SetRotation(new Vector3(-0.0f, -0.0f, -0.0f));
 
                 gameObject.SetActive(false);
-                AudioPlayer.play(voClip[0]);
-                GameplaySubtitles.counter = 13;
+                if (Painting_Texture == "p07.dds") //bedrooom
+                {
+                    AudioPlayer.play(voClip[0]); //one down
+                    GameplaySubtitles.counter = 13;
+                }
+                if (Painting_Texture == "p03.dds") //living room
+                {
+                    //screaming painting
+                    AudioPlayer.play("painting_dropin"); 
+                    AudioPlayer.play("painting_burning");
+                    //GameplaySubtitles.counter = ;
+                }
+                if (Painting_Name == "p04.dds") //dining room
+                {
+                    //AudioPlayer.play();
+                    //GameplaySubtitles.counter = ;
+                }
+                if (Painting_Name == "p01.dds") //dining room
+                {
+                    //AudioPlayer.play();
+                    //GameplaySubtitles.counter = ;
+                }
                 AudioPlayer.play("gallery_movepainting");
                 
 
