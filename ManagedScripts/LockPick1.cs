@@ -173,6 +173,12 @@ public class LockPick1 : Script
             savedNumOfTries = numOfTries;
         }
 
+        if (Input.GetKeyDown(Keycode.L))
+        {
+            //cheatcode for presentation
+            passed = true;
+        }
+
         //if (!_TutorialCompleted)
         //{
         //    // NOTE: Audio
@@ -271,7 +277,7 @@ public class LockPick1 : Script
                     audio.stop(lockSoundEffects[0]);
                     delay -= Time.deltaTime;
 
-                    if (delay <= 0)
+                    if (delay <= 0 && !passed)
                     {
                         // Not sure if there is a better way to do this
                         if (audio.finished(rattleSoundEffects[0]))
@@ -294,7 +300,7 @@ public class LockPick1 : Script
                 }
 
                 //play VO
-                if (playOnce && audio.finished("pc_findtherightspot") && audio.finished(playerGuideVO[0]))
+                if (playOnce && audio.finished("pc_findtherightspot") && audio.finished(playerGuideVO[0]) && !passed)
                 {
                     audio.play("pc_turnthelock");
                     
@@ -331,7 +337,7 @@ public class LockPick1 : Script
                     audio.stop(lockSoundEffects[0]);
                     delay -= Time.deltaTime;
 
-                    if (delay <= 0)
+                    if (delay <= 0 && !passed)
                     {
                         // Not sure if there is a better way to do this
                         if (audio.finished(rattleSoundEffects[0]))
@@ -365,7 +371,7 @@ public class LockPick1 : Script
                     audio.stop(lockSoundEffects[0]);
                     delay -= Time.deltaTime;
 
-                    if (delay <= 0)
+                    if (delay <= 0 && !passed)
                     {
                         // Not sure if there is a better way to do this
                         if (audio.finished(rattleSoundEffects[0]))
@@ -398,7 +404,7 @@ public class LockPick1 : Script
                     audio.stop(lockSoundEffects[0]);
                     delay -= Time.deltaTime;
 
-                    if (delay <= 0)
+                    if (delay <= 0 && !passed)
                     {
                         // Not sure if there is a better way to do this
                         if (audio.finished(rattleSoundEffects[0]))
@@ -433,7 +439,7 @@ public class LockPick1 : Script
                     audio.stop(lockSoundEffects[0]);
                     delay -= Time.deltaTime;
 
-                    if (delay <= 0)
+                    if (delay <= 0 && !passed)
                     {
                         // Not sure if there is a better way to do this
                         if (audio.finished(rattleSoundEffects[0]))
@@ -467,7 +473,7 @@ public class LockPick1 : Script
                     audio.stop(lockSoundEffects[0]);
                     delay -= Time.deltaTime;
 
-                    if (delay <= 0)
+                    if (delay <= 0 && !passed)
                     {
                         // Not sure if there is a better way to do this
                         if (audio.finished(rattleSoundEffects[0]))
@@ -499,7 +505,7 @@ public class LockPick1 : Script
                     audio.stop(lockSoundEffects[0]);
                     delay -= Time.deltaTime;
 
-                    if (delay <= 0)
+                    if (delay <= 0 && !passed)
                     {
                         // Not sure if there is a better way to do this
                         if (audio.finished(rattleSoundEffects[0]))
@@ -520,7 +526,7 @@ public class LockPick1 : Script
                         delay = 0.4f;
                     }
                 }
-                if (audio.finished(rattleSoundEffects[6]) && audio.finished(playerGuideVO[0]) && audio.finished("pc_turnthelock")) //prevent multiple VO playing
+                if (audio.finished(rattleSoundEffects[6]) && audio.finished(playerGuideVO[0]) && audio.finished("pc_turnthelock") && !passed) //prevent multiple VO playing
                 {
                     audio.stop(rattleSoundEffects[0]);
 
@@ -646,12 +652,20 @@ public class LockPick1 : Script
                     audio.play(playerGuideVO[2]); //aite looks like im in
                     next_VO = true;
                     GameplaySubtitles.counter = 7;
+                    Flashlight_Script.batteryLife = 49;
+
                 }
                 if (doorIndex == 1)
                 {
-                    GameplaySubtitles.counter = 21;
-                    audio.play("creak3"); 
-                    audio.play("pc_approachbedroom"); //placeholder
+                    Flashlight_Script.batteryLife = 24;
+                    audio.play("lightshut2");
+
+                    GameplaySubtitles.counter = 23;
+                    audio.play("pc_runningoutofjuice");
+
+                    //"is someone here?" event:
+                   // GameplaySubtitles.counter = 21;
+                    //audio.play("pc_approachbedroom"); //placeholder
                 }
 
                 if (doorIndex == 3)

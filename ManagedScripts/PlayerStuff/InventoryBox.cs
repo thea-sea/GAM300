@@ -104,6 +104,7 @@ public class InventoryBox : Script
             {
                 // Do battery logic
                 Flashlight_Script.batteryLife = 100.0f;
+                Flashlight_Script.replaceBattery = true;
             }
             if(storedObjName == "???")
             {

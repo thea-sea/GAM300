@@ -20,11 +20,12 @@ public class GameplaySubtitles : Script
     public static int counter;
     public static bool next = true;
     float timer;
+    int pressCtrlTwice = 0;
 
     public override void Awake()
     {
         Audiofiles = new String[17];
-        Subtitles = new String[23];
+        Subtitles = new String[25];
         GraphicsManagerWrapper.ToggleViewFrom2D(false);
         Subtitles[0] = "Press [F] for flashlight";
         Subtitles[1] = "Press [WASD] to move";
@@ -62,6 +63,8 @@ public class GameplaySubtitles : Script
         Subtitles[20] = "Something's behind this painting.";
         Subtitles[21] = "Is someone here?";
         Subtitles[22] = "Someone's coming... I better hide.";
+        Subtitles[23] = "Flashlight's running out of juice... better replace the battery.";
+        Subtitles[24] = "Press [Ctrl] to toggle crouch";
 
         Audiofiles[0] = ""; //wasd no audio
         Audiofiles[1] = ""; //no audio
@@ -120,6 +123,28 @@ public class GameplaySubtitles : Script
                 counter++;
 
         }
+        if (counter == 7 )
+        {
+            if (audio.finished("pc_lockpicksuccess2"))
+            {
+                counter = 24;
+            }
+        }
+        if ( counter == 24)
+        {
+            if (pressCtrlTwice == 2)
+            {
+                counter = 17;
+                audio.play("pc_okuncle"); //placeholder
+
+            }
+            if (Input.GetKeyDown(Keycode.CTRL))
+            {
+                pressCtrlTwice++;
+            }
+
+
+        }
         if (LockPick1.counter == 2) //only this works when LockPick1 script is no longer active, checking passed doesnt work
         {
             //this is already handled in lockpick script
@@ -127,11 +152,10 @@ public class GameplaySubtitles : Script
             if (LockPick1.audio.finished(LockPick1.playerGuideVO[2])) //no turning back now
             {
                 LockPick1.audio.stop(LockPick1.playerGuideVO[2]);
-                counter = 17;
+                //counter = 7;
                 LockPick1.counter = 6;//prevent audio repeat
                 //play enter house bgm
                 audio.play(BGMfile[0]);
-                audio.play("pc_okuncle"); //placeholder
             }
 
         }
@@ -210,6 +234,16 @@ public class GameplaySubtitles : Script
                 GameplaySubtitles.counter = 8;
             }
         }
+        if (counter == 23)
+        {
+            if (audio.finished("pc_runningoutofjuice"))
+            {
+                audio.stop("pc_runningoutofjuice");
+                GameplaySubtitles.counter = 8;
+
+            }
+        }
+
         if (Note_Script.isNotePicked)
         {
             if (audio.finished("pc_checkreceipt"))

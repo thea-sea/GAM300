@@ -626,7 +626,7 @@ public class FPS_Controller_Script : Script
     {
         audio = gameObject.GetComponent<AudioComponent>();
         
-        if(isWalking)
+        if(isWalking && !isCrouched) //no footsteps sfx when crouching
         {
             if (audioTimer < 0.0f)
             {
