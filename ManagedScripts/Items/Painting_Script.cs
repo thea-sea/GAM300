@@ -69,7 +69,7 @@ public class Painting_Script : Script
                     GameplaySubtitles.counter = 20;
                 }
                 if (Painting_Texture == "p03.dds")
-                    {
+                {
                     //Something’s different about this one. What’s this symbol on the back?
                 }
 

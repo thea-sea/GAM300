@@ -673,10 +673,16 @@ public class LockPick1 : Script
                     //bathroom is near
 
                 }
-                if (doorIndex == 4) //you are in bathroom
+                if (doorIndex == 4) //you are just outside bathroom
                 {
-                   
+                    
 
+                }
+                if (doorIndex == 5)
+                {
+                    //audio.play("shower_running");
+                    //audio.play("drowningloop");
+                    //audio.play("splashing");
                 }
 
                 // if (audio.finished(playerGuideVO[2]))

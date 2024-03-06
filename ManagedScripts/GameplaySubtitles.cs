@@ -25,7 +25,7 @@ public class GameplaySubtitles : Script
     public override void Awake()
     {
         Audiofiles = new String[17];
-        Subtitles = new String[28];
+        Subtitles = new String[41];
         GraphicsManagerWrapper.ToggleViewFrom2D(false);
         Subtitles[0] = "Press [F] for flashlight";
         Subtitles[1] = "Press [WASD] to move";
@@ -65,9 +65,22 @@ public class GameplaySubtitles : Script
         Subtitles[22] = "Someone's coming... I better hide.";
         Subtitles[23] = "Flashlight's running out of juice... better replace the battery.";
         Subtitles[24] = "Press [Ctrl] to toggle crouch";
-        Subtitles[25] = "Something’s different about this one. What’s this symbol on the back?";
-        Subtitles[26] = "<Painting drops into fire>";
-        Subtitles[27] = "<Painting burns in fire>";
+        Subtitles[25] = "The shower’s running... but I don’t hear anyone in there.";
+        Subtitles[26] = "The tub is still wet, but there’s no one...";
+        Subtitles[27] = "Something’s different about this one. What’s this symbol on the back?";
+        Subtitles[28] = "Painting: You shouldn’t be here";
+        Subtitles[29] = "Martin: Huh?";
+        Subtitles[30] = "Painting: You have our blood, but you’re not one of us..";
+        Subtitles[31] = "Painting: And yet you choose to come back... why?";
+        Subtitles[32] = "Painting: LEAVE WHILE YOU STILL CAN!";
+        Subtitles[33] = "More paintings.";
+        Subtitles[34] = "Please don’t scream...";
+        Subtitles[35] = "There’s something... off about this one.";
+        Subtitles[36] = "No! It saw me!";
+        Subtitles[37] = "I hope it didn’t see me come in here...";
+        Subtitles[38] = "It saw me hide in here, I have to go!";
+        Subtitles[39] = "There’s something... off about this one.";
+        Subtitles[40] = "There’s something... off about this one.";
 
         Audiofiles[0] = ""; //wasd no audio
         Audiofiles[1] = ""; //no audio
