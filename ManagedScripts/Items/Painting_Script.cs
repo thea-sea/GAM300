@@ -63,7 +63,7 @@ public class Painting_Script : Script
 
             if (once)
             {
-                if(Painting_Texture == "p07.dds") //bedrooom
+                if (Painting_Texture == "p07.dds") //bedrooom
                 {
                     AudioPlayer.play(voClip[1]); //something's behing this painting
                     GameplaySubtitles.counter = 20;
@@ -92,19 +92,21 @@ public class Painting_Script : Script
                     AudioPlayer.play(voClip[0]); //one down
                     GameplaySubtitles.counter = 13;
                 }
-                if (Painting_Texture == "p03.dds") //living room
+                if (Painting_Texture == "p06.dds") //living room
                 {
                     //screaming painting
-                    AudioPlayer.play("painting_dropin"); 
-                    AudioPlayer.play("painting_burning");
+                    GameplaySubtitles.counter = 27; //somethings diff..
+                    AudioPlayer.play("pc_somethingdiff");
+                   
+                   
                     //GameplaySubtitles.counter = ;
                 }
-                if (Painting_Name == "p04.dds") //dining room
+                if (Painting_Name == "p04.dds") //dining room MOUNTAIN
                 {
                     //AudioPlayer.play();
                     //GameplaySubtitles.counter = ;
                 }
-                if (Painting_Name == "p01.dds") //dining room
+                if (Painting_Name == "p03.dds") //dining room FLOWER
                 {
                     //AudioPlayer.play();
                     //GameplaySubtitles.counter = ;

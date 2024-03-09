@@ -60,6 +60,15 @@ public class p05 : Script
 
                 // Trigger Painting Event
                 AudioPlayer.play("gallery_movepainting");
+                if (Painting_Texture == "p06.dds") //living room
+                {
+                    //screaming painting
+                    GameplaySubtitles.counter = 27; //somethings diff..
+                    AudioPlayer.play("pc_somethingdiff");
+
+
+                    //GameplaySubtitles.counter = ;
+                }
 
                 // hiding event 
                 //hidingGameObject.GetComponent<Hiding>().numOfPaintingsTook++;
