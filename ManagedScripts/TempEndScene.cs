@@ -6,12 +6,15 @@ public class TempEndScene : Script
     private bool fadeOut = true;
     private float incrementFading = Time.deltaTime / 4f;
     readonly string runningSFX = "end_grassrunning";
+    readonly string monsterSFX = "mon_death";
     AudioComponent audio;
     public override void Awake()
     {
         //audio = new AudioComponent();
         audio = gameObject.GetComponent<AudioComponent>();
         audio.play(runningSFX);
+        audio.play(monsterSFX);
+        audio.FadeOut(3, monsterSFX);
         audio.FadeIn(7, runningSFX);
     }
     public override void Start()

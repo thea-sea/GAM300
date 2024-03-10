@@ -11,7 +11,7 @@ public class FinishGame : Script
 
     public GameObject doorStates;
     public GameObject doorText;
-    public GameBlackboard blackboard;
+    //public GameBlackboard blackboard;
 
     readonly string climbingSFX = "end_climbing";
     AudioComponent audio;
@@ -19,7 +19,7 @@ public class FinishGame : Script
     public override void Awake()
     {
         doorText = GameObjectScriptFind("DoorText");    // Hate this please change after milestone
-        blackboard = GameObjectScriptFind("GameBlackboard").GetComponent<GameBlackboard>();    // Hate this please change after milestone
+        //blackboard = GameObjectScriptFind("GameBlackboard").GetComponent<GameBlackboard>();    // Hate this please change after milestone
         audio = gameObject.GetComponent<AudioComponent>();
     }
     public override void Start()
