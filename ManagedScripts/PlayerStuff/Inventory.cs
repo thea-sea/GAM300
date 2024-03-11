@@ -277,6 +277,8 @@ public class InventoryScript : Script
             {
                 // Do battery logic
                 Flashlight_Script.batteryLife = 100.0f;
+                AudioComponent audio = gameObject.GetComponent<AudioComponent>();
+                audio.play("flashlight battery restore");
             }
             if (storedObjName == "???")
             {
