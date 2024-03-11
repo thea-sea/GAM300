@@ -87,6 +87,7 @@ public class LockPick1 : Script
     public static AudioComponent audio;
     public static bool failed;
     public static bool passed;
+    public static bool enteredHouse = false;
     float timer;
 
     public int doorIndex;
@@ -646,6 +647,7 @@ public class LockPick1 : Script
                     next_VO = true;
                     GameplaySubtitles.counter = 7;
                     Flashlight_Script.batteryLife = 49;
+                    enteredHouse = true;
 
                 }
                 if (doorIndex == 1)

@@ -7,7 +7,7 @@ public class FPS_Controller_Script : Script
 {
     public RigidBodyComponent rb;
     public string[] footStepSoundEffects;
-    String[] backgroundMusic;
+    public static String[] backgroundMusic;
     private int currentFootStepPlaying;
     float audioTimer;
     AudioComponent audio;
@@ -153,7 +153,7 @@ public class FPS_Controller_Script : Script
         audioTimer = 1.0f;
 
         backgroundMusic = new String[3];
-        backgroundMusic[0] = "ambientdrone1";
+        backgroundMusic[0] = "outside_ambience";
     }
     public override void Start()
     {
@@ -433,11 +433,21 @@ public class FPS_Controller_Script : Script
 
         //}
         #endregion
-
-        if (audio.finished(backgroundMusic[0]))
+        if (!LockPick1.enteredHouse)
         {
-            audio.play(backgroundMusic[0]);
-            //audio.setVolume(0.5f);
+            if (audio.finished(backgroundMusic[0]))
+            {
+                audio.play(backgroundMusic[0]);
+                //audio.setVolume(0.5f);
+            }
+        }
+        else
+        {
+            audio.FadeOut(3, backgroundMusic[0]);
+            if (audio.finished(backgroundMusic[0]))
+            {
+                audio.FadeIn(3, "ambientdrone1");
+            }
         }
     }
 

@@ -176,6 +176,7 @@ public class GameplaySubtitles : Script
                 LockPick1.counter = 6;//prevent audio repeat
                 //play enter house bgm
                 audio.play(BGMfile[0]);
+                audio.stop("outside_ambience");
             }
 
         }

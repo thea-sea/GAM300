@@ -122,6 +122,7 @@ public class Hiding : Script
                 }
                 player.GetComponent<Flashlight_Script>().activateLight = false;
                 _flashlight.SetActive(false);
+                audioPlayer.play("door open");
 
                 if (enemyPathfinding.GetComponent<GhostMovement>().bedroomHideEventDone == false && numOfPaintingsTook == 1) // triggering bedroom monster event 
                 {
@@ -140,6 +141,8 @@ public class Hiding : Script
             if (Input.GetKeyDown(Keycode.E))
             {
                 //Console.WriteLine("There");
+                audioPlayer.play("door close");
+
                 hiding = false;
                 interactable = true;
                 //player.transform.SetPosition(nonHidingPos);

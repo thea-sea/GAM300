@@ -83,6 +83,7 @@ public class Door_Script : Script
                 //}
                 if (Input.GetKeyDown(Keycode.E) || fadeOut == true)
                 {
+                    audio.play("door open");
                     fadeOut = true;
                     float fadeValue = GraphicsManagerWrapper.GetFadeFactor();
                     if (fadeOut == true && fadeIn == false)
@@ -129,6 +130,8 @@ public class Door_Script : Script
         }
         if (fadeOut == true && fadeIn == true)
         {
+            audio.play("door creak");
+
             float fadeValue = GraphicsManagerWrapper.GetFadeFactor();
             fadeValue += fadeValueIncrement;
             GraphicsManagerWrapper.SetFadeFactor(fadeValue);
