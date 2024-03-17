@@ -52,6 +52,7 @@ public class EventBathroomSink : Script
             {
                 flicker = false;
                 bathroomLights.SetActive(flicker);
+                audio.stop("shower_running");
                 // Play light bulb exploding?
             }
         }

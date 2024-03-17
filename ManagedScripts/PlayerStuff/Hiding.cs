@@ -24,6 +24,8 @@ public class Hiding : Script
     public GameObject _ExitTimerUI;
     //public CheckGameState myGameState;
     public GameObject closet;
+    public GameObject doorStates;
+    public GameObject doorText;
     [Header("AudioStuff")]
     //public AudioSource playerVOSource;
     public AudioComponent audioPlayer;  //#1
@@ -58,6 +60,8 @@ public class Hiding : Script
         subtitles = new String[2];
         subtitles[0] = "Nothing inside";
         subtitles[1] = "But I could hide in here in case someone shows up";
+        doorText = GameObjectScriptFind("DoorText");    // Hate this please change after milestone
+        doorStates = GameObjectScriptFind("DoorStates");    // Hate this please change after milestone
     }
 
     public override void Start()
@@ -73,9 +77,12 @@ public class Hiding : Script
     public override void Update()
     {
 
-        if (interactable && gameObject.GetComponent<RigidBodyComponent>().IsRayHit() && gameObject.GetComponent<RigidBodyComponent>().IsPlayerCast())
+        if (interactable && gameObject.GetComponent<RigidBodyComponent>().IsRayHit() && gameObject.GetComponent<RigidBodyComponent>().IsPlayerCast()&& !hiding)
         {
             _InteractUI.SetActive(true);
+            doorStates.GetComponent<DoorState>().doorLookedAt = true;
+            //doorText.SetActive(true);
+            doorText.GetComponent<UISpriteComponent>().SetFontMessage("Press E to Hide");
 
 
             if (playOnce && !p07.isPaintingCollected)
@@ -96,16 +103,19 @@ public class Hiding : Script
                     audioPlayer.play(voClips[0]);
                 }
             }
-            
-            
+
+
             //Sprite.SetFontMessage(subtitles[counter]); //no effect
 
-            
+
 
             if (Input.GetKeyDown(Keycode.E) && hiding == false) // Player hides to trigger the monster event
             {
+
+
+
                 hiding = true;
-                interactable = false;
+                //interactable = false;
                 nonHidingPos = player.transform.GetPosition();
                 //player.transform.SetPosition(closet.transform.GetPosition());
                 //counter = 1;
@@ -132,13 +142,17 @@ public class Hiding : Script
         }
         else if (hiding)
         {
+            doorText.GetComponent<UISpriteComponent>().SetFontMessage("Hold E to Leave Closet");
+
             _InteractUI.SetActive(false);
+            doorStates.GetComponent<DoorState>().doorLookedAt = true;
 
             if (Input.GetKey(Keycode.E) || Input.GetKeyDown(Keycode.E))
             {
                 hidingTimer -= Time.deltaTime;
                 _ExitTimerUI.SetActive(true);
                 _ExitTimerUI.transform.SetScaleX((hidingTimer / maxHidingTime) * originalUIScale);
+                
                 if (hidingTimer <= 0.0f)
                 {
                     //Console.WriteLine("There");
@@ -156,6 +170,12 @@ public class Hiding : Script
                     player.GetComponent<FPS_Controller_Script>().playerCanMove = true;
                     player.GetComponent<FPS_Controller_Script>().enableHeadBob = true;
                     _flashlight.SetActive(true);
+
+                    if (EventBedroomHiding.doOnce == false)
+                    {
+                        audioPlayer.play("pc_monstergoesaway2");
+                        GameplaySubtitles.counter = 15;
+                    }
                 }
             }
             else
@@ -167,7 +187,7 @@ public class Hiding : Script
         else
         {
             _InteractUI.SetActive(false);
-            
+
 
         }
     }

@@ -10,6 +10,7 @@
 ***/
 using System;
 using System.Reflection.Emit;
+using System.Text;
 using ScriptAPI;
 
 public class EventBedroomHiding : Script
@@ -23,8 +24,17 @@ public class EventBedroomHiding : Script
     public AudioComponent audioPlayer;  //#1
     String[] voClips;
     public String[] subtitles;
+    public static bool doOnce = true;
 
     public int numOfPaintingsTook = 0;
+	
+	public override void Awake()
+	{
+		voClips = new string[3];
+        voClips[0] = "pc_hideinclosetfirst";
+        voClips[1] = "pc_wanderingcloset";
+        voClips[2] = "pc_monstergoesaway1"; //wth was that
+	}
 
 
     public override void Update()
@@ -43,8 +53,12 @@ public class EventBedroomHiding : Script
 
             if (enemyPathfinding.GetComponent<GhostMovement>().bedroomHideEventDone)
             {
-                audioPlayer.play(voClips[2]);
-                GameplaySubtitles.counter = 15;
+                if (doOnce)
+                {
+                    audioPlayer.play(voClips[2]);
+                    GameplaySubtitles.counter = 11;
+                    doOnce = false;
+                }
             }
         }
     }

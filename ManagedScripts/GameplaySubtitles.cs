@@ -25,7 +25,7 @@ public class GameplaySubtitles : Script
     public override void Awake()
     {
         Audiofiles = new String[17];
-        Subtitles = new String[46];
+        Subtitles = new String[47];
         GraphicsManagerWrapper.ToggleViewFrom2D(false);
         Subtitles[0] = "Press [F] for flashlight";
         Subtitles[1] = "Press [WASD] to move";
@@ -86,6 +86,7 @@ public class GameplaySubtitles : Script
         Subtitles[43] = "That might have opened the door. Worth taking a look.";
         Subtitles[44] = "Sounds like it opened something. But what?";
         Subtitles[45] = "That's it. Time to get out of here.";
+        Subtitles[46] = "I don't think I can move this silently, that thing will definitely know where I am";
 
         Audiofiles[0] = ""; //wasd no audio
         Audiofiles[1] = ""; //no audio
@@ -146,6 +147,7 @@ public class GameplaySubtitles : Script
         }
         if (counter == 7 )
         {
+            audio.stop("outside_ambience");
             if (audio.finished("pc_lockpicksuccess2"))
             {
                 counter = 24;
@@ -177,7 +179,7 @@ public class GameplaySubtitles : Script
                 LockPick1.counter = 6;//prevent audio repeat
                 //play enter house bgm
                 audio.play(BGMfile[0]);
-                audio.stop("outside_ambience");
+                
             }
 
         }
@@ -189,7 +191,16 @@ public class GameplaySubtitles : Script
                 GameplaySubtitles.counter = 5;
             }
         }
-        
+        if (counter == 11)
+        {
+            if (audio.finished("pc_monstergoesaway1"))
+            {
+                audio.stop("pc_monstergoesaway1");
+                GameplaySubtitles.counter = 5;
+            }
+
+        }
+
         if (counter == 15)
         {
             if (audio.finished("pc_monstergoesaway2"))
@@ -293,6 +304,8 @@ public class GameplaySubtitles : Script
         {
             if (audio.finished("pc_stealpainting1"))
             {
+                audio.play("mon_alerted3");
+
                 audio.stop("pc_stealpainting1");
                 counter = 8;
 
@@ -300,9 +313,10 @@ public class GameplaySubtitles : Script
         }
         if (counter == 8) // Gallery pick up painting
         {
-            if (audio.finished("gallery_movepainting")) // Creaking sound ends
+            if (audio.finished("gallery_movepainting")&& audio.finished("painting_dropin")) // Creaking sound ends
             {
                 audio.stop("gallery_movepainting");
+                audio.play("mon_alerted3");
                 audio.play("pc_monsterrattledoor"); // Someone's coming, better hide
                 counter = 22; //commented this out as u dont hide after every painting u pick up
             }
@@ -338,6 +352,14 @@ public class GameplaySubtitles : Script
             if (audio.finished("pc_timetogetout"))
             {
                 audio.stop("pc_timetogetout");
+                GameplaySubtitles.counter = 5;
+            }
+        }
+        if (counter == 46)
+        {
+            if (audio.finished("pc_movethissilently"))
+            {
+                audio.stop("pc_movethissilently");
                 GameplaySubtitles.counter = 5;
             }
         }
