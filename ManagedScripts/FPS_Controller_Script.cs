@@ -48,7 +48,7 @@ public class FPS_Controller_Script : Script
     #region Movement Variables
     [Header("Movement Variables")]
     public bool playerCanMove = true;
-    public float walkSpeed = 2f;
+    public float walkSpeed = 3f;
     private float savedWalkSpeed = 2f;
     public float maxVelocityChange = 10f;
     public bool isWalking = false;
@@ -446,11 +446,11 @@ public class FPS_Controller_Script : Script
         {
             if (audio.checkPlaying(backgroundMusic[0]))
             {
-                audio.FadeOut(3, backgroundMusic[0]);
+                //audio.FadeOut(3, backgroundMusic[0]);
             }
             if (audio.finished(backgroundMusic[0]))
             {
-                audio.FadeIn(3, "ambientdrone1");
+                audio.play("ambientdrone1");
             }
         }
     }

@@ -22,13 +22,14 @@ public class GameplaySubtitles : Script
     public GameObject? fire;
     float timer;
     int pressCtrlTwice = 0;
+    float subtitleTimer = 2.0f;
 
     private bool Isfire = true;
 
     public override void Awake()
     {
         Audiofiles = new String[17];
-        Subtitles = new String[47];
+        Subtitles = new String[48];
         GraphicsManagerWrapper.ToggleViewFrom2D(false);
         Subtitles[0] = "Press [F] for flashlight";
         Subtitles[1] = "Press [WASD] to move";
@@ -89,7 +90,8 @@ public class GameplaySubtitles : Script
         Subtitles[43] = "That might have opened the door. Worth taking a look.";
         Subtitles[44] = "Sounds like it opened something. But what?";
         Subtitles[45] = "That's it. Time to get out of here.";
-        Subtitles[46] = "I don't think I can move this silently, that thing will definitely know where I am";
+        Subtitles[46] = "I don't think I can move this silently";
+        Subtitles[47] = "That thing will definitely know where I am";
 
         Audiofiles[0] = ""; //wasd no audio
         Audiofiles[1] = ""; //no audio
@@ -130,6 +132,10 @@ public class GameplaySubtitles : Script
 
         } if (counter == 1)
         {
+            audio.set3DCoords(/*GameObjectScriptFind("(Kitchen) Fridge").*/transform.GetPosition(), "kitchen_ambience");
+            //Console.WriteLine(GameObjectScriptFind("(Kitchen) Fridge").transform.GetPosition().X);
+            //Console.WriteLine(GameObjectScriptFind("(Kitchen) Fridge").transform.GetPosition().Z);
+            audio.play("kitchen_ambience");
             if (Input.GetKeyDown(Keycode.W) || Input.GetKeyDown(Keycode.A) || Input.GetKeyDown(Keycode.S) || Input.GetKeyDown(Keycode.D))
             {
                 //go next line
@@ -367,6 +373,20 @@ public class GameplaySubtitles : Script
         }
         if (counter == 46)
         {
+            if (subtitleTimer <= 0.0f)
+            {
+                GameplaySubtitles.counter = 47;
+            }
+            else
+            {
+                subtitleTimer -= Time.deltaTime;
+                GameplaySubtitles.counter = 46;
+
+            }
+        }
+        if (counter == 47)
+        {
+
             if (audio.finished("pc_movethissilently"))
             {
                 audio.stop("pc_movethissilently");
@@ -433,6 +453,8 @@ public class GameplaySubtitles : Script
                 Isfire = false;
             }
         }
+
+       
 
         // if (Input.GetKeyDown(Keycode.SPACE))
         // {

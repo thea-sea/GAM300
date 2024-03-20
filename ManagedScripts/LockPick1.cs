@@ -614,7 +614,7 @@ public class LockPick1 : Script
 
         if (passed)
         {
-            audio.FadeOut(3, "outside_ambience");
+            //audio.FadeOut(3, "outside_ambience");
             movePick = false;
             audio.stop(rattleSoundEffects[0]);
             counter = 1;
