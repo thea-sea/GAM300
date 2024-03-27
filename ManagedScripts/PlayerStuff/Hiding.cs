@@ -48,6 +48,8 @@ public class Hiding : Script
     private float timer = 1.0f;
 
     public float turnSpeed = 0.01f;
+    private bool dialogueStarted = false;
+
 
     public override void Awake()
     {
@@ -76,7 +78,13 @@ public class Hiding : Script
 
     public override void Update()
     {
-
+        if (dialogueStarted) { timer -= Time.deltaTime; }
+        if (timer <= 0.0f) //make sure text goes away even when u are not looking at closet
+        {
+            //counter = 1;
+            GameplaySubtitles.counter = 10; //but i could hide
+            playOnce = false;
+        }
         if (interactable && gameObject.GetComponent<RigidBodyComponent>().IsRayHit()&& !hiding)
         {
             _InteractUI.SetActive(true);
@@ -85,23 +93,15 @@ public class Hiding : Script
             doorText.GetComponent<UISpriteComponent>().SetFontMessage("Press E to Hide");
 
 
-            if (playOnce && !p07.isPaintingCollected)
+            if (playOnce && !p07.isPaintingCollected && timer > 0.0f)
             {
                 //textmachine.SetActive(false);
                 //UISpriteComponent Sprite = GameObjectScriptFind("VOSubtitles").GetComponent<UISpriteComponent>();
-                if (timer <= 0.0f)
-                {
-                    //counter = 1;
-
-                    GameplaySubtitles.counter = 10; //but i could hide
-                    playOnce = false;
-                }
-                else
-                {
-                    timer -= Time.deltaTime;
-                    GameplaySubtitles.counter = 9; //nothing inside
-                    audioPlayer.play(voClips[0]);
-                }
+                dialogueStarted = true;
+                
+                GameplaySubtitles.counter = 9; //nothing inside
+                audioPlayer.play(voClips[0]);
+                
             }
 
 
