@@ -10,6 +10,7 @@
 ***/
 using ScriptAPI;
 using System;
+using System.Diagnostics;
 
 public class GameplaySubtitles : Script
 {
@@ -76,9 +77,9 @@ public class GameplaySubtitles : Script
         Subtitles[26] = "The tub is still wet, but there's no one...";
         Subtitles[27] = "Something's different about this one. What's this symbol on the back?";
         Subtitles[28] = "Painting: You shouldn't be here";
-        Subtitles[29] = "Martin: Huh?";
+        Subtitles[29] = "Huh?";
         Subtitles[30] = "Painting: You have our blood, but you're not one of us..";
-        Subtitles[31] = "Painting: And yet you choose to come back... why?";
+        Subtitles[31] = "Painting: And yet you still choose to come back... why?";
         Subtitles[32] = "Painting: LEAVE WHILE YOU STILL CAN!";
         Subtitles[33] = "More paintings.";
         Subtitles[34] = "Please don’t scream...";
@@ -129,7 +130,7 @@ public class GameplaySubtitles : Script
 
         UISpriteComponent Sprite = gameObject.GetComponent<UISpriteComponent>();
         AudioComponent audio = gameObject.GetComponent<AudioComponent>();
-
+            
         if (counter == 0)
         {
             if (Input.GetKeyDown(Keycode.F))
@@ -489,38 +490,17 @@ public class GameplaySubtitles : Script
             }
         }
 
-       
+        //set font to red if its the painting talking
+        if (counter == 28 || counter == 30 || counter == 31 || counter == 32)
+        {
+            Sprite.SetFontColour(new Vector4(1.0f, 0.0f, 0.0f, 1.0f));
+        }
+        else
+            Sprite.SetFontColour(new Vector4(1.0f, 1.0f, 1.0f, 1.0f));
 
-        // if (Input.GetKeyDown(Keycode.SPACE))
-        // {
-        //     audio.stop(Audiofiles[counter]);
-        //     GraphicsManagerWrapper.ToggleViewFrom2D(false);
-        //     SceneLoader.LoadMainGame();
-        // }
-        // else
-        // {
-        //     audio.playplay();
 
-        //     if (counter > 16)//cutscene over
-        //     {
-        //         GraphicsManagerWrapper.ToggleViewFrom2D(false);
-        //         SceneLoader.LoadMainGame();
-        //     }
-        //     else
-        //     {
-        //         if (next)
-        //         {
         Sprite.SetFontMessage(Subtitles[counter]);
-        //             audio.play(Audiofiles[counter]);
-        //             next = false;
-        //         }
-        //         else if (audio.finished(Audiofiles[counter]))
-        //         {
-        //             next = true;
-        //             ++counter;
-        //         }
-        //     }
-        // }
+        
         
     }
 }
