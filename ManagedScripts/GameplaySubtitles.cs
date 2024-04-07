@@ -203,7 +203,7 @@ public class GameplaySubtitles : Script
             }
 
         }
-        if (counter == 9 || counter == 10)
+        if (counter == 10)
         {
             if (audio.finished("pc_hideinclosetfirst"))
             {

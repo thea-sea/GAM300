@@ -79,7 +79,7 @@ public class Hiding : Script
     public override void Update()
     {
         if (dialogueStarted) { timer -= Time.deltaTime; }
-        if (timer <= 0.0f) //make sure text goes away even when u are not looking at closet
+        if (timer <= 0.0f && !audioPlayer.finished(voClips[0])) //make sure text goes away even when u are not looking at closet
         {
             //counter = 1;
             GameplaySubtitles.counter = 10; //but i could hide
