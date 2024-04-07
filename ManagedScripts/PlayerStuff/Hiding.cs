@@ -173,8 +173,12 @@ public class Hiding : Script
 
                     if (EventBedroomHiding.doOnce == false)
                     {
-                        audioPlayer.play("pc_monstergoesaway2");
-                        GameplaySubtitles.counter = 15;
+                        if (EventLivingRoom.doOnce) //bobo fix to check that the bedroom hiding has passed
+                        {
+                            audioPlayer.play("pc_monstergoesaway2");
+                            GameplaySubtitles.counter = 15;
+
+                        }// else dont keep repeating this audio for every hide closet!
                     }
                 }
             }

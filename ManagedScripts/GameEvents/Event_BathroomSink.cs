@@ -61,7 +61,7 @@ public class EventBathroomSink : Script
             {
                 monster.GetComponent<AnimatedComponent>().SetEnabled(true);
                 monster.SetActive(true);
-                audio.play("smallscare2");
+                audio.play("smallscare1");
                 if (player.transform.GetRotation().Y >= lastPlayerRot.Y + 150 || player.transform.GetRotation().Y <= lastPlayerRot.Y - 150)
                 {
                     ghostTimer -= Time.deltaTime;

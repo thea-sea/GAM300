@@ -822,8 +822,8 @@ public class GhostMovement : Script
 
             if (player.transform.GetPosition().X <= 319.0f)
             {
-                gameObject.GetComponent<AudioComponent>().play("pc_movethissilently");
-                GameplaySubtitles.counter = 46;
+                gameObject.GetComponent<AudioComponent>().play("pc_needtobecareful");
+                GameplaySubtitles.counter = 50;
                 startEvent = false;
             }
 
