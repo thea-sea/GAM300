@@ -370,8 +370,8 @@ public class GameplaySubtitles : Script
                 audio.stop("gallery_movepainting");
                 audio.play("mon_alerted3");
                 audio.set3DCoords(GhostMovement.GhostTransformPosition, "mon_alerted3");
-                audio.play("pc_monsterrattledoor"); // Someone's coming, better hide
-                audio.set3DCoords(listenerpos, "pc_monsterrattledoor");
+                //audio.play("pc_monsterrattledoor"); // Someone's coming, better hide
+                //audio.set3DCoords(listenerpos, "pc_monsterrattledoor");
                 audio.play("pc_icanhearitcoming"); // I can hear it coming (variation of: someone's coming)
                 audio.set3DCoords(listenerpos, "pc_icanhearitcoming");
                 counter = 51; 

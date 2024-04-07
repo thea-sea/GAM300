@@ -188,7 +188,7 @@ public class Hiding : Script
                 _ExitTimerUI.SetActive(false);
             }
         }
-        audioPlayer.set3DCoords(audioPlayer.getListenerPos(), "pc_monstergoesaway2");
+        //audioPlayer.set3DCoords(audioPlayer.getListenerPos(), "pc_monstergoesaway2");
     }
 
     void FadeInFadeOut()
